@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة إدارة الحجوزات</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    <title>لوحة إدارة حجوزات السماعات</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
-            background: #0f172a;
+            background: #0a0a1a;
             color: #e2e8f0;
             min-height: 100vh;
             direction: rtl;
@@ -22,8 +22,8 @@
             right: 0; top: 0;
             width: 260px;
             height: 100vh;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            border-left: 1px solid #334155;
+            background: linear-gradient(180deg, #1a0a2e 0%, #0a0a1a 100%);
+            border-left: 1px solid #2d1b69;
             z-index: 100;
             padding: 20px 0;
             transition: transform 0.3s;
@@ -32,26 +32,26 @@
         .sidebar-header {
             padding: 10px 20px 30px;
             text-align: center;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid #2d1b69;
             margin-bottom: 20px;
         }
-        .sidebar-header .logo { font-size: 40px; margin-bottom: 8px; }
-        .sidebar-header h2 { font-size: 16px; color: #60a5fa; font-weight: 700; }
-        .sidebar-header p { font-size: 12px; color: #94a3b8; }
+        .sidebar-header .logo { font-size: 44px; margin-bottom: 8px; }
+        .sidebar-header h2 { font-size: 16px; color: #a78bfa; font-weight: 700; }
+        .sidebar-header p { font-size: 12px; color: #7c6baa; }
         .sidebar-nav { list-style: none; padding: 0 12px; }
         .sidebar-nav li { margin-bottom: 4px; }
         .sidebar-nav a {
             display: flex; align-items: center; gap: 10px;
             padding: 10px 16px;
-            color: #94a3b8;
+            color: #7c6baa;
             text-decoration: none;
             border-radius: 10px;
             transition: all 0.2s;
             font-size: 14px;
         }
         .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: #1e40af20;
-            color: #60a5fa;
+            background: #7c3aed20;
+            color: #a78bfa;
         }
         .sidebar-nav a .icon { font-size: 18px; width: 24px; text-align: center; }
 
@@ -84,18 +84,18 @@
             text-decoration: none;
         }
         .btn:hover { transform: translateY(-1px); }
-        .btn-primary { background: #2563eb; color: #fff; }
-        .btn-primary:hover { background: #1d4ed8; }
+        .btn-primary { background: #7c3aed; color: #fff; }
+        .btn-primary:hover { background: #6d28d9; }
         .btn-success { background: #059669; color: #fff; }
         .btn-success:hover { background: #047857; }
         .btn-danger { background: #dc2626; color: #fff; }
         .btn-danger:hover { background: #b91c1c; }
         .btn-outline {
             background: transparent;
-            border: 1px solid #475569;
-            color: #94a3b8;
+            border: 1px solid #2d1b69;
+            color: #7c6baa;
         }
-        .btn-outline:hover { border-color: #60a5fa; color: #60a5fa; }
+        .btn-outline:hover { border-color: #a78bfa; color: #a78bfa; }
         .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 8px; }
         .btn-icon {
             width: 32px; height: 32px;
@@ -114,8 +114,8 @@
             margin-bottom: 24px;
         }
         .stat-card {
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: #1a0a2e;
+            border: 1px solid #2d1b69;
             border-radius: 16px;
             padding: 20px;
             position: relative;
@@ -130,9 +130,9 @@
             opacity: 0.1;
             transform: translate(20px, -20px);
         }
-        .stat-card.total::before { background: #3b82f6; }
+        .stat-card.total::before { background: #8b5cf6; }
         .stat-card.review::before { background: #f59e0b; }
-        .stat-card.preparing::before { background: #8b5cf6; }
+        .stat-card.preparing::before { background: #ec4899; }
         .stat-card.delivered::before { background: #10b981; }
         .stat-card.cancelled::before { background: #ef4444; }
         .stat-icon { font-size: 28px; margin-bottom: 8px; }
@@ -141,12 +141,12 @@
             font-weight: 900;
             margin-bottom: 2px;
         }
-        .stat-card.total .stat-number { color: #60a5fa; }
+        .stat-card.total .stat-number { color: #a78bfa; }
         .stat-card.review .stat-number { color: #fbbf24; }
-        .stat-card.preparing .stat-number { color: #a78bfa; }
+        .stat-card.preparing .stat-number { color: #f472b6; }
         .stat-card.delivered .stat-number { color: #34d399; }
         .stat-card.cancelled .stat-number { color: #f87171; }
-        .stat-label { font-size: 13px; color: #94a3b8; }
+        .stat-label { font-size: 13px; color: #7c6baa; }
 
         /* Search & Filter Bar */
         .filter-bar {
@@ -164,8 +164,8 @@
         .search-box input {
             width: 100%;
             padding: 10px 40px 10px 16px;
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: #1a0a2e;
+            border: 1px solid #2d1b69;
             border-radius: 12px;
             color: #e2e8f0;
             font-family: 'Cairo', sans-serif;
@@ -173,17 +173,17 @@
             outline: none;
             transition: border-color 0.2s;
         }
-        .search-box input:focus { border-color: #3b82f6; }
+        .search-box input:focus { border-color: #8b5cf6; }
         .search-box .search-icon {
             position: absolute;
             right: 14px; top: 50%;
             transform: translateY(-50%);
-            color: #64748b;
+            color: #6d5b95;
         }
         .filter-select {
             padding: 10px 16px;
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: #1a0a2e;
+            border: 1px solid #2d1b69;
             border-radius: 12px;
             color: #e2e8f0;
             font-family: 'Cairo', sans-serif;
@@ -192,12 +192,12 @@
             cursor: pointer;
             min-width: 160px;
         }
-        .filter-select:focus { border-color: #3b82f6; }
+        .filter-select:focus { border-color: #8b5cf6; }
 
         /* Table */
         .table-container {
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: #1a0a2e;
+            border: 1px solid #2d1b69;
             border-radius: 16px;
             overflow: hidden;
         }
@@ -207,24 +207,24 @@
             border-collapse: collapse;
             min-width: 1100px;
         }
-        thead { background: #0f172a; }
+        thead { background: #0a0a1a; }
         th {
             padding: 14px 16px;
             font-size: 13px;
             font-weight: 700;
-            color: #94a3b8;
+            color: #7c6baa;
             text-align: right;
             white-space: nowrap;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid #2d1b69;
         }
         td {
             padding: 12px 16px;
             font-size: 13px;
-            border-bottom: 1px solid #1e293b50;
+            border-bottom: 1px solid #1a0a2e50;
             vertical-align: middle;
         }
         tbody tr { transition: background 0.15s; }
-        tbody tr:hover { background: #33415530; }
+        tbody tr:hover { background: #2d1b6930; }
 
         /* Status Badge */
         .status-select {
@@ -241,7 +241,7 @@
         }
         .status-review { background: #fef3c7; color: #92400e; }
         .status-contacted { background: #dbeafe; color: #1e40af; }
-        .status-preparing { background: #ede9fe; color: #5b21b6; }
+        .status-preparing { background: #fce7f3; color: #9d174d; }
         .status-shipped { background: #e0e7ff; color: #3730a3; }
         .status-delivered { background: #d1fae5; color: #065f46; }
         .status-cancelled { background: #fee2e2; color: #991b1b; }
@@ -268,29 +268,29 @@
             position: relative;
         }
         .action-btn:hover { transform: scale(1.1); }
-        .action-btn.edit { background: #1e40af30; color: #60a5fa; }
+        .action-btn.edit { background: #7c3aed30; color: #a78bfa; }
         .action-btn.call { background: #065f4630; color: #34d399; }
         .action-btn.whatsapp { background: #166534aa; color: #4ade80; }
-        .action-btn.status-wa { background: #7e22ce30; color: #c084fc; }
+        .action-btn.status-wa { background: #9d174d30; color: #f472b6; }
         .action-btn.delete { background: #991b1b30; color: #f87171; }
         .action-btn[title]:hover::after {
             content: attr(title);
             position: absolute;
             top: -30px;
-            background: #1e293b;
+            background: #1a0a2e;
             color: #e2e8f0;
             padding: 3px 8px;
             border-radius: 6px;
             font-size: 11px;
             white-space: nowrap;
-            border: 1px solid #334155;
+            border: 1px solid #2d1b69;
             z-index: 10;
         }
 
         /* New Badge */
         .new-badge {
             display: inline-block;
-            background: #ef4444;
+            background: #ec4899;
             color: #fff;
             font-size: 10px;
             padding: 1px 6px;
@@ -317,8 +317,8 @@
         }
         .modal-overlay.active { display: flex; }
         .modal {
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: #1a0a2e;
+            border: 1px solid #2d1b69;
             border-radius: 20px;
             width: 100%;
             max-width: 600px;
@@ -331,14 +331,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 24px;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid #2d1b69;
         }
         .modal-header h3 { font-size: 18px; font-weight: 700; color: #f1f5f9; }
         .modal-close {
             width: 36px; height: 36px;
             border: none; border-radius: 10px;
-            background: #334155;
-            color: #94a3b8;
+            background: #2d1b69;
+            color: #7c6baa;
             cursor: pointer;
             font-size: 18px;
             display: flex; align-items: center; justify-content: center;
@@ -348,7 +348,7 @@
         .modal-body { padding: 24px; }
         .modal-footer {
             padding: 16px 24px;
-            border-top: 1px solid #334155;
+            border-top: 1px solid #2d1b69;
             display: flex;
             gap: 10px;
             justify-content: flex-start;
@@ -360,7 +360,7 @@
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: #94a3b8;
+            color: #7c6baa;
             margin-bottom: 6px;
         }
         .form-group input,
@@ -368,8 +368,8 @@
         .form-group select {
             width: 100%;
             padding: 10px 14px;
-            background: #0f172a;
-            border: 1px solid #334155;
+            background: #0a0a1a;
+            border: 1px solid #2d1b69;
             border-radius: 10px;
             color: #e2e8f0;
             font-family: 'Cairo', sans-serif;
@@ -380,7 +380,7 @@
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
-            border-color: #3b82f6;
+            border-color: #8b5cf6;
         }
         .form-group textarea { min-height: 80px; resize: vertical; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -391,13 +391,13 @@
             gap: 16px;
         }
         .detail-item {
-            background: #0f172a;
+            background: #0a0a1a;
             border-radius: 12px;
             padding: 14px;
         }
         .detail-label {
             font-size: 12px;
-            color: #64748b;
+            color: #6d5b95;
             margin-bottom: 4px;
         }
         .detail-value {
@@ -412,8 +412,8 @@
             padding: 60px 20px;
         }
         .empty-state .icon { font-size: 60px; margin-bottom: 16px; }
-        .empty-state h3 { color: #64748b; font-size: 18px; margin-bottom: 8px; }
-        .empty-state p { color: #475569; font-size: 14px; }
+        .empty-state h3 { color: #6d5b95; font-size: 18px; margin-bottom: 8px; }
+        .empty-state p { color: #4a3b70; font-size: 14px; }
 
         /* Loading */
         .loading-state {
@@ -422,8 +422,8 @@
         }
         .spinner {
             width: 40px; height: 40px;
-            border: 3px solid #334155;
-            border-top-color: #3b82f6;
+            border: 3px solid #2d1b69;
+            border-top-color: #8b5cf6;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 16px;
@@ -453,7 +453,7 @@
         }
         .toast.success { background: #065f46; color: #d1fae5; border: 1px solid #10b981; }
         .toast.error { background: #991b1b; color: #fee2e2; border: 1px solid #ef4444; }
-        .toast.info { background: #1e40af; color: #dbeafe; border: 1px solid #3b82f6; }
+        .toast.info { background: #4c1d95; color: #ede9fe; border: 1px solid #8b5cf6; }
         @keyframes slideIn {
             from { transform: translateX(-100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -466,14 +466,14 @@
         }
         .confirm-dialog .icon { font-size: 50px; margin-bottom: 16px; }
         .confirm-dialog h3 { font-size: 18px; margin-bottom: 8px; color: #f1f5f9; }
-        .confirm-dialog p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+        .confirm-dialog p { color: #7c6baa; font-size: 14px; margin-bottom: 20px; }
         .confirm-actions { display: flex; gap: 10px; justify-content: center; }
 
         /* Mobile Cards */
         .mobile-cards { display: none; }
         .mobile-card {
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: #1a0a2e;
+            border: 1px solid #2d1b69;
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 12px;
@@ -484,7 +484,7 @@
             align-items: center;
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid #2d1b69;
         }
         .mobile-card-name { font-size: 16px; font-weight: 700; color: #f1f5f9; }
         .mobile-card-body { display: grid; gap: 8px; margin-bottom: 12px; }
@@ -493,13 +493,13 @@
             justify-content: space-between;
             font-size: 13px;
         }
-        .mobile-card-label { color: #64748b; }
+        .mobile-card-label { color: #6d5b95; }
         .mobile-card-value { color: #e2e8f0; font-weight: 600; }
         .mobile-card-status { margin-bottom: 12px; }
         .mobile-card-status label {
             display: block;
             font-size: 12px;
-            color: #64748b;
+            color: #6d5b95;
             margin-bottom: 4px;
         }
         .mobile-card-status select { width: 100%; }
@@ -517,8 +517,8 @@
             top: 12px; right: 12px;
             z-index: 200;
             width: 44px; height: 44px;
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: #1a0a2e;
+            border: 1px solid #2d1b69;
             border-radius: 12px;
             color: #e2e8f0;
             font-size: 20px;
@@ -539,21 +539,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #334155;
+            border-top: 1px solid #2d1b69;
             font-size: 13px;
-            color: #64748b;
+            color: #6d5b95;
         }
 
         /* ========== Responsive ========== */
 
-        /* Large tablets & small laptops */
         @media (max-width: 1100px) {
             .sidebar { width: 220px; }
             .main-content { margin-right: 220px; }
             table { min-width: 1000px; }
         }
 
-        /* Tablets */
         @media (max-width: 900px) {
             .sidebar {
                 transform: translateX(100%);
@@ -575,153 +573,66 @@
             .table-container .table-scroll { display: none; }
             .mobile-cards { display: block; }
             .form-row { grid-template-columns: 1fr; }
-            .top-bar {
-                flex-direction: row;
-                align-items: center;
-            }
-            .top-bar h1 {
-                font-size: 18px;
-                margin-right: 40px;
-            }
+            .top-bar { flex-direction: row; align-items: center; }
+            .top-bar h1 { font-size: 18px; margin-right: 40px; }
             .top-bar-actions { flex-wrap: wrap; }
-            .filter-bar {
-                flex-direction: column;
-                gap: 10px;
-            }
+            .filter-bar { flex-direction: column; gap: 10px; }
             .search-box { min-width: 100%; }
             .filter-select { width: 100%; }
-            .modal {
-                max-width: 90%;
-                max-height: 85vh;
-                border-radius: 16px;
-            }
+            .modal { max-width: 90%; max-height: 85vh; border-radius: 16px; }
             .modal-header { padding: 16px 20px; }
             .modal-body { padding: 20px; }
-            .modal-footer {
-                padding: 14px 20px;
-                flex-wrap: wrap;
-            }
+            .modal-footer { padding: 14px 20px; flex-wrap: wrap; }
             .mobile-card-body { gap: 6px; }
-            .mobile-card-row {
-                flex-wrap: wrap;
-                gap: 4px;
-            }
+            .mobile-card-row { flex-wrap: wrap; gap: 4px; }
         }
 
-        /* Small tablets & large phones */
         @media (max-width: 650px) {
-            .main-content {
-                padding: 12px;
-                padding-top: 58px;
-            }
+            .main-content { padding: 12px; padding-top: 58px; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
             .stat-card { padding: 14px; }
             .stat-number { font-size: 22px; }
             .stat-icon { font-size: 22px; }
             .stat-label { font-size: 11px; }
             .top-bar h1 { font-size: 16px; }
-            .top-bar-actions .btn {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-            .mobile-card {
-                padding: 14px;
-                border-radius: 14px;
-                margin-bottom: 10px;
-            }
+            .top-bar-actions .btn { padding: 6px 12px; font-size: 12px; }
+            .mobile-card { padding: 14px; border-radius: 14px; margin-bottom: 10px; }
             .mobile-card-name { font-size: 15px; }
             .mobile-card-row { font-size: 12px; }
-            .mobile-card-actions {
-                grid-template-columns: repeat(5, 1fr);
-                gap: 5px;
-            }
-            .mobile-card-actions .action-btn {
-                height: 36px;
-                font-size: 14px;
-                border-radius: 8px;
-            }
-            .mobile-card-status select {
-                padding: 8px 10px;
-                font-size: 12px;
-                border-radius: 10px;
-            }
-            .modal {
-                max-width: 95%;
-                margin: 10px;
-            }
+            .mobile-card-actions { grid-template-columns: repeat(5, 1fr); gap: 5px; }
+            .mobile-card-actions .action-btn { height: 36px; font-size: 14px; border-radius: 8px; }
+            .mobile-card-status select { padding: 8px 10px; font-size: 12px; border-radius: 10px; }
+            .modal { max-width: 95%; margin: 10px; }
             .modal-header h3 { font-size: 16px; }
-            .modal-footer {
-                gap: 8px;
-            }
-            .modal-footer .btn {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
+            .modal-footer { gap: 8px; }
+            .modal-footer .btn { padding: 8px 12px; font-size: 12px; }
             .confirm-dialog h3 { font-size: 16px; }
             .confirm-dialog p { font-size: 13px; }
             .confirm-dialog .icon { font-size: 40px; }
-            .confirm-actions {
-                flex-direction: column;
-                gap: 8px;
-            }
+            .confirm-actions { flex-direction: column; gap: 8px; }
             .confirm-actions .btn { width: 100%; justify-content: center; }
             .toast { min-width: 240px; font-size: 13px; padding: 10px 16px; }
         }
 
-        /* Phones */
         @media (max-width: 480px) {
-            .main-content {
-                padding: 10px;
-                padding-top: 55px;
-            }
+            .main-content { padding: 10px; padding-top: 55px; }
             .stats-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
-            .stat-card {
-                padding: 12px;
-                border-radius: 12px;
-            }
+            .stat-card { padding: 12px; border-radius: 12px; }
             .stat-number { font-size: 20px; }
             .stat-icon { font-size: 20px; margin-bottom: 2px; }
             .stat-label { font-size: 10px; }
-            .top-bar {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
-            }
-            .top-bar h1 {
-                font-size: 15px;
-                margin-right: 40px;
-                text-align: right;
-            }
+            .top-bar { flex-direction: column; align-items: stretch; gap: 8px; }
+            .top-bar h1 { font-size: 15px; margin-right: 40px; text-align: right; }
             .top-bar-actions {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 6px;
             }
-            .top-bar-actions .btn {
-                justify-content: center;
-                padding: 8px;
-                font-size: 12px;
-            }
-            .search-box input {
-                padding: 10px 36px 10px 12px;
-                font-size: 13px;
-                border-radius: 10px;
-            }
-            .filter-select {
-                padding: 10px 12px;
-                font-size: 13px;
-                border-radius: 10px;
-                min-width: 100%;
-            }
-            .mobile-card {
-                padding: 12px;
-                border-radius: 12px;
-                margin-bottom: 8px;
-            }
-            .mobile-card-header {
-                margin-bottom: 10px;
-                padding-bottom: 10px;
-            }
+            .top-bar-actions .btn { justify-content: center; padding: 8px; font-size: 12px; }
+            .search-box input { padding: 10px 36px 10px 12px; font-size: 13px; border-radius: 10px; }
+            .filter-select { padding: 10px 12px; font-size: 13px; border-radius: 10px; min-width: 100%; }
+            .mobile-card { padding: 12px; border-radius: 12px; margin-bottom: 8px; }
+            .mobile-card-header { margin-bottom: 10px; padding-bottom: 10px; }
             .mobile-card-name { font-size: 14px; }
             .mobile-card-body { gap: 5px; margin-bottom: 10px; }
             .mobile-card-row { font-size: 12px; }
@@ -733,41 +644,18 @@
             }
             .mobile-card-status { margin-bottom: 10px; }
             .mobile-card-status label { font-size: 11px; }
-            .mobile-card-status select {
-                padding: 7px 8px;
-                font-size: 11px;
-            }
-            .mobile-card-actions {
-                grid-template-columns: repeat(5, 1fr);
-                gap: 4px;
-            }
-            .mobile-card-actions .action-btn {
-                height: 34px;
-                font-size: 13px;
-                border-radius: 8px;
-            }
-            .menu-toggle {
-                width: 40px;
-                height: 40px;
-                top: 10px;
-                right: 10px;
-                border-radius: 10px;
-                font-size: 18px;
-            }
+            .mobile-card-status select { padding: 7px 8px; font-size: 11px; }
+            .mobile-card-actions { grid-template-columns: repeat(5, 1fr); gap: 4px; }
+            .mobile-card-actions .action-btn { height: 34px; font-size: 13px; border-radius: 8px; }
+            .menu-toggle { width: 40px; height: 40px; top: 10px; right: 10px; border-radius: 10px; font-size: 18px; }
             .sidebar { width: 260px; }
             .sidebar-header { padding: 8px 16px 20px; }
             .sidebar-header .logo { font-size: 32px; }
             .sidebar-header h2 { font-size: 14px; }
             .sidebar-nav a { padding: 8px 14px; font-size: 13px; }
             .modal-overlay { padding: 10px; }
-            .modal {
-                max-width: 100%;
-                border-radius: 14px;
-                max-height: 90vh;
-            }
-            .modal-header {
-                padding: 14px 16px;
-            }
+            .modal { max-width: 100%; border-radius: 14px; max-height: 90vh; }
+            .modal-header { padding: 14px 16px; }
             .modal-header h3 { font-size: 15px; }
             .modal-close { width: 32px; height: 32px; font-size: 16px; }
             .modal-body { padding: 16px; }
@@ -816,12 +704,8 @@
             }
         }
 
-        /* Very small phones */
         @media (max-width: 360px) {
-            .main-content {
-                padding: 8px;
-                padding-top: 52px;
-            }
+            .main-content { padding: 8px; padding-top: 52px; }
             .stats-grid { gap: 5px; }
             .stat-card { padding: 10px; border-radius: 10px; }
             .stat-number { font-size: 18px; }
@@ -831,16 +715,12 @@
             .mobile-card { padding: 10px; border-radius: 10px; }
             .mobile-card-name { font-size: 13px; }
             .mobile-card-row { font-size: 11px; }
-            .mobile-card-actions .action-btn {
-                height: 32px;
-                font-size: 12px;
-            }
+            .mobile-card-actions .action-btn { height: 32px; font-size: 12px; }
             .modal-header h3 { font-size: 14px; }
             .modal-body { padding: 14px; }
             .modal-footer .btn { font-size: 10px; padding: 7px 8px; }
         }
 
-        /* Landscape orientation on mobile */
         @media (max-height: 500px) and (orientation: landscape) {
             .main-content { padding-top: 50px; }
             .stats-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
@@ -865,9 +745,9 @@
 <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-        <div class="logo">📊</div>
-        <h2>لوحة الإدارة</h2>
-        <p>إدارة حجوزات الأجهزة</p>
+        <div class="logo">🎧</div>
+        <h2>لوحة إدارة السماعات</h2>
+        <p>حجوزات سماعات الثانوية العامة</p>
     </div>
     <ul class="sidebar-nav">
         <li><a href="#" class="active"><span class="icon">📋</span> الحجوزات</a></li>
@@ -881,7 +761,7 @@
 <div class="main-content">
     <!-- Top Bar -->
     <div class="top-bar">
-        <h1>📋 إدارة الحجوزات</h1>
+        <h1>🎧 إدارة حجوزات السماعات</h1>
         <div class="top-bar-actions">
             <button class="btn btn-outline" onclick="exportCSV()">📥 تصدير CSV</button>
             <button class="btn btn-outline" onclick="window.print()">🖨️ طباعة</button>
@@ -891,7 +771,7 @@
     <!-- Stats -->
     <div class="stats-grid">
         <div class="stat-card total">
-            <div class="stat-icon">📦</div>
+            <div class="stat-icon">🎧</div>
             <div class="stat-number" id="statTotal">0</div>
             <div class="stat-label">إجمالي الحجوزات</div>
         </div>
@@ -921,7 +801,7 @@
     <div class="filter-bar">
         <div class="search-box">
             <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="ابحث بالاسم، التليفون، الجهاز، العنوان..." oninput="filterReservations()">
+            <input type="text" id="searchInput" placeholder="ابحث بالاسم، التليفون، نوع السماعة، العنوان..." oninput="filterReservations()">
         </div>
         <select class="filter-select" id="statusFilter" onchange="filterReservations()">
             <option value="all">📋 كل الحالات</option>
@@ -944,7 +824,7 @@
                         <th>الاسم</th>
                         <th>رقم التليفون</th>
                         <th>العنوان</th>
-                        <th>نوع الجهاز</th>
+                        <th>نوع السماعة</th>
                         <th>الاستفسار</th>
                         <th>ميعاد التسليم</th>
                         <th>تاريخ الحجز</th>
@@ -998,7 +878,7 @@
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>💻 نوع الجهاز</label>
+                    <label>🎧 نوع السماعة</label>
                     <input type="text" id="editDevice">
                 </div>
                 <div class="form-group">
@@ -1172,13 +1052,11 @@
     async function updateStatus(docId, newStatus, selectEl) {
         try {
             await db.collection('reservations').doc(docId).update({ status: newStatus });
-            // Update select class
             if (selectEl) {
                 selectEl.className = 'status-select ' + getStatusCSS(newStatus);
             }
             showToast('تم تحديث حالة الطلب بنجاح');
 
-            // Ask to send WhatsApp
             const res = allReservations.find(r => r.id === docId);
             if (res) {
                 showWAStatusDialog(res.data, newStatus);
@@ -1194,11 +1072,11 @@
         const name = data.name || '';
         const device = data.device || '';
         const phone = data.phone || '';
-        const message = `مرحباً ${name}\n\nنود إبلاغك أنه تم تحديث حالة طلبك.\n\n📱 نوع الجهاز: ${device}\n\n📦 حالة الطلب: ${status}\n\nشكراً لتعاملك معنا.`;
+        const message = `مرحباً ${name}\n\nنود إبلاغك أنه تم تحديث حالة طلبك.\n\n🎧 نوع السماعة: ${device}\n\n📦 حالة الطلب: ${status}\n\nشكراً لتعاملك معنا.`;
 
         document.getElementById('waStatusContent').innerHTML = `
-            <p style="color:#94a3b8; margin-bottom:12px;">هل تريد إرسال حالة الطلب الجديدة للعميل عبر واتساب؟</p>
-            <div style="background:#0f172a; border-radius:12px; padding:16px; white-space:pre-wrap; font-size:14px; color:#e2e8f0; line-height:1.8; border:1px solid #334155;">${message}</div>
+            <p style="color:#7c6baa; margin-bottom:12px;">هل تريد إرسال حالة الطلب الجديدة للعميل عبر واتساب؟</p>
+            <div style="background:#0a0a1a; border-radius:12px; padding:16px; white-space:pre-wrap; font-size:14px; color:#e2e8f0; line-height:1.8; border:1px solid #2d1b69;">${message}</div>
         `;
         document.getElementById('waStatusFooter').innerHTML = `
             <a href="https://wa.me/${formatPhoneForWA(phone)}?text=${encodeURIComponent(message)}" target="_blank" class="btn btn-success" onclick="closeModal('waStatusModal')">💬 إرسال عبر واتساب</a>
@@ -1261,7 +1139,7 @@
                 <div class="detail-item"><div class="detail-label">👤 الاسم</div><div class="detail-value">${d.name || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">📱 رقم التليفون</div><div class="detail-value">${d.phone || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">📍 العنوان</div><div class="detail-value">${d.address || '—'}</div></div>
-                <div class="detail-item"><div class="detail-label">💻 نوع الجهاز</div><div class="detail-value">${d.device || '—'}</div></div>
+                <div class="detail-item"><div class="detail-label">🎧 نوع السماعة</div><div class="detail-value">${d.device || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">📅 ميعاد التسليم</div><div class="detail-value">${d.delivery_date || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">🕐 تاريخ الحجز</div><div class="detail-value">${formatDate(d.created_at)}</div></div>
             </div>
@@ -1271,7 +1149,7 @@
         document.getElementById('detailFooter').innerHTML = `
             <button class="btn btn-primary" onclick="closeModal('detailModal'); openEdit('${docId}')" style="flex:1; min-width:0; justify-content:center;">✏️ تعديل</button>
             <a href="tel:${d.phone}" class="btn btn-success" style="flex:1; min-width:0; justify-content:center;">📞 اتصال</a>
-            <a href="https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || '') + '، بخصوص حجز جهاز ' + (d.device || ''))}" target="_blank" class="btn btn-success" style="background:#25d366; flex:1; min-width:0; justify-content:center;">💬 واتساب</a>
+            <a href="https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || '') + '، بخصوص حجز سماعة ' + (d.device || ''))}" target="_blank" class="btn btn-success" style="background:#25d366; flex:1; min-width:0; justify-content:center;">💬 واتساب</a>
             <button class="btn btn-outline" onclick="closeModal('detailModal')" style="flex:1; min-width:0; justify-content:center;">إغلاق</button>
         `;
         openModal('detailModal');
@@ -1305,8 +1183,8 @@
         const mobileContainer = document.getElementById('mobileCards');
 
         if (reservations.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="icon">📭</div><h3>لا توجد حجوزات</h3><p>لم يتم العثور على حجوزات مطابقة</p></div></td></tr>`;
-            mobileContainer.innerHTML = `<div class="empty-state"><div class="icon">📭</div><h3>لا توجد حجوزات</h3></div>`;
+            tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات سماعات</h3><p>لم يتم العثور على حجوزات مطابقة</p></div></td></tr>`;
+            mobileContainer.innerHTML = `<div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div>`;
             document.getElementById('showingCount').textContent = 'عرض 0 حجز';
             return;
         }
@@ -1327,16 +1205,16 @@
                     <td style="font-weight:700; color:#f1f5f9;">${newBadge}${d.name || '—'}</td>
                     <td style="direction:ltr; text-align:right;">${d.phone || '—'}</td>
                     <td>${d.address || '—'}</td>
-                    <td><span style="color:#60a5fa; font-weight:600;">${d.device || '—'}</span></td>
+                    <td><span style="color:#a78bfa; font-weight:600;">🎧 ${d.device || '—'}</span></td>
                     <td style="max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${d.question || ''}">${d.question || '—'}</td>
                     <td>${d.delivery_date || '—'}</td>
-                    <td style="font-size:12px; color:#94a3b8;">${formatDate(d.created_at)}</td>
+                    <td style="font-size:12px; color:#7c6baa;">${formatDate(d.created_at)}</td>
                     <td>${statusSelectHTML(id, status)}</td>
                     <td>
                         <div class="actions-cell">
                             <button class="action-btn edit" title="تعديل" onclick="openEdit('${id}')">✏️</button>
                             <button class="action-btn call" title="اتصال" onclick="window.open('tel:${d.phone}')">📞</button>
-                            <button class="action-btn whatsapp" title="واتساب" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || '') + '، بخصوص حجز جهاز ' + (d.device || ''))}', '_blank')">💬</button>
+                            <button class="action-btn whatsapp" title="واتساب" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || '') + '، بخصوص حجز سماعة ' + (d.device || ''))}', '_blank')">💬</button>
                             <button class="action-btn status-wa" title="إرسال حالة الطلب" onclick="sendStatusWA('${id}')">📨</button>
                             <button class="action-btn delete" title="حذف" onclick="confirmDelete('${id}')">🗑️</button>
                         </div>
@@ -1354,7 +1232,7 @@
                     <div class="mobile-card-body">
                         <div class="mobile-card-row"><span class="mobile-card-label">📱 التليفون</span><span class="mobile-card-value" style="direction:ltr;">${d.phone || '—'}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">📍 العنوان</span><span class="mobile-card-value">${d.address || '—'}</span></div>
-                        <div class="mobile-card-row"><span class="mobile-card-label">💻 الجهاز</span><span class="mobile-card-value" style="color:#60a5fa;">${d.device || '—'}</span></div>
+                        <div class="mobile-card-row"><span class="mobile-card-label">🎧 السماعة</span><span class="mobile-card-value" style="color:#a78bfa;">${d.device || '—'}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">📅 التسليم</span><span class="mobile-card-value">${d.delivery_date || '—'}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">🕐 تاريخ الحجز</span><span class="mobile-card-value" style="font-size:11px;">${formatDate(d.created_at)}</span></div>
                         ${d.question ? `<div class="mobile-card-row"><span class="mobile-card-label">❓ استفسار</span><span class="mobile-card-value">${d.question}</span></div>` : ''}
@@ -1366,7 +1244,7 @@
                     <div class="mobile-card-actions">
                         <button class="action-btn edit" onclick="openEdit('${id}')" title="تعديل">✏️</button>
                         <button class="action-btn call" onclick="window.open('tel:${d.phone}')" title="اتصال">📞</button>
-                        <button class="action-btn whatsapp" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || '') + '، بخصوص حجز جهاز ' + (d.device || ''))}', '_blank')" title="واتساب">💬</button>
+                        <button class="action-btn whatsapp" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || '') + '، بخصوص حجز سماعة ' + (d.device || ''))}', '_blank')" title="واتساب">💬</button>
                         <button class="action-btn status-wa" onclick="sendStatusWA('${id}')" title="إرسال حالة">📨</button>
                         <button class="action-btn delete" onclick="confirmDelete('${id}')" title="حذف">🗑️</button>
                     </div>
@@ -1424,7 +1302,7 @@
             return;
         }
         const BOM = '\uFEFF';
-        let csv = BOM + 'الاسم,رقم التليفون,العنوان,نوع الجهاز,الاستفسار,ميعاد التسليم,حالة الطلب,تاريخ الحجز\n';
+        let csv = BOM + 'الاسم,رقم التليفون,العنوان,نوع السماعة,الاستفسار,ميعاد التسليم,حالة الطلب,تاريخ الحجز\n';
         allReservations.forEach(r => {
             const d = r.data;
             csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${formatDate(d.created_at)}"\n`;
@@ -1432,7 +1310,7 @@
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `reservations_${new Date().toISOString().slice(0,10)}.csv`;
+        link.download = `earphones_reservations_${new Date().toISOString().slice(0,10)}.csv`;
         link.click();
         showToast('تم تصدير البيانات بنجاح');
     }
