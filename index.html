@@ -697,6 +697,149 @@
             font-weight: 800;
         }
         
+        /* Desktop Notification Style */
+        .desktop-notification {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #0e0b06, #1a1508);
+            border-right: 4px solid #F5C542;
+            border-radius: 16px;
+            padding: 16px 20px;
+            min-width: 320px;
+            max-width: 400px;
+            z-index: 10000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideInLeft 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(20px);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .desktop-notification:hover {
+            transform: translateX(-5px);
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideOutLeft {
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+        
+        .desktop-notification.hide {
+            animation: slideOutLeft 0.3s ease forwards;
+        }
+        
+        .notification-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .notification-icon {
+            font-size: 28px;
+        }
+        
+        .notification-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #F5C542;
+        }
+        
+        .notification-time {
+            font-size: 10px;
+            color: #a07d3a;
+            margin-right: auto;
+        }
+        
+        .notification-message {
+            font-size: 13px;
+            color: #e2e8f0;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        
+        .notification-details {
+            font-size: 11px;
+            color: #a07d3a;
+            border-top: 1px solid rgba(229,184,60,0.15);
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .notification-action-btn {
+            padding: 4px 12px;
+            font-size: 11px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .notification-action-btn.view {
+            background: rgba(229,184,60,0.2);
+            color: #F5C542;
+        }
+        
+        .notification-action-btn.view:hover {
+            background: rgba(229,184,60,0.4);
+        }
+        
+        .notification-action-btn.close {
+            background: rgba(220,38,38,0.2);
+            color: #ef4444;
+        }
+        
+        .notification-action-btn.close:hover {
+            background: rgba(220,38,38,0.4);
+        }
+        
+        /* Permission Request Banner */
+        .permission-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #0e0b06;
+            border: 1px solid rgba(229,184,60,0.3);
+            border-radius: 16px;
+            padding: 16px 20px;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .permission-banner.show {
+            display: flex;
+        }
+        
+        .permission-banner p {
+            font-size: 13px;
+            color: #e2e8f0;
+        }
+        
         @media (max-width: 1000px) {
             .sidebar {
                 transform: translateX(100%);
@@ -728,6 +871,12 @@
                 grid-template-columns: repeat(3, 1fr);
                 gap: 10px;
             }
+            .desktop-notification {
+                left: 10px;
+                right: 10px;
+                min-width: auto;
+                max-width: calc(100% - 20px);
+            }
         }
         
         @media (max-width: 600px) {
@@ -744,12 +893,39 @@
                 grid-template-columns: repeat(3, 1fr);
             }
         }
+        
+        /* Notification Badge */
+        .notification-badge {
+            position: relative;
+        }
+        
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
 <div class="admin-bg"></div>
 <div class="toast-container" id="toastContainer"></div>
+
+<!-- Permission Banner -->
+<div class="permission-banner" id="permissionBanner">
+    <div>🔔</div>
+    <p>فعّل الإشعارات لتصلك تحديثات الحجوزات فوراً</p>
+    <button class="btn btn-primary" onclick="requestNotificationPermission()" style="padding: 6px 16px;">تفعيل</button>
+    <button class="btn btn-outline" onclick="closePermissionBanner()" style="padding: 6px 16px;">لاحقاً</button>
+</div>
 
 <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
@@ -881,7 +1057,242 @@
 
     const db = firebase.firestore();
     let allReservations = [];
+    let previousReservations = new Map(); // لحفظ الحالة السابقة
+    let lastNotificationTime = 0;
+    const NOTIFICATION_COOLDOWN = 3000; // 3 ثوان بين الإشعارات
 
+    // صوت الإشعار (نبضة قصيرة)
+    const notificationSound = new Audio("data:audio/wav;base64,U3RlYWx0aCBzb3VuZA==");
+    // محاولة إنشاء صوت باستخدام Web Audio API كبديل
+    let audioContext = null;
+    
+    function playNotificationSound() {
+        try {
+            // محاولة تشغيل صوت بسيط عبر Web Audio API
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 880; // نغمة عالية
+            gainNode.gain.value = 0.3;
+            
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
+            oscillator.stop(audioContext.currentTime + 0.5);
+            
+            // إذا كان الـ AudioContext معلقاً (بسبب سياسة المتصفح)، نحاول تنشيطه
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        } catch(e) {
+            console.log("تعذر تشغيل الصوت:", e);
+        }
+    }
+
+    // طلب إذن الإشعارات
+    async function requestNotificationPermission() {
+        if ('Notification' in window) {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                showToast('🔔 تم تفعيل الإشعارات بنجاح', 'success');
+                closePermissionBanner();
+                // اختبار الإشعار
+                showDesktopNotification('✅ نظام الإشعارات جاهز', 'سيتم إشعارك عند إضافة حجوزات جديدة أو تحديث الحالات');
+                playNotificationSound();
+            } else if (permission === 'denied') {
+                showToast('❌ تم رفض الإشعارات، يمكنك تفعيلها من إعدادات المتصفح', 'error');
+            }
+        } else {
+            showToast('المتصفح لا يدعم الإشعارات', 'error');
+        }
+    }
+    
+    function closePermissionBanner() {
+        document.getElementById('permissionBanner').classList.remove('show');
+        localStorage.setItem('notifications_banner_closed', 'true');
+    }
+    
+    // عرض إشعار سطح المكتب
+    function showDesktopNotification(title, message, reservationId = null, reservationData = null) {
+        if (!('Notification' in window)) return;
+        if (Notification.permission !== 'granted') return;
+        
+        // منع الإشعارات المتكررة جداً
+        const now = Date.now();
+        if (now - lastNotificationTime < NOTIFICATION_COOLDOWN) {
+            return;
+        }
+        lastNotificationTime = now;
+        
+        const options = {
+            body: message,
+            icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y=".9em" font-size="90" fill="%23F5C542"%3E🎧%3C/text%3E%3C/svg%3E',
+            badge: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y=".9em" font-size="90" fill="%23F5C542"%3E🎧%3C/text%3E%3C/svg%3E',
+            tag: reservationId || 'general',
+            renotify: true,
+            requireInteraction: true, // يبقى الإشعار ظاهراً حتى يتفاعل معه المستخدم
+            silent: false,
+            vibrate: [200, 100, 200]
+        };
+        
+        const notification = new Notification(title, options);
+        
+        notification.onclick = () => {
+            window.focus();
+            if (reservationId) {
+                const reservation = allReservations.find(r => r.id === reservationId);
+                if (reservation) {
+                    openDetail(reservationId);
+                }
+            }
+            notification.close();
+        };
+        
+        notification.onclose = () => {
+            // تم إغلاق الإشعار
+        };
+        
+        // تشغيل الصوت مع الإشعار
+        playNotificationSound();
+    }
+    
+    // عرض الإشعار المخصص داخل الصفحة (نسخة احتياطية)
+    function showCustomNotification(title, message, reservationId = null, reservationData = null) {
+        const container = document.getElementById('toastContainer');
+        const notificationDiv = document.createElement('div');
+        notificationDiv.className = 'desktop-notification';
+        
+        const time = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+        
+        notificationDiv.innerHTML = `
+            <div class="notification-header">
+                <div class="notification-icon">🎧</div>
+                <div class="notification-title">${title}</div>
+                <div class="notification-time">${time}</div>
+            </div>
+            <div class="notification-message">${message}</div>
+            <div class="notification-details">أبو زهرة - نظام إدارة الحجوزات</div>
+            <div class="notification-actions">
+                ${reservationId ? '<button class="notification-action-btn view" onclick="showNotificationDetail(\'' + reservationId + '\')">عرض التفاصيل</button>' : ''}
+                <button class="notification-action-btn close" onclick="this.closest(\'.desktop-notification\').classList.add(\'hide\'); setTimeout(() => this.closest(\'.desktop-notification\').remove(), 300);">إغلاق</button>
+            </div>
+        `;
+        
+        container.appendChild(notificationDiv);
+        
+        // إزالة الإشعار تلقائياً بعد 10 ثوانٍ
+        setTimeout(() => {
+            if (notificationDiv && notificationDiv.parentNode) {
+                notificationDiv.classList.add('hide');
+                setTimeout(() => notificationDiv.remove(), 300);
+            }
+        }, 10000);
+        
+        // تشغيل الصوت
+        playNotificationSound();
+    }
+    
+    function showNotificationDetail(reservationId) {
+        const reservation = allReservations.find(r => r.id === reservationId);
+        if (reservation) {
+            openDetail(reservationId);
+        }
+        // إغلاق جميع الإشعارات المخصصة
+        document.querySelectorAll('.desktop-notification').forEach(n => {
+            n.classList.add('hide');
+            setTimeout(() => n.remove(), 300);
+        });
+    }
+    
+    // فحص التغييرات وإرسال الإشعارات
+    function checkForChanges(newReservations) {
+        const newMap = new Map();
+        newReservations.forEach(r => newMap.set(r.id, r));
+        
+        // التحقق من الحجوزات الجديدة
+        newReservations.forEach(res => {
+            if (!previousReservations.has(res.id)) {
+                // حجز جديد
+                const d = res.data;
+                const customerName = d.name || 'عميل جديد';
+                const device = d.device || 'سماعة';
+                const title = '🆕 حجز جديد!';
+                const message = `${customerName} | ${device}`;
+                
+                showDesktopNotification(title, message, res.id, d);
+                showCustomNotification(title, message, res.id, d);
+            }
+        });
+        
+        // التحقق من تحديثات الحالة أو الدفع
+        newReservations.forEach(res => {
+            const old = previousReservations.get(res.id);
+            if (old) {
+                const oldStatus = old.data.status || 'قيد المراجعة';
+                const newStatus = res.data.status || 'قيد المراجعة';
+                const oldPayment = old.data.payment_confirmed || false;
+                const newPayment = res.data.payment_confirmed || false;
+                
+                if (oldStatus !== newStatus) {
+                    // تغيرت حالة الطلب
+                    const customerName = res.data.name || 'عميل';
+                    const statusLabels = {
+                        'قيد المراجعة': '⏳ قيد المراجعة',
+                        'تم التواصل': '📞 تم التواصل',
+                        'تحت التجهيز': '🔧 تحت التجهيز',
+                        'تم الانتهاء من التجهيز': '✔️ تم التجهيز',
+                        'تم تسليمه لمندوب الشحن': '🚚 تم تسليمه للشحن',
+                        'تم الاستلام': '✅ تم الاستلام',
+                        'ملغي': '❌ ملغي'
+                    };
+                    const title = '📋 تحديث حالة الطلب';
+                    const message = `${customerName} : ${statusLabels[newStatus] || newStatus}`;
+                    
+                    showDesktopNotification(title, message, res.id, res.data);
+                    showCustomNotification(title, message, res.id, res.data);
+                }
+                
+                if (oldPayment !== newPayment && newPayment === true) {
+                    // تم تأكيد الدفع
+                    const customerName = res.data.name || 'عميل';
+                    const title = '💰 تأكيد الدفع';
+                    const message = `${customerName} : تم تأكيد دفع رسوم الشحن`;
+                    
+                    showDesktopNotification(title, message, res.id, res.data);
+                    showCustomNotification(title, message, res.id, res.data);
+                }
+            }
+        });
+        
+        // تحديث الخريطة
+        previousReservations = newMap;
+    }
+    
+    // التحقق من إذن الإشعارات عند التحميل
+    function checkNotificationPermission() {
+        if ('Notification' in window) {
+            if (Notification.permission === 'granted') {
+                console.log('إذن الإشعارات مفعل');
+            } else if (Notification.permission === 'default') {
+                // عرض البانر بعد 3 ثوانٍ إذا لم يتم إغلاقه من قبل
+                const bannerClosed = localStorage.getItem('notifications_banner_closed');
+                if (!bannerClosed) {
+                    setTimeout(() => {
+                        if (Notification.permission === 'default') {
+                            document.getElementById('permissionBanner').classList.add('show');
+                        }
+                    }, 3000);
+                }
+            }
+        }
+    }
+    
     const STATUSES = [
         { value: 'قيد المراجعة', label: '⏳ قيد المراجعة', css: 'status-review' },
         { value: 'تم التواصل', label: '📞 تم التواصل', css: 'status-contacted' },
@@ -932,7 +1343,6 @@
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    // Build invoice message
     function buildInvoiceMessage(data, newStatus, paymentConfirmed) {
         const name = data.name || 'العميل';
         const phone = data.phone || '';
@@ -972,7 +1382,6 @@ ${statusMessage}
 شكراً لاختياركم أبو زهرة`;
     }
 
-    // Send WhatsApp
     function sendWAInvoice(data, newStatus, paymentConfirmed) {
         const invoice = buildInvoiceMessage(data, newStatus, paymentConfirmed);
         const phone = data.phone;
@@ -980,7 +1389,6 @@ ${statusMessage}
         window.open(`https://wa.me/${formatPhoneForWA(phone)}?text=${encodeURIComponent(invoice)}`, '_blank');
     }
 
-    // Confirm Payment - updates payment_confirmed field, NOT the status
     async function confirmPayment(docId) {
         const reservation = allReservations.find(r => r.id === docId);
         if (!reservation) return;
@@ -996,14 +1404,12 @@ ${statusMessage}
             });
             showToast('✅ تم تأكيد دفع مبلغ الشحن');
             
-            const updatedData = { ...reservation.data, payment_confirmed: true };
-            sendWAInvoice(updatedData, reservation.data.status || 'قيد المراجعة', true);
+            // الإشعار سيتم عن طريق الـ snapshot
         } catch (err) {
             showToast('حدث خطأ', 'error');
         }
     }
 
-    // Update Status - preserves payment_confirmed field
     async function updateStatus(docId, newStatus, selectEl) {
         try {
             await db.collection('reservations').doc(docId).update({ status: newStatus });
@@ -1012,8 +1418,7 @@ ${statusMessage}
             
             const reservation = allReservations.find(r => r.id === docId);
             if (reservation) {
-                const updatedData = { ...reservation.data, status: newStatus };
-                sendWAInvoice(updatedData, newStatus, reservation.data.payment_confirmed || false);
+                sendWAInvoice(reservation.data, newStatus, reservation.data.payment_confirmed || false);
             }
         } catch (err) {
             showToast('حدث خطأ', 'error');
@@ -1064,7 +1469,7 @@ ${statusMessage}
         const r = allReservations.find(r => r.id === docId);
         if (!r) return;
         const d = r.data;
-        const paymentBadge = d.payment_confirmed ? '<span class="payment-badge">✅ تم دفع الشحن</span>' : '<span class="payment-badge not-paid">⏳ لم يدفع بعد</span>';
+        const paymentBadge = d.payment_confirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
         const statusBadge = `<span class="status-badge ${getStatusCSS(d.status || 'قيد المراجعة')}">${getStatusLabel(d.status || 'قيد المراجعة')}</span>`;
         
         document.getElementById('detailContent').innerHTML = `
@@ -1111,13 +1516,12 @@ ${statusMessage}
         sendWAInvoice(r.data, r.data.status || 'قيد المراجعة', r.data.payment_confirmed || false);
     }
 
-    // Render
     function renderReservations(reservations) {
         const tbody = document.getElementById('tableBody');
         const mobile = document.getElementById('mobileCards');
         
         if (reservations.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div></td></tr>`;
+            tbody.innerHTML = `</td><td colspan="10"><div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div></td></tr>`;
             mobile.innerHTML = '<div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div>';
             document.getElementById('showingCount').textContent = 'عرض 0 حجز';
             return;
@@ -1133,7 +1537,6 @@ ${statusMessage}
             const newBadge = isNew(d.created_at) ? '<span class="new-badge">جديد</span>' : '';
             const paymentBadge = paymentConfirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
             
-            // Table row
             tableHTML += `
                 <tr>
                     <td>${idx + 1}</td>
@@ -1159,7 +1562,6 @@ ${statusMessage}
                 </tr>
             `;
             
-            // Mobile card
             mobileHTML += `
                 <div class="mobile-card">
                     <div class="mobile-card-header">
@@ -1238,17 +1640,43 @@ ${statusMessage}
         showToast('تم التصدير');
     }
     
-    // Real-time listener
+    // Real-time listener مع الإشعارات
     db.collection('reservations').orderBy('created_at', 'desc').onSnapshot(snapshot => {
-        allReservations = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
+        const newReservations = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
+        
+        // التحقق من التغييرات وإرسال الإشعارات (لأول مرة فقط بعد تحميل البيانات الأولية)
+        if (previousReservations.size > 0) {
+            checkForChanges(newReservations);
+        }
+        
+        allReservations = newReservations;
         updateStats(allReservations);
         filterReservations();
+        
+        // تحديث الخريطة بعد المعالجة
+        if (previousReservations.size === 0) {
+            // أول تحميل - تخزين البيانات بدون إشعارات
+            previousReservations = new Map();
+            allReservations.forEach(r => previousReservations.set(r.id, r));
+        }
     }, err => console.error(err));
     
+    // بدء تشغيل النظام
     document.addEventListener('keydown', e => {
         if (e.key === '/') { e.preventDefault(); document.getElementById('searchInput').focus(); }
         if (e.key === 'Escape') { ['editModal', 'detailModal', 'confirmModal'].forEach(id => closeModal(id)); }
     });
+    
+    // تفعيل الصوت عند أول تفاعل من المستخدم (لأن المتصفحات تمنع الصوت التلقائي)
+    document.body.addEventListener('click', function initAudio() {
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        document.body.removeEventListener('click', initAudio);
+    });
+    
+    // التحقق من الإذن
+    checkNotificationPermission();
 </script>
 </body>
 </html>
