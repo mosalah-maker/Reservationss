@@ -1509,7 +1509,7 @@ ${statusMessage}
         if (!canEdit) {
             // Show disabled select with current status only
             return `<div class="status-badge ${getStatusCSS(currentStatus)}" style="display:inline-block; padding:8px 12px;">${getStatusLabel(currentStatus)}</div>
-                    <div style="font-size:10px; color:#a07d3a; margin-top:4px;">🔒 مسؤول: ${assignedTo === 'mosalah@gmail.com' ? 'صلاح' : (assignedTo === 'mohamed@abozahra.com' ? 'محمد' : 'غير محدد')}</div>`;
+                    <div style="font-size:10px; color:#a07d3a; margin-top:4px;">🔒 مسؤول: ${assignedTo === 'mosalah@gmail.com' ? 'elmo' : (assignedTo === 'zeyad@gmail.com' ? 'zeyad' : 'غير محدد')}</div>`;
         }
         
         let options = STATUSES.map(s => `<option value="${s.value}" ${s.value === currentStatus ? 'selected' : ''}>${s.label}</option>`).join('');
@@ -1558,7 +1558,7 @@ ${statusMessage}
         const paymentBadge = d.payment_confirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
         const statusBadge = `<span class="status-badge ${getStatusCSS(d.status || 'قيد المراجعة')}">${getStatusLabel(d.status || 'قيد المراجعة')}</span>`;
         const hasProof = d.payment_proof_url ? true : false;
-        const assignedToName = d.assignedTo === 'mosalah@gmail.com' ? 'صلاح' : (d.assignedTo === 'mohamed@abozahra.com' ? 'محمد' : 'غير مخصص');
+        const assignedToName = d.assignedTo === 'mosalah@gmail.com' ? 'elmo' : (d.assignedTo === 'zeyad@gmail.com' ? 'zeyad' : 'غير مخصص');
         
         let proofSection = '';
         if (hasProof) {
@@ -1634,7 +1634,7 @@ ${statusMessage}
             const paymentConfirmed = d.payment_confirmed === true;
             const hasProof = d.payment_proof_url ? true : false;
             const newBadge = isNew(d.created_at) ? '<span class="new-badge">جديد</span>' : '';
-            const assignedBadge = d.assignedTo ? `<span class="assigned-badge">📌 ${d.assignedTo === 'mosalah@gmail.com' ? 'صلاح' : (d.assignedTo === 'mohamed@abozahra.com' ? 'محمد' : '')}</span>` : '';
+            const assignedBadge = d.assignedTo ? `<span class="assigned-badge">📌 ${d.assignedTo === 'mosalah@gmail.com' ? 'elmo' : (d.assignedTo === 'zeyad@gmail.com' ? 'zeyad' : '')}</span>` : '';
             const paymentBadge = paymentConfirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
             const proofBtn = hasProof 
                 ? `<button class="proof-btn green" onclick="viewProof('${id}')" title="عرض الإسكرين">📸</button>`
@@ -1770,7 +1770,7 @@ ${statusMessage}
         let csv = BOM + 'الاسم,التليفون,العنوان,المنتج,الاستفسار,ميعاد التسليم,حالة الطلب,حالة الدفع,تم رفع إسكرين,رقم المحول منه,تاريخ الحجز,مسؤول الطلب\n';
         filtered.forEach(r => {
             const d = r.data;
-            csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${d.payment_confirmed ? 'مدفوع' : 'غير مدفوع'}","${d.payment_proof_url ? 'نعم' : 'لا'}","${d.sender_phone || ''}","${formatDate(d.created_at)}","${d.assignedTo === 'mosalah@gmail.com' ? 'صلاح' : (d.assignedTo === 'mohamed@abozahra.com' ? 'محمد' : 'غير مخصص')}"\n`;
+            csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${d.payment_confirmed ? 'مدفوع' : 'غير مدفوع'}","${d.payment_proof_url ? 'نعم' : 'لا'}","${d.sender_phone || ''}","${formatDate(d.created_at)}","${d.assignedTo === 'mosalah@gmail.com' ? 'elmo' : (d.assignedTo === 'zeyad@gmail.com' ? 'zeyad' : 'غير مخصص')}"\n`;
         });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
