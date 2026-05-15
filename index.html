@@ -127,6 +127,92 @@
             z-index: 10;
         }
 
+        /* Login Container */
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            background: radial-gradient(circle at 30% 20%, #0e0b06, #030101);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .login-container.hide {
+            display: none;
+        }
+        
+        .login-card {
+            background: rgba(14, 11, 6, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 184, 60, 0.3);
+            border-radius: 48px;
+            padding: 40px 32px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            animation: modalSlideIn 0.4s ease;
+        }
+        
+        .login-card .logo {
+            font-size: 70px;
+            margin-bottom: 16px;
+        }
+        
+        .login-card h2 {
+            color: #F5C542;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .login-card p {
+            color: #a07d3a;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            background: #050301;
+            border: 1px solid rgba(229, 184, 60, 0.2);
+            border-radius: 60px;
+            color: #e2e8f0;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            text-align: right;
+        }
+        
+        .login-input:focus {
+            border-color: #F5C542;
+            outline: none;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #E5B83C, #B8860B);
+            border: none;
+            border-radius: 60px;
+            color: #050301;
+            font-weight: 800;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        
+        .login-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+        
         /* Top Bar */
         .top-bar {
             display: flex;
@@ -144,6 +230,30 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(229,184,60,0.1);
+            padding: 8px 16px;
+            border-radius: 60px;
+        }
+        
+        .user-email {
+            font-size: 13px;
+            color: #F5C542;
+        }
+        
+        .btn-logout {
+            background: rgba(220,38,38,0.2);
+            color: #ef4444;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
         }
         
         .btn {
@@ -425,6 +535,7 @@
         .action-btn.delete { background: rgba(220,38,38,0.15); color: #ef4444; }
         .action-btn.view { background: rgba(229,184,60,0.15); color: #F5C542; }
         .action-btn.link { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .action-btn.assign { background: rgba(16,185,129,0.15); color: #10b981; }
 
         /* Mobile Cards */
         .mobile-cards {
@@ -707,6 +818,16 @@
             font-weight: 800;
         }
         
+        .assigned-badge {
+            background: #10b981;
+            color: #050301;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-right: 8px;
+            font-weight: 800;
+        }
+        
         /* Desktop Notification Style */
         .desktop-notification {
             position: fixed;
@@ -910,6 +1031,19 @@
 <div class="admin-bg"></div>
 <div class="toast-container" id="toastContainer"></div>
 
+<!-- Login Container -->
+<div class="login-container" id="loginContainer">
+    <div class="login-card">
+        <div class="logo">🎧</div>
+        <h2>أبو زهرة</h2>
+        <p>لوحة التحكم المتكاملة</p>
+        <input type="email" id="loginEmail" class="login-input" placeholder="البريد الإلكتروني" dir="ltr">
+        <input type="password" id="loginPassword" class="login-input" placeholder="كلمة السر" dir="ltr">
+        <button class="login-btn" onclick="login()">تسجيل الدخول</button>
+        <div class="login-error" id="loginError">خطأ في البريد أو كلمة السر</div>
+    </div>
+</div>
+
 <!-- Permission Banner -->
 <div class="permission-banner" id="permissionBanner">
     <div>🔔</div>
@@ -934,18 +1068,18 @@
     </ul>
 </aside>
 
-<div class="main-content">
+<div class="main-content" id="mainContent" style="display: none;">
     <div class="top-bar">
         <h1>🎧 إدارة حجوزات السماعات - أبو زهرة</h1>
-        <div class="top-bar-actions">
-            <button class="btn btn-outline" onclick="exportCSV()">📥 تصدير CSV</button>
-            <button class="btn btn-outline" onclick="window.print()">🖨️ طباعة</button>
+        <div class="user-info">
+            <span class="user-email" id="userEmail">user@example.com</span>
+            <button class="btn-logout" onclick="logout()">🚪 تسجيل خروج</button>
         </div>
     </div>
 
     <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon">🎧</div><div class="stat-number" id="statTotal">0</div><div class="stat-label">إجمالي الحجوزات</div></div>
-        <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-number" id="statReview">0</div><div class="stat-label">قيد المراجعة</div></div>
+        <div class="stat-card"><div class="stat-icon">🎧</div><div class="stat-number" id="statTotal">0</div><div class="stat-label">إجمالي حجوزاتي</div></div>
+        <div class="stat-card"><div class="stat-icon">🆕</div><div class="stat-number" id="statNew">0</div><div class="stat-label">جديدة (متاحة)</div></div>
         <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-number" id="statPaid">0</div><div class="stat-label">تم الدفع</div></div>
         <div class="stat-card"><div class="stat-icon">📸</div><div class="stat-number" id="statHasProof">0</div><div class="stat-label">تم رفع إسكرين</div></div>
         <div class="stat-card"><div class="stat-icon">🔧</div><div class="stat-number" id="statPreparing">0</div><div class="stat-label">تحت التجهيز</div></div>
@@ -959,7 +1093,7 @@
         </div>
         <select class="filter-select" id="statusFilter" onchange="filterReservations()">
             <option value="all">📋 كل الحالات</option>
-            <option value="قيد المراجعة">⏳ قيد المراجعة</option>
+            <option value="قيد المراجعة">⏳ قيد المراجعة (متاحة)</option>
             <option value="تم التواصل">📞 تم التواصل</option>
             <option value="تحت التجهيز">🔧 تحت التجهيز</option>
             <option value="تم الانتهاء من التجهيز">✔️ تم الانتهاء من التجهيز</option>
@@ -1047,8 +1181,10 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 <script>
+    // Initialize Firebase
     firebase.initializeApp({
         apiKey: "AIzaSyDrhyNCKO5tzF-tiRQevk12kLM8hAkkr0w",
         authDomain: "reservations-e411a.firebaseapp.com",
@@ -1056,14 +1192,22 @@
     });
 
     const db = firebase.firestore();
+    const auth = firebase.auth();
+    
     let allReservations = [];
+    let currentUserEmail = null;
     let previousReservations = new Map();
     let lastNotificationTime = 0;
     const NOTIFICATION_COOLDOWN = 3000;
     let audioContext = null;
     
-    // رابط صفحة تأكيد الحجز
     const CONFIRM_PAGE_URL = "https://mosalah-maker.github.io/Confirm-your-reservation/";
+    
+    // Available admins
+    const ADMINS = {
+        'mosalah@gmail.com': { name: 'elmo', color: '#F5C542' },
+        'zeyad@gmail.com': { name: 'zeyad', color: '#10b981' }
+    };
     
     function formatPhoneForWA(phone) {
         if (!phone) return '';
@@ -1087,7 +1231,7 @@
         return (Date.now() - d.getTime()) < 3600000;
     }
     
-    function showToast(msg, type = 'success') {
+    function showToast(msg) {
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.innerHTML = msg;
@@ -1105,12 +1249,6 @@
     
     function getConfirmationLink(reservationId) {
         return `${CONFIRM_PAGE_URL}?id=${reservationId}`;
-    }
-    
-    function copyPaymentLink(reservationId) {
-        const link = getConfirmationLink(reservationId);
-        navigator.clipboard.writeText(link);
-        showToast('✅ تم نسخ رابط تأكيد الحجز');
     }
     
     function sendConfirmationWA(phone, name, reservationId) {
@@ -1173,7 +1311,6 @@ ${link}
         openModal('proofModal');
     }
     
-    // نظام الإشعارات الصوتية
     function playNotificationSound() {
         try {
             if (!audioContext) {
@@ -1194,17 +1331,13 @@ ${link}
         } catch(e) { console.log("صوت:", e); }
     }
     
-    // طلب إذن الإشعارات
     async function requestNotificationPermission() {
         if ('Notification' in window) {
             const permission = await Notification.requestPermission();
             if (permission === 'granted') {
                 showToast('🔔 تم تفعيل الإشعارات بنجاح');
                 closePermissionBanner();
-                showDesktopNotification('✅ نظام الإشعارات جاهز', 'سيتم إشعارك عند إضافة حجوزات جديدة أو رفع إسكرين');
                 playNotificationSound();
-            } else if (permission === 'denied') {
-                showToast('❌ تم رفض الإشعارات');
             }
         }
     }
@@ -1225,7 +1358,6 @@ ${link}
             icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y=".9em" font-size="90" fill="%23F5C542"%3E🎧%3C/text%3E%3C/svg%3E',
             tag: reservationId || 'general',
             renotify: true,
-            requireInteraction: true,
             vibrate: [200, 100, 200]
         };
         
@@ -1237,36 +1369,6 @@ ${link}
             }
             notification.close();
         };
-        playNotificationSound();
-    }
-    
-    function showCustomNotification(title, message, reservationId = null) {
-        const container = document.getElementById('toastContainer');
-        const notificationDiv = document.createElement('div');
-        notificationDiv.className = 'desktop-notification';
-        const time = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-        
-        notificationDiv.innerHTML = `
-            <div class="notification-header">
-                <div class="notification-icon">🎧</div>
-                <div class="notification-title">${title}</div>
-                <div class="notification-time">${time}</div>
-            </div>
-            <div class="notification-message">${message}</div>
-            <div class="notification-details">أبو زهرة - نظام إدارة الحجوزات</div>
-            <div class="notification-actions">
-                ${reservationId ? '<button class="notification-action-btn view" onclick="openDetail(\'' + reservationId + '\'); this.closest(\'.desktop-notification\').remove();">عرض التفاصيل</button>' : ''}
-                <button class="notification-action-btn close" onclick="this.closest(\'.desktop-notification\').classList.add(\'hide\'); setTimeout(() => this.closest(\'.desktop-notification\').remove(), 300);">إغلاق</button>
-            </div>
-        `;
-        
-        container.appendChild(notificationDiv);
-        setTimeout(() => {
-            if (notificationDiv && notificationDiv.parentNode) {
-                notificationDiv.classList.add('hide');
-                setTimeout(() => notificationDiv.remove(), 300);
-            }
-        }, 10000);
         playNotificationSound();
     }
     
@@ -1293,19 +1395,33 @@ ${link}
         try {
             await db.collection('reservations').doc(docId).update({ payment_confirmed: true });
             showToast('✅ تم تأكيد دفع مبلغ الشحن');
-        } catch (err) { showToast('حدث خطأ', 'error'); }
+        } catch (err) { showToast('حدث خطأ'); }
     }
     
     async function updateStatus(docId, newStatus, selectEl) {
         try {
-            await db.collection('reservations').doc(docId).update({ status: newStatus });
+            // If status is changing from "قيد المراجعة" to anything else, assign to current user
+            const reservation = allReservations.find(r => r.id === docId);
+            const currentAssignedTo = reservation?.data?.assignedTo;
+            const updates = { status: newStatus };
+            
+            // Auto-assign: if status is not "قيد المراجعة" and no one assigned, assign to current user
+            if (newStatus !== 'قيد المراجعة' && (!currentAssignedTo || currentAssignedTo === null)) {
+                updates.assignedTo = currentUserEmail;
+                showToast(`📌 تم تخصيص الحجز لك`);
+            }
+            
+            await db.collection('reservations').doc(docId).update(updates);
             if (selectEl) selectEl.className = 'status-select ' + getStatusCSS(newStatus);
             showToast('تم تحديث حالة الطلب');
-            const reservation = allReservations.find(r => r.id === docId);
-            if (reservation) {
-                sendWAInvoice(reservation.data, newStatus, reservation.data.payment_confirmed || false);
-            }
-        } catch (err) { showToast('حدث خطأ', 'error'); }
+        } catch (err) { showToast('حدث خطأ'); }
+    }
+    
+    async function assignToMe(docId) {
+        try {
+            await db.collection('reservations').doc(docId).update({ assignedTo: currentUserEmail });
+            showToast('✅ تم تخصيص الحجز لك');
+        } catch (err) { showToast('حدث خطأ'); }
     }
     
     function buildInvoiceMessage(data, newStatus, paymentConfirmed) {
@@ -1346,7 +1462,6 @@ ${statusMessage}
 ━━━━━━━━━━━━━━━━━━━━
 شكراً لاختياركم أبو زهرة`;
 
-        // رسالة مخصصة لحالة "تم الاستلام"
         if (newStatus === 'تم الاستلام') {
             formattedInvoice += `
 
@@ -1360,9 +1475,7 @@ ${statusMessage}
 
 💬 *مستنيين رأيك 🙌*  
 *Abo Zahra* 🎧`;
-        }
-        // رسالة مخصصة لحالة "تم التواصل"
-        else if (newStatus === 'تم التواصل') {
+        } else if (newStatus === 'تم التواصل') {
             formattedInvoice += `
 
 📢 *لو حابب تتأكد من شغلنا وجودتنا*  
@@ -1379,7 +1492,7 @@ ${statusMessage}
     function sendWAInvoice(data, newStatus, paymentConfirmed) {
         const invoice = buildInvoiceMessage(data, newStatus, paymentConfirmed);
         const phone = data.phone;
-        if (!phone) { showToast('لا يوجد رقم هاتف', 'error'); return; }
+        if (!phone) { showToast('لا يوجد رقم هاتف'); return; }
         window.open(`https://wa.me/${formatPhoneForWA(phone)}?text=${encodeURIComponent(invoice)}`, '_blank');
     }
     
@@ -1389,7 +1502,16 @@ ${statusMessage}
         sendWAInvoice(r.data, r.data.status || 'قيد المراجعة', r.data.payment_confirmed || false);
     }
     
-    function statusSelectHTML(docId, currentStatus) {
+    function statusSelectHTML(docId, currentStatus, assignedTo) {
+        // Check if this reservation is assigned to current user or is unassigned (قيد المراجعة)
+        const canEdit = (assignedTo === currentUserEmail) || (!assignedTo && currentStatus === 'قيد المراجعة');
+        
+        if (!canEdit) {
+            // Show disabled select with current status only
+            return `<div class="status-badge ${getStatusCSS(currentStatus)}" style="display:inline-block; padding:8px 12px;">${getStatusLabel(currentStatus)}</div>
+                    <div style="font-size:10px; color:#a07d3a; margin-top:4px;">🔒 مسؤول: ${assignedTo === 'mosalah@gmail.com' ? 'صلاح' : (assignedTo === 'mohamed@abozahra.com' ? 'محمد' : 'غير محدد')}</div>`;
+        }
+        
         let options = STATUSES.map(s => `<option value="${s.value}" ${s.value === currentStatus ? 'selected' : ''}>${s.label}</option>`).join('');
         return `<select class="status-select ${getStatusCSS(currentStatus)}" onchange="updateStatus('${docId}', this.value, this)">${options}</select>`;
     }
@@ -1419,14 +1541,14 @@ ${statusMessage}
             question: document.getElementById('editQuestion').value.trim()
         };
         if (!updates.name || !updates.phone || !updates.address || !updates.device) {
-            showToast('املأ جميع الحقول', 'error');
+            showToast('املأ جميع الحقول');
             return;
         }
         try {
             await db.collection('reservations').doc(docId).update(updates);
             showToast('تم التحديث');
             closeModal('editModal');
-        } catch (err) { showToast('خطأ', 'error'); }
+        } catch (err) { showToast('خطأ'); }
     }
     
     function openDetail(docId) {
@@ -1436,6 +1558,7 @@ ${statusMessage}
         const paymentBadge = d.payment_confirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
         const statusBadge = `<span class="status-badge ${getStatusCSS(d.status || 'قيد المراجعة')}">${getStatusLabel(d.status || 'قيد المراجعة')}</span>`;
         const hasProof = d.payment_proof_url ? true : false;
+        const assignedToName = d.assignedTo === 'mosalah@gmail.com' ? 'صلاح' : (d.assignedTo === 'mohamed@abozahra.com' ? 'محمد' : 'غير مخصص');
         
         let proofSection = '';
         if (hasProof) {
@@ -1454,14 +1577,22 @@ ${statusMessage}
                 <div class="detail-item"><div class="detail-label">الاستفسار</div><div class="detail-value">${d.question || 'لا يوجد'}</div></div>
                 <div class="detail-item"><div class="detail-label">حالة الدفع</div><div class="detail-value">${paymentBadge}</div></div>
                 <div class="detail-item"><div class="detail-label">حالة الطلب</div><div class="detail-value">${statusBadge}</div></div>
+                <div class="detail-item"><div class="detail-label">مسؤول الطلب</div><div class="detail-value">${assignedToName}</div></div>
                 ${proofSection}
             </div>
         `;
+        
+        let assignButton = '';
+        if (!d.assignedTo && d.status === 'قيد المراجعة') {
+            assignButton = `<button class="btn btn-primary" onclick="assignToMe('${docId}'); closeModal('detailModal')">📌 تخصيص لي</button>`;
+        }
+        
         document.getElementById('detailFooter').innerHTML = `
             <button class="btn btn-primary" onclick="closeModal('detailModal'); openEdit('${docId}')">✏️ تعديل</button>
             <a href="tel:${d.phone}" class="btn btn-success">📞 اتصال</a>
             <a href="https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || '') + '، بخصوص حجزك')}" target="_blank" class="btn btn-success" style="background:#25D366;">💬 واتساب</a>
             <button class="btn btn-outline" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${docId}')" style="background:#25D366;">🔗 رابط التأكيد</button>
+            ${assignButton}
             <button class="btn btn-outline" onclick="closeModal('detailModal')">إغلاق</button>
         `;
         openModal('detailModal');
@@ -1477,7 +1608,7 @@ ${statusMessage}
                     showToast('تم الحذف');
                     closeModal('confirmModal');
                     deleteId = null;
-                } catch (err) { showToast('خطأ', 'error'); }
+                } catch (err) { showToast('خطأ'); }
             }
         };
         openModal('confirmModal');
@@ -1503,32 +1634,42 @@ ${statusMessage}
             const paymentConfirmed = d.payment_confirmed === true;
             const hasProof = d.payment_proof_url ? true : false;
             const newBadge = isNew(d.created_at) ? '<span class="new-badge">جديد</span>' : '';
+            const assignedBadge = d.assignedTo ? `<span class="assigned-badge">📌 ${d.assignedTo === 'mosalah@gmail.com' ? 'صلاح' : (d.assignedTo === 'mohamed@abozahra.com' ? 'محمد' : '')}</span>` : '';
             const paymentBadge = paymentConfirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
             const proofBtn = hasProof 
                 ? `<button class="proof-btn green" onclick="viewProof('${id}')" title="عرض الإسكرين">📸</button>`
                 : `<button class="proof-btn red" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${id}')" title="إرسال رابط التأكيد للعميل">📸</button>`;
             
+            // Check if user can edit this reservation
+            const canEdit = (d.assignedTo === currentUserEmail) || (!d.assignedTo && status === 'قيد المراجعة');
+            
+            let assignAction = '';
+            if (!d.assignedTo && status === 'قيد المراجعة') {
+                assignAction = `<button class="action-btn assign" onclick="assignToMe('${id}')" title="تخصيص لي">📌</button>`;
+            }
+            
             tableHTML += `
                 <tr>
                     <td>${idx + 1}</td>
-                    <td><span style="font-weight:800; color:#F5C542;">${newBadge}${d.name || '—'}</span></td>
+                    <td><span style="font-weight:800; color:#F5C542;">${newBadge}${assignedBadge}${d.name || '—'}</span></td>
                     <td style="direction:ltr;">${d.phone || '—'}</td>
                     <td>${d.address ? d.address.substring(0, 30) + (d.address.length > 30 ? '...' : '') : '—'}</td>
                     <td><span style="color:#FFDE9E;">🎧 ${(d.device || '—').substring(0, 40)}${(d.device || '').length > 40 ? '...' : ''}</span></td>
                     <td>${d.delivery_date || '—'}</td>
                     <td style="font-size:12px;">${formatDate(d.created_at)}</td>
                     <td>${paymentBadge}</td>
-                    <td>${statusSelectHTML(id, status)}</td>
+                    <td>${statusSelectHTML(id, status, d.assignedTo)}</td>
                     <td style="text-align:center;">${proofBtn}</td>
                     <td>
                         <div class="actions-cell">
                             <button class="action-btn view" onclick="openDetail('${id}')" title="تفاصيل">👁️</button>
-                            <button class="action-btn edit" onclick="openEdit('${id}')" title="تعديل">✏️</button>
+                            ${canEdit ? `<button class="action-btn edit" onclick="openEdit('${id}')" title="تعديل">✏️</button>` : ''}
                             <button class="action-btn call" onclick="window.open('tel:${d.phone}')" title="اتصال">📞</button>
                             <button class="action-btn whatsapp" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || ''))}', '_blank')" title="واتساب">💬</button>
-                            ${!paymentConfirmed ? `<button class="action-btn payment" onclick="confirmPayment('${id}')" title="تأكيد دفع الشحن">💰</button>` : ''}
+                            ${!paymentConfirmed && canEdit ? `<button class="action-btn payment" onclick="confirmPayment('${id}')" title="تأكيد دفع الشحن">💰</button>` : ''}
                             <button class="action-btn status-wa" onclick="sendStatusWA('${id}')" title="إرسال الحالة">📨</button>
-                            <button class="action-btn delete" onclick="confirmDelete('${id}')" title="حذف">🗑️</button>
+                            ${canEdit ? `<button class="action-btn delete" onclick="confirmDelete('${id}')" title="حذف">🗑️</button>` : ''}
+                            ${assignAction}
                         </div>
                       </td>
                   </tr>
@@ -1537,7 +1678,7 @@ ${statusMessage}
             mobileHTML += `
                 <div class="mobile-card">
                     <div class="mobile-card-header">
-                        <div class="mobile-card-name">${newBadge}${d.name || '—'}</div>
+                        <div class="mobile-card-name">${newBadge}${assignedBadge}${d.name || '—'}</div>
                         <button class="action-btn view" onclick="openDetail('${id}')">👁️</button>
                     </div>
                     <div class="mobile-card-body">
@@ -1553,15 +1694,16 @@ ${statusMessage}
                     </div>
                     <div class="mobile-card-status">
                         <label style="color:#a07d3a; font-size:12px;">الحالة:</label>
-                        ${statusSelectHTML(id, status)}
+                        ${statusSelectHTML(id, status, d.assignedTo)}
                     </div>
                     <div class="mobile-card-actions">
-                        <button class="action-btn edit" onclick="openEdit('${id}')">✏️</button>
+                        ${canEdit ? `<button class="action-btn edit" onclick="openEdit('${id}')">✏️</button>` : ''}
                         <button class="action-btn call" onclick="window.open('tel:${d.phone}')">📞</button>
                         <button class="action-btn whatsapp" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || ''))}', '_blank')">💬</button>
-                        ${!paymentConfirmed ? `<button class="action-btn payment" onclick="confirmPayment('${id}')">💰</button>` : ''}
+                        ${!paymentConfirmed && canEdit ? `<button class="action-btn payment" onclick="confirmPayment('${id}')">💰</button>` : ''}
                         <button class="action-btn status-wa" onclick="sendStatusWA('${id}')">📨</button>
-                        <button class="action-btn delete" onclick="confirmDelete('${id}')">🗑️</button>
+                        ${canEdit ? `<button class="action-btn delete" onclick="confirmDelete('${id}')">🗑️</button>` : ''}
+                        ${assignAction}
                     </div>
                 </div>
             `;
@@ -1574,14 +1716,14 @@ ${statusMessage}
     
     function updateStats(reservations) {
         const total = reservations.length;
-        const review = reservations.filter(r => (r.data.status || 'قيد المراجعة') === 'قيد المراجعة').length;
+        const newCount = reservations.filter(r => (r.data.status || 'قيد المراجعة') === 'قيد المراجعة' && !r.data.assignedTo).length;
         const paid = reservations.filter(r => r.data.payment_confirmed === true).length;
         const hasProof = reservations.filter(r => r.data.payment_proof_url).length;
         const preparing = reservations.filter(r => r.data.status === 'تحت التجهيز').length;
         const delivered = reservations.filter(r => r.data.status === 'تم الاستلام').length;
         
         document.getElementById('statTotal').textContent = total;
-        document.getElementById('statReview').textContent = review;
+        document.getElementById('statNew').textContent = newCount;
         document.getElementById('statPaid').textContent = paid;
         document.getElementById('statHasProof').textContent = hasProof;
         document.getElementById('statPreparing').textContent = preparing;
@@ -1589,35 +1731,150 @@ ${statusMessage}
         document.getElementById('totalCount').textContent = `الإجمالي: ${total}`;
     }
     
-    function filterReservations() {
+    function getFilteredReservations() {
         const search = document.getElementById('searchInput').value.toLowerCase();
         const statusFilter = document.getElementById('statusFilter').value;
         const proofFilter = document.getElementById('proofFilter').value;
+        
         let filtered = allReservations.filter(r => {
             const d = r.data;
+            const status = d.status || 'قيد المراجعة';
+            const assignedTo = d.assignedTo;
+            
+            // Filter by assignment: 
+            // Show if: assigned to current user OR (no assignment AND status is 'قيد المراجعة')
+            const canSee = (assignedTo === currentUserEmail) || (!assignedTo && status === 'قيد المراجعة');
+            if (!canSee) return false;
+            
             const matchSearch = !search || (d.name || '').toLowerCase().includes(search) || (d.phone || '').includes(search) || (d.device || '').toLowerCase().includes(search);
-            const matchStatus = statusFilter === 'all' || (d.status || 'قيد المراجعة') === statusFilter;
+            const matchStatus = statusFilter === 'all' || status === statusFilter;
             let matchProof = true;
             if (proofFilter === 'has_proof') matchProof = d.payment_proof_url ? true : false;
             if (proofFilter === 'no_proof') matchProof = !d.payment_proof_url;
             return matchSearch && matchStatus && matchProof;
         });
+        
+        return filtered;
+    }
+    
+    function filterReservations() {
+        const filtered = getFilteredReservations();
         renderReservations(filtered);
+        updateStats(filtered);
     }
     
     function exportCSV() {
-        if (!allReservations.length) { showToast('لا بيانات', 'info'); return; }
+        const filtered = getFilteredReservations();
+        if (!filtered.length) { showToast('لا بيانات'); return; }
         const BOM = '\uFEFF';
-        let csv = BOM + 'الاسم,التليفون,العنوان,المنتج,الاستفسار,ميعاد التسليم,حالة الطلب,حالة الدفع,تم رفع إسكرين,رقم المحول منه,تاريخ الحجز\n';
-        allReservations.forEach(r => {
+        let csv = BOM + 'الاسم,التليفون,العنوان,المنتج,الاستفسار,ميعاد التسليم,حالة الطلب,حالة الدفع,تم رفع إسكرين,رقم المحول منه,تاريخ الحجز,مسؤول الطلب\n';
+        filtered.forEach(r => {
             const d = r.data;
-            csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${d.payment_confirmed ? 'مدفوع' : 'غير مدفوع'}","${d.payment_proof_url ? 'نعم' : 'لا'}","${d.sender_phone || ''}","${formatDate(d.created_at)}"\n`;
+            csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${d.payment_confirmed ? 'مدفوع' : 'غير مدفوع'}","${d.payment_proof_url ? 'نعم' : 'لا'}","${d.sender_phone || ''}","${formatDate(d.created_at)}","${d.assignedTo === 'mosalah@gmail.com' ? 'صلاح' : (d.assignedTo === 'mohamed@abozahra.com' ? 'محمد' : 'غير مخصص')}"\n`;
         });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
         link.download = `abo_zahra_${new Date().toISOString().slice(0,10)}.csv`;
         link.click();
         showToast('تم التصدير');
+    }
+    
+    // Login function
+    async function login() {
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        
+        if (!email || !password) {
+            document.getElementById('loginError').style.display = 'block';
+            return;
+        }
+        
+        try {
+            // Check if email is in allowed admins
+            if (!ADMINS[email]) {
+                document.getElementById('loginError').style.display = 'block';
+                return;
+            }
+            
+            // Try to sign in
+            await auth.signInWithEmailAndPassword(email, password);
+            
+            // Success - hide login, show main content
+            currentUserEmail = email;
+            document.getElementById('loginContainer').classList.add('hide');
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('userEmail').textContent = ADMINS[email].name;
+            
+            showToast(`👋 مرحباً ${ADMINS[email].name}`);
+            
+            // Start listening to reservations
+            startReservationsListener();
+            
+        } catch (err) {
+            console.error(err);
+            document.getElementById('loginError').style.display = 'block';
+        }
+    }
+    
+    function logout() {
+        auth.signOut().then(() => {
+            currentUserEmail = null;
+            document.getElementById('loginContainer').classList.remove('hide');
+            document.getElementById('mainContent').style.display = 'none';
+            allReservations = [];
+            previousReservations.clear();
+            showToast('تم تسجيل الخروج');
+        });
+    }
+    
+    // Auto upgrade old reservations (status not 'قيد المراجعة' or 'ملغي') to mosalah@gmail.com
+    async function upgradeOldReservations() {
+        try {
+            const snapshot = await db.collection('reservations').get();
+            const batch = db.batch();
+            let needsUpdate = false;
+            
+            snapshot.docs.forEach(doc => {
+                const data = doc.data();
+                const status = data.status || 'قيد المراجعة';
+                const assignedTo = data.assignedTo;
+                
+                // If status is not 'قيد المراجعة' and not 'ملغي' and no assignedTo, assign to mosalah@gmail.com
+                if (status !== 'قيد المراجعة' && status !== 'ملغي' && !assignedTo) {
+                    batch.update(doc.ref, { assignedTo: 'mosalah@gmail.com' });
+                    needsUpdate = true;
+                }
+            });
+            
+            if (needsUpdate) {
+                await batch.commit();
+                console.log('✅ تم ترقية الطلبات القديمة تلقائياً');
+            }
+        } catch (err) {
+            console.error('خطأ في ترقية الطلبات:', err);
+        }
+    }
+    
+    let unsubscribeListener = null;
+    
+    function startReservationsListener() {
+        if (unsubscribeListener) unsubscribeListener();
+        
+        unsubscribeListener = db.collection('reservations').orderBy('created_at', 'desc').onSnapshot(snapshot => {
+            const newReservations = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
+            
+            if (previousReservations.size > 0) {
+                checkForChanges(newReservations);
+            }
+            
+            allReservations = newReservations;
+            filterReservations();
+            
+            if (previousReservations.size === 0) {
+                previousReservations = new Map();
+                allReservations.forEach(r => previousReservations.set(r.id, r));
+            }
+        }, err => console.error(err));
     }
     
     function checkForChanges(newReservations) {
@@ -1628,14 +1885,16 @@ ${statusMessage}
             if (!previousReservations.has(res.id)) {
                 const d = res.data;
                 const customerName = d.name || 'عميل جديد';
-                showDesktopNotification('🆕 حجز جديد!', `${customerName} | ${d.device || 'سماعة'}`, res.id);
-                showCustomNotification('🆕 حجز جديد!', `${customerName} | ${d.device || 'سماعة'}`, res.id);
+                // Only notify if reservation is available for current admin (unassigned or assigned to them)
+                if (!d.assignedTo || d.assignedTo === currentUserEmail) {
+                    showDesktopNotification('🆕 حجز جديد!', `${customerName} | ${d.device || 'سماعة'}`, res.id);
+                }
             }
         });
         
         newReservations.forEach(res => {
             const old = previousReservations.get(res.id);
-            if (old) {
+            if (old && old.data.assignedTo === currentUserEmail) {
                 const oldStatus = old.data.status || 'قيد المراجعة';
                 const newStatus = res.data.status || 'قيد المراجعة';
                 const oldPayment = old.data.payment_confirmed || false;
@@ -1654,17 +1913,14 @@ ${statusMessage}
                         'ملغي': '❌ ملغي'
                     };
                     showDesktopNotification('📋 تحديث حالة الطلب', `${res.data.name || 'عميل'} : ${statusLabels[newStatus] || newStatus}`, res.id);
-                    showCustomNotification('📋 تحديث حالة الطلب', `${res.data.name || 'عميل'} : ${statusLabels[newStatus] || newStatus}`, res.id);
                 }
                 
                 if (oldPayment !== newPayment && newPayment === true) {
                     showDesktopNotification('💰 تأكيد الدفع', `${res.data.name || 'عميل'} : تم تأكيد دفع رسوم الشحن`, res.id);
-                    showCustomNotification('💰 تأكيد الدفع', `${res.data.name || 'عميل'} : تم تأكيد دفع رسوم الشحن`, res.id);
                 }
                 
                 if (!oldProof && newProof) {
                     showDesktopNotification('📸 تم رفع إسكرين تحويل', `${res.data.name || 'عميل'} : تم رفع إسكرين التحويل - مراجعة`, res.id);
-                    showCustomNotification('📸 تم رفع إسكرين تحويل', `${res.data.name || 'عميل'} : تم رفع إسكرين التحويل - مراجعة`, res.id);
                 }
             }
         });
@@ -1689,23 +1945,24 @@ ${statusMessage}
         }
     }
     
-    // Real-time listener
-    db.collection('reservations').orderBy('created_at', 'desc').onSnapshot(snapshot => {
-        const newReservations = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
-        
-        if (previousReservations.size > 0) {
-            checkForChanges(newReservations);
+    // Auto-login if already authenticated
+    auth.onAuthStateChanged(async (user) => {
+        if (user && ADMINS[user.email]) {
+            currentUserEmail = user.email;
+            document.getElementById('loginContainer').classList.add('hide');
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('userEmail').textContent = ADMINS[user.email].name;
+            
+            // Run upgrade once
+            await upgradeOldReservations();
+            
+            startReservationsListener();
+            showToast(`👋 مرحباً ${ADMINS[user.email].name}`);
+        } else if (user && !ADMINS[user.email]) {
+            // Not an admin, sign out
+            await auth.signOut();
         }
-        
-        allReservations = newReservations;
-        updateStats(allReservations);
-        filterReservations();
-        
-        if (previousReservations.size === 0) {
-            previousReservations = new Map();
-            allReservations.forEach(r => previousReservations.set(r.id, r));
-        }
-    }, err => console.error(err));
+    });
     
     document.addEventListener('keydown', e => {
         if (e.key === '/') { e.preventDefault(); document.getElementById('searchInput').focus(); }
@@ -1720,6 +1977,26 @@ ${statusMessage}
     });
     
     checkNotificationPermission();
+    
+    // Expose functions globally
+    window.login = login;
+    window.logout = logout;
+    window.assignToMe = assignToMe;
+    window.updateStatus = updateStatus;
+    window.confirmPayment = confirmPayment;
+    window.sendStatusWA = sendStatusWA;
+    window.openEdit = openEdit;
+    window.saveEdit = saveEdit;
+    window.openDetail = openDetail;
+    window.confirmDelete = confirmDelete;
+    window.viewProof = viewProof;
+    window.filterReservations = filterReservations;
+    window.exportCSV = exportCSV;
+    window.sendConfirmationWA = sendConfirmationWA;
+    window.closeModal = closeModal;
+    window.toggleSidebar = toggleSidebar;
+    window.requestNotificationPermission = requestNotificationPermission;
+    window.closePermissionBanner = closePermissionBanner;
 </script>
 </body>
 </html>
