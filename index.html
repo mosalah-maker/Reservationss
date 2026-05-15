@@ -3,54 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>أبو زهرة | لوحة تحكم الحجوزات</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23F5C542'>🎧</text></svg>">
+    <title>أبو زهرة | لوحة التحكم</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: #050301; color: #e2e8f0; min-height: 100vh; direction: rtl; overflow-x: hidden; }
-        .admin-bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(circle at 20% 30%, rgba(229,170,50,0.08) 0%, #030101 90%); }
-        .sidebar { position: fixed; right: 0; top: 0; width: 280px; height: 100vh; background: linear-gradient(180deg, #0e0b06 0%, #050301 100%); border-left: 1px solid rgba(229,184,60,0.2); z-index: 100; padding: 20px 0; transition: transform 0.3s; overflow-y: auto; }
-        .sidebar-header { padding: 10px 20px 30px; text-align: center; border-bottom: 1px solid rgba(229,184,60,0.2); margin-bottom: 20px; }
-        .sidebar-header .logo { font-size: 55px; margin-bottom: 8px; animation: pulseGold 2s infinite; }
-        @keyframes pulseGold { 0%,100%{text-shadow:0 0 0 #F5C542;} 50%{text-shadow:0 0 15px #F5C542;} }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #050301;
+            color: #e2e8f0;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+        /* نفس الستايلات اللي كانت موجودة في الداشبورد القديم */
+        .admin-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(229,170,50,0.08) 0%, #030101 90%);
+        }
+        .sidebar {
+            position: fixed;
+            right: 0; top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #0e0b06 0%, #050301 100%);
+            border-left: 1px solid rgba(229,184,60,0.2);
+            z-index: 100;
+            padding: 20px 0;
+            transition: transform 0.3s;
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            padding: 10px 20px 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(229,184,60,0.2);
+            margin-bottom: 20px;
+        }
+        .sidebar-header .logo { font-size: 55px; margin-bottom: 8px; }
         .sidebar-header h2 { font-size: 18px; color: #F5C542; font-weight: 800; }
-        .sidebar-header p { font-size: 12px; color: #a07d3a; }
         .sidebar-nav { list-style: none; padding: 0 15px; }
         .sidebar-nav li { margin-bottom: 5px; }
-        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 12px 18px; color: #a07d3a; text-decoration: none; border-radius: 12px; transition: all 0.3s; font-size: 14px; font-weight: 600; }
-        .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(229,184,60,0.12); color: #F5C542; border-right: 3px solid #F5C542; }
-        .main-content { margin-right: 280px; padding: 20px; min-height: 100vh; position: relative; z-index: 10; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 12px; }
-        .top-bar h1 { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #F5C542, #FFE4A0); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none; border-radius: 40px; font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.3s; text-decoration: none; }
-        .btn:hover { transform: translateY(-2px); }
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            color: #a07d3a;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(229,184,60,0.12);
+            color: #F5C542;
+            border-right: 3px solid #F5C542;
+        }
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .top-bar h1 {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F5C542, #FFE4A0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 40px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
         .btn-primary { background: linear-gradient(135deg, #E5B83C, #B8860B); color: #050301; }
-        .btn-primary:hover { background: linear-gradient(135deg, #F5C542, #D4AF37); box-shadow: 0 5px 20px rgba(229,184,60,0.3); }
         .btn-outline { background: transparent; border: 1px solid rgba(229,184,60,0.4); color: #F5C542; }
-        .btn-outline:hover { border-color: #F5C542; background: rgba(229,184,60,0.1); }
         .btn-success { background: #25D366; color: #fff; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 30px; }
-        .stat-card { background: rgba(14,11,6,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(229,184,60,0.2); border-radius: 20px; padding: 20px; transition: all 0.3s; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(14,11,6,0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229,184,60,0.2);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
         .stat-card:hover { transform: translateY(-5px); border-color: rgba(229,184,60,0.5); }
         .stat-icon { font-size: 32px; margin-bottom: 10px; }
         .stat-number { font-size: 32px; font-weight: 900; color: #F5C542; }
         .stat-label { font-size: 13px; color: #a07d3a; font-weight: 600; }
-        .filter-bar { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
-        .search-box { flex: 1; min-width: 250px; position: relative; }
-        .search-box input { width: 100%; padding: 14px 45px 14px 18px; background: rgba(14,11,6,0.8); border: 1px solid rgba(229,184,60,0.2); border-radius: 50px; color: #e2e8f0; font-family: 'Cairo', sans-serif; font-size: 14px; outline: none; }
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 14px 45px 14px 18px;
+            background: rgba(14,11,6,0.8);
+            border: 1px solid rgba(229,184,60,0.2);
+            border-radius: 50px;
+            color: #e2e8f0;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
         .search-box input:focus { border-color: #F5C542; }
-        .search-box .search-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #F5C542; }
-        .filter-select { padding: 12px 18px; background: rgba(14,11,6,0.8); border: 1px solid rgba(229,184,60,0.2); border-radius: 50px; color: #e2e8f0; font-family: 'Cairo', sans-serif; font-size: 14px; cursor: pointer; min-width: 180px; }
-        .table-container { background: rgba(14,11,6,0.6); backdrop-filter: blur(10px); border: 1px solid rgba(229,184,60,0.15); border-radius: 24px; overflow: hidden; }
+        .search-box .search-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #F5C542;
+        }
+        .filter-select {
+            padding: 12px 18px;
+            background: rgba(14,11,6,0.8);
+            border: 1px solid rgba(229,184,60,0.2);
+            border-radius: 50px;
+            color: #e2e8f0;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            min-width: 180px;
+        }
+        .table-container {
+            background: rgba(14,11,6,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229,184,60,0.15);
+            border-radius: 24px;
+            overflow: hidden;
+        }
         .table-scroll { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 1300px; }
-        thead { background: rgba(0,0,0,0.4); border-bottom: 1px solid rgba(229,184,60,0.2); }
-        th { padding: 16px; font-size: 13px; font-weight: 700; color: #F5C542; text-align: right; }
-        td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid rgba(229,184,60,0.08); vertical-align: middle; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1300px;
+        }
+        thead {
+            background: rgba(0,0,0,0.4);
+            border-bottom: 1px solid rgba(229,184,60,0.2);
+        }
+        th {
+            padding: 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #F5C542;
+            text-align: right;
+        }
+        td {
+            padding: 14px 16px;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(229,184,60,0.08);
+            vertical-align: middle;
+        }
         tbody tr:hover { background: rgba(229,184,60,0.05); }
-        .status-select { padding: 8px 12px; border-radius: 30px; border: none; font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; outline: none; min-width: 170px; }
+        .status-select {
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            outline: none;
+            min-width: 170px;
+        }
         .status-select.status-review { background: #fef3c7; color: #92400e; }
         .status-select.status-contacted { background: #dbeafe; color: #1e40af; }
         .status-select.status-preparing { background: #fce7f3; color: #9d174d; }
@@ -59,53 +213,211 @@
         .status-select.status-delivered { background: #d1fae5; color: #065f46; }
         .status-select.status-cancelled { background: #fee2e2; color: #991b1b; }
         .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
-        .action-btn { width: 36px; height: 36px; border: none; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s; }
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
         .action-btn:hover { transform: scale(1.1); }
         .action-btn.edit { background: rgba(229,184,60,0.15); color: #F5C542; }
         .action-btn.call { background: rgba(34,197,94,0.15); color: #22c55e; }
         .action-btn.whatsapp { background: rgba(37,211,102,0.15); color: #25D366; }
         .action-btn.delete { background: rgba(220,38,38,0.15); color: #ef4444; }
         .action-btn.view { background: rgba(229,184,60,0.15); color: #F5C542; }
-        .proof-btn { width: 42px; height: 42px; border-radius: 12px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.2s; border: none; }
+        .proof-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s;
+            border: none;
+        }
         .proof-btn.red { background: rgba(220,38,38,0.2); color: #ef4444; border: 1px solid rgba(220,38,38,0.5); }
         .proof-btn.green { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.5); }
         .proof-btn:hover { transform: scale(1.1); }
         .mobile-cards { display: none; }
-        .mobile-card { background: rgba(14,11,6,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(229,184,60,0.15); border-radius: 20px; padding: 16px; margin-bottom: 12px; }
-        .mobile-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(229,184,60,0.15); }
+        .mobile-card {
+            background: rgba(14,11,6,0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229,184,60,0.15);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .mobile-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(229,184,60,0.15);
+        }
         .mobile-card-name { font-size: 16px; font-weight: 800; color: #F5C542; }
         .mobile-card-body { display: grid; gap: 8px; margin-bottom: 12px; }
         .mobile-card-row { display: flex; justify-content: space-between; font-size: 13px; }
         .mobile-card-label { color: #a07d3a; }
         .mobile-card-value { color: #e2e8f0; font-weight: 600; }
         .mobile-card-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
         .modal-overlay.active { display: flex; }
-        .modal { background: #0e0b06; border: 1px solid rgba(229,184,60,0.3); border-radius: 32px; width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto; animation: modalSlideIn 0.3s ease; }
-        @keyframes modalSlideIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid rgba(229,184,60,0.2); }
+        .modal {
+            background: #0e0b06;
+            border: 1px solid rgba(229,184,60,0.3);
+            border-radius: 32px;
+            width: 100%;
+            max-width: 550px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(229,184,60,0.2);
+        }
         .modal-header h3 { font-size: 20px; font-weight: 800; color: #F5C542; }
-        .modal-close { width: 36px; height: 36px; border: none; border-radius: 12px; background: rgba(229,184,60,0.1); color: #F5C542; cursor: pointer; font-size: 18px; }
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(229,184,60,0.1);
+            color: #F5C542;
+            cursor: pointer;
+            font-size: 18px;
+        }
         .modal-body { padding: 24px; }
-        .modal-footer { padding: 16px 24px; border-top: 1px solid rgba(229,184,60,0.2); display: flex; gap: 10px; flex-wrap: wrap; }
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(229,184,60,0.2);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
         .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #a07d3a; margin-bottom: 6px; }
-        .form-group input, .form-group textarea { width: 100%; padding: 12px 16px; background: #050301; border: 1px solid rgba(229,184,60,0.2); border-radius: 16px; color: #e2e8f0; font-family: 'Cairo', sans-serif; font-size: 14px; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #a07d3a;
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: #050301;
+            border: 1px solid rgba(229,184,60,0.2);
+            border-radius: 16px;
+            color: #e2e8f0;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+        }
         .detail-grid { display: grid; gap: 12px; }
-        .detail-item { background: #050301; border-radius: 16px; padding: 14px; }
+        .detail-item {
+            background: #050301;
+            border-radius: 16px;
+            padding: 14px;
+        }
         .detail-label { font-size: 12px; color: #a07d3a; margin-bottom: 4px; }
         .detail-value { font-size: 15px; font-weight: 700; color: #F5C542; }
-        .proof-image { max-width: 100%; border-radius: 16px; margin-top: 8px; cursor: pointer; }
-        .toast-container { position: fixed; top: 20px; left: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; }
-        .toast { padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; animation: slideInRight 0.3s ease; background: #0e0b06; border: 1px solid rgba(229,184,60,0.3); color: #F5C542; }
-        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .proof-image {
+            max-width: 100%;
+            border-radius: 16px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            animation: slideInRight 0.3s ease;
+            background: #0e0b06;
+            border: 1px solid rgba(229,184,60,0.3);
+            color: #F5C542;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
         .loading-state { text-align: center; padding: 60px; }
-        .spinner { width: 40px; height: 40px; border: 3px solid rgba(229,184,60,0.2); border-top-color: #F5C542; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(229,184,60,0.2);
+            border-top-color: #F5C542;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .empty-state { text-align: center; padding: 60px; }
-        .menu-toggle { display: none; position: fixed; top: 15px; right: 15px; z-index: 200; width: 45px; height: 45px; background: #0e0b06; border: 1px solid rgba(229,184,60,0.3); border-radius: 12px; color: #F5C542; font-size: 22px; cursor: pointer; }
-        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 95; }
-        .new-badge { background: #F5C542; color: #050301; font-size: 10px; padding: 2px 8px; border-radius: 20px; margin-right: 8px; font-weight: 800; }
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 200;
+            width: 45px;
+            height: 45px;
+            background: #0e0b06;
+            border: 1px solid rgba(229,184,60,0.3);
+            border-radius: 12px;
+            color: #F5C542;
+            font-size: 22px;
+            cursor: pointer;
+        }
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 95;
+        }
+        .new-badge {
+            background: #F5C542;
+            color: #050301;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-right: 8px;
+            font-weight: 800;
+        }
         @media (max-width: 1000px) {
             .sidebar { transform: translateX(100%); width: 280px; }
             .sidebar.open { transform: translateX(0); }
@@ -121,18 +433,6 @@
             .filter-bar { flex-direction: column; }
             .mobile-card-actions { grid-template-columns: repeat(4, 1fr); }
         }
-        .confirm-page { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; background: #050301; }
-        .confirm-card { max-width: 550px; width: 100%; background: #0e0b06; border-radius: 32px; padding: 28px; border: 1px solid #F5C542; }
-        .confirm-card h2 { color: #F5C542; text-align: center; margin-bottom: 20px; }
-        .bank-number { background: #1a1508; padding: 20px; border-radius: 20px; text-align: center; margin: 20px 0; }
-        .bank-number .number { font-size: 28px; font-weight: bold; color: #F5C542; letter-spacing: 2px; }
-        .upload-area { border: 2px dashed rgba(229,184,60,0.3); border-radius: 24px; padding: 30px; text-align: center; margin: 20px 0; cursor: pointer; transition: all 0.3s; }
-        .upload-area:hover { border-color: #F5C542; background: rgba(229,184,60,0.05); }
-        .upload-area i { font-size: 48px; color: #F5C542; margin-bottom: 12px; }
-        .upload-btn { background: #F5C542; color: #050301; border: none; padding: 16px 32px; border-radius: 60px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s; }
-        .upload-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(229,184,60,0.3); }
-        .preview-img { max-width: 100%; border-radius: 16px; margin-top: 15px; display: none; }
-        .sender-input { width: 100%; padding: 15px; background: #050301; border: 1px solid rgba(229,184,60,0.3); border-radius: 16px; color: white; text-align: center; font-size: 18px; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -147,16 +447,17 @@
     <div class="sidebar-header">
         <div class="logo">🎧</div>
         <h2>Abo Zahra</h2>
-        <p>لوحة التحكم الفاخرة</p>
+        <p>لوحة التحكم</p>
     </div>
     <ul class="sidebar-nav">
         <li><a href="#" class="active" onclick="return false"><span class="icon">📋</span> الحجوزات</a></li>
         <li><a href="#" onclick="exportCSV(); return false"><span class="icon">📥</span> تصدير البيانات</a></li>
         <li><a href="#" onclick="window.print(); return false"><span class="icon">🖨️</span> طباعة</a></li>
+        <li><a href="#" onclick="window.open('index.html', '_blank'); return false"><span class="icon">🌐</span> صفحة الحجز</a></li>
     </ul>
 </aside>
 
-<div class="main-content" id="mainContent">
+<div class="main-content">
     <div class="top-bar">
         <h1>🎧 إدارة حجوزات السماعات - أبو زهرة</h1>
         <div class="top-bar-actions">
@@ -168,7 +469,7 @@
     <div class="stats-grid">
         <div class="stat-card"><div class="stat-icon">🎧</div><div class="stat-number" id="statTotal">0</div><div class="stat-label">إجمالي الحجوزات</div></div>
         <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-number" id="statReview">0</div><div class="stat-label">قيد المراجعة</div></div>
-        <div class="stat-card"><div class="stat-icon">📸</div><div class="stat-number" id="statHasProof">0</div><div class="stat-label">رفع إسكرين</div></div>
+        <div class="stat-card"><div class="stat-icon">📸</div><div class="stat-number" id="statHasProof">0</div><div class="stat-label">تم رفع إسكرين</div></div>
         <div class="stat-card"><div class="stat-icon">🔧</div><div class="stat-number" id="statPreparing">0</div><div class="stat-label">تحت التجهيز</div></div>
         <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-number" id="statDelivered">0</div><div class="stat-label">تم الاستلام</div></div>
     </div>
@@ -188,13 +489,18 @@
             <option value="تم الاستلام">✅ تم الاستلام</option>
             <option value="ملغي">❌ ملغي</option>
         </select>
+        <select class="filter-select" id="proofFilter" onchange="filterReservations()">
+            <option value="all">📸 كل الحالات</option>
+            <option value="has_proof">✅ تم رفع إسكرين</option>
+            <option value="no_proof">❌ لم يرفع إسكرين</option>
+        </select>
     </div>
 
     <div class="table-container">
         <div class="table-scroll">
             <table>
                 <thead>
-                    <tr><th>#</th><th>الاسم</th><th>التليفون</th><th>العنوان</th><th>السماعة</th><th>التسليم</th><th>تاريخ الحجز</th><th>حالة الطلب</th><th>الإسكرين</th><th>العمليات</th></tr>
+                    <tr><th>#</th><th>الاسم</th><th>التليفون</th><th>العنوان</th><th>المنتج</th><th>التسليم</th><th>تاريخ الحجز</th><th>حالة الطلب</th><th>الإسكرين</th><th>العمليات</th></tr>
                 </thead>
                 <tbody id="tableBody">
                     <tr><td colspan="10"><div class="loading-state"><div class="spinner"></div><p>جاري التحميل...</p></div></td></tr>
@@ -218,7 +524,7 @@
             <div class="form-group"><label>الاسم</label><input type="text" id="editName"></div>
             <div class="form-group"><label>رقم التليفون</label><input type="text" id="editPhone"></div>
             <div class="form-group"><label>العنوان</label><input type="text" id="editAddress"></div>
-            <div class="form-group"><label>نوع السماعة</label><input type="text" id="editDevice"></div>
+            <div class="form-group"><label>المنتج</label><textarea id="editDevice" rows="3"></textarea></div>
             <div class="form-group"><label>ميعاد التسليم</label><input type="date" id="editDeliveryDate"></div>
             <div class="form-group"><label>الاستفسار</label><textarea id="editQuestion" rows="3"></textarea></div>
         </div>
@@ -274,31 +580,22 @@
     const db = firebase.firestore();
     let allReservations = [];
     let previousReservations = new Map();
-    const BASE_URL = window.location.origin + window.location.pathname;
     
-    const IMGBB_API_KEY = "d96cbbe822e1ace2ef3247edf29d6de2";
-
-    function formatPhoneForWA(phone) {
-        if (!phone) return '';
-        let cleaned = phone.replace(/[\s\-\+\(\)]/g, '');
-        if (cleaned.startsWith('00')) cleaned = cleaned.substring(2);
-        if (cleaned.startsWith('0')) cleaned = '2' + cleaned;
-        if (!cleaned.startsWith('20')) cleaned = '20' + cleaned;
-        return cleaned;
-    }
-
+    // رابط صفحة تأكيد الحجز (عدله على حسب رابط موقعك)
+    const CONFIRM_PAGE_URL = "https://mosalah-maker.github.io/confirm.html";
+    
     function formatDate(ts) {
         if (!ts) return '—';
         let d = ts.toDate ? ts.toDate() : (ts.seconds ? new Date(ts.seconds * 1000) : new Date(ts));
         return d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     }
-
+    
     function isNew(ts) {
         if (!ts) return false;
         let d = ts.toDate ? ts.toDate() : (ts.seconds ? new Date(ts.seconds * 1000) : new Date(ts));
         return (Date.now() - d.getTime()) < 3600000;
     }
-
+    
     function showToast(msg) {
         const toast = document.createElement('div');
         toast.className = 'toast';
@@ -306,38 +603,27 @@
         document.getElementById('toastContainer').appendChild(toast);
         setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3500);
     }
-
+    
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('open');
         document.getElementById('sidebarOverlay').classList.toggle('open');
     }
-
+    
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-    async function uploadToImgBB(file) {
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('key', IMGBB_API_KEY);
-        
-        const response = await fetch('https://api.imgbb.com/1/upload', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const result = await response.json();
-        if (result.success) {
-            return result.data.url;
-        } else {
-            throw new Error(result.error?.message || 'فشل رفع الصورة');
-        }
-    }
-
+    
+    // ربط صفحة التأكيد
     function getConfirmationLink(reservationId) {
-        return `${BASE_URL}?c=${reservationId}`;
+        return `${CONFIRM_PAGE_URL}?id=${reservationId}`;
     }
-
-    async function sendConfirmationWA(phone, name, reservationId) {
+    
+    function copyPaymentLink(reservationId) {
+        const link = getConfirmationLink(reservationId);
+        navigator.clipboard.writeText(link);
+        showToast('✅ تم نسخ رابط تأكيد الحجز');
+    }
+    
+    function sendConfirmationWA(phone, name, reservationId) {
         const link = getConfirmationLink(reservationId);
         const message = `🌹 مرحباً ${name}،
 
@@ -362,13 +648,10 @@ ${link}
 شكراً لثقتك 🤍
 أبو زهرة للإلكترونيات`;
         
-        window.open(`https://wa.me/${formatPhoneForWA(phone)}?text=${encodeURIComponent(message)}`, '_blank');
-    }
-
-    function copyPaymentLink(reservationId) {
-        const link = getConfirmationLink(reservationId);
-        navigator.clipboard.writeText(link);
-        showToast('✅ تم نسخ رابط التأكيد');
+        let formattedPhone = phone.replace(/[\s\-\+\(\)]/g, '');
+        if (formattedPhone.startsWith('0')) formattedPhone = '2' + formattedPhone.substring(1);
+        if (!formattedPhone.startsWith('20')) formattedPhone = '20' + formattedPhone;
+        window.open(`https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`, '_blank');
     }
     
     function viewProof(reservationId) {
@@ -411,10 +694,10 @@ ${link}
         { value: 'تم الاستلام', label: '✅ تم الاستلام', css: 'status-delivered' },
         { value: 'ملغي', label: '❌ ملغي', css: 'status-cancelled' }
     ];
-
+    
     function getStatusCSS(s) { const st = STATUSES.find(st => st.value === s); return st ? st.css : 'status-review'; }
     function getStatusLabel(s) { const st = STATUSES.find(st => st.value === s); return st ? st.label : '⏳ قيد المراجعة'; }
-
+    
     async function updateStatus(docId, newStatus, selectEl) {
         try {
             await db.collection('reservations').doc(docId).update({ status: newStatus });
@@ -422,12 +705,12 @@ ${link}
             showToast('تم تحديث حالة الطلب');
         } catch (err) { showToast('حدث خطأ'); }
     }
-
+    
     function statusSelectHTML(docId, currentStatus) {
         let options = STATUSES.map(s => `<option value="${s.value}" ${s.value === currentStatus ? 'selected' : ''}>${s.label}</option>`).join('');
         return `<select class="status-select ${getStatusCSS(currentStatus)}" onchange="updateStatus('${docId}', this.value, this)">${options}</select>`;
     }
-
+    
     function openEdit(docId) {
         const r = allReservations.find(r => r.id === docId);
         if (!r) return;
@@ -441,7 +724,7 @@ ${link}
         document.getElementById('editQuestion').value = d.question || '';
         openModal('editModal');
     }
-
+    
     async function saveEdit() {
         const docId = document.getElementById('editId').value;
         const updates = {
@@ -462,7 +745,7 @@ ${link}
             closeModal('editModal');
         } catch (err) { showToast('خطأ'); }
     }
-
+    
     function openDetail(docId) {
         const r = allReservations.find(r => r.id === docId);
         if (!r) return;
@@ -481,7 +764,7 @@ ${link}
                 <div class="detail-item"><div class="detail-label">الاسم</div><div class="detail-value">${d.name || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">التليفون</div><div class="detail-value">${d.phone || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">العنوان</div><div class="detail-value">${d.address || '—'}</div></div>
-                <div class="detail-item"><div class="detail-label">السماعة</div><div class="detail-value">${d.device || '—'}</div></div>
+                <div class="detail-item"><div class="detail-label">المنتج</div><div class="detail-value">${d.device || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">التسليم</div><div class="detail-value">${d.delivery_date || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">تاريخ الحجز</div><div class="detail-value">${formatDate(d.created_at)}</div></div>
                 <div class="detail-item"><div class="detail-label">الاستفسار</div><div class="detail-value">${d.question || 'لا يوجد'}</div></div>
@@ -492,13 +775,13 @@ ${link}
         document.getElementById('detailFooter').innerHTML = `
             <button class="btn btn-primary" onclick="closeModal('detailModal'); openEdit('${docId}')">✏️ تعديل</button>
             <a href="tel:${d.phone}" class="btn btn-success">📞 اتصال</a>
-            <button class="btn btn-success" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${docId}')" style="background:#25D366;">💬 إرسال الرابط</button>
+            <button class="btn btn-success" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${docId}')" style="background:#25D366;">💬 إرسال رابط التأكيد</button>
             <button class="btn btn-outline" onclick="copyPaymentLink('${docId}')">🔗 نسخ الرابط</button>
             <button class="btn btn-outline" onclick="closeModal('detailModal')">إغلاق</button>
         `;
         openModal('detailModal');
     }
-
+    
     let deleteId = null;
     function confirmDelete(docId) {
         deleteId = docId;
@@ -514,7 +797,7 @@ ${link}
         };
         openModal('confirmModal');
     }
-
+    
     function renderReservations(reservations) {
         const tbody = document.getElementById('tableBody');
         const mobile = document.getElementById('mobileCards');
@@ -536,7 +819,7 @@ ${link}
             const newBadge = isNew(d.created_at) ? '<span class="new-badge">جديد</span>' : '';
             const proofBtn = hasProof 
                 ? `<button class="proof-btn green" onclick="viewProof('${id}')" title="عرض الإسكرين">📸</button>`
-                : `<button class="proof-btn red" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${id}')" title="لم يرفع إسكرين">📸</button>`;
+                : `<button class="proof-btn red" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${id}')" title="إرسال رابط التأكيد للعميل">📸</button>`;
             
             tableHTML += `
                 <tr>
@@ -544,7 +827,7 @@ ${link}
                     <td><span style="font-weight:800; color:#F5C542;">${newBadge}${d.name || '—'}</span></td>
                     <td style="direction:ltr;">${d.phone || '—'}</td>
                     <td>${d.address ? d.address.substring(0, 30) + (d.address.length > 30 ? '...' : '') : '—'}</td>
-                    <td><span style="color:#FFDE9E;">🎧 ${d.device || '—'}</span></td>
+                    <td><span style="color:#FFDE9E;">🎧 ${(d.device || '—').substring(0, 40)}${(d.device || '').length > 40 ? '...' : ''}</span></td>
                     <td>${d.delivery_date || '—'}</td>
                     <td style="font-size:12px;">${formatDate(d.created_at)}</td>
                     <td>${statusSelectHTML(id, status)}</td>
@@ -570,7 +853,7 @@ ${link}
                     <div class="mobile-card-body">
                         <div class="mobile-card-row"><span class="mobile-card-label">📱 التليفون</span><span class="mobile-card-value">${d.phone || '—'}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">📍 العنوان</span><span class="mobile-card-value">${d.address || '—'}</span></div>
-                        <div class="mobile-card-row"><span class="mobile-card-label">🎧 السماعة</span><span class="mobile-card-value">${d.device || '—'}</span></div>
+                        <div class="mobile-card-row"><span class="mobile-card-label">🎧 المنتج</span><span class="mobile-card-value">${(d.device || '—').substring(0, 30)}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">📅 التسليم</span><span class="mobile-card-value">${d.delivery_date || '—'}</span></div>
                     </div>
                     <div class="mobile-card-status">
@@ -611,11 +894,15 @@ ${link}
     function filterReservations() {
         const search = document.getElementById('searchInput').value.toLowerCase();
         const statusFilter = document.getElementById('statusFilter').value;
+        const proofFilter = document.getElementById('proofFilter').value;
         let filtered = allReservations.filter(r => {
             const d = r.data;
             const matchSearch = !search || (d.name || '').toLowerCase().includes(search) || (d.phone || '').includes(search) || (d.device || '').toLowerCase().includes(search);
             const matchStatus = statusFilter === 'all' || (d.status || 'قيد المراجعة') === statusFilter;
-            return matchSearch && matchStatus;
+            let matchProof = true;
+            if (proofFilter === 'has_proof') matchProof = d.payment_proof_url ? true : false;
+            if (proofFilter === 'no_proof') matchProof = !d.payment_proof_url;
+            return matchSearch && matchStatus && matchProof;
         });
         renderReservations(filtered);
     }
@@ -623,7 +910,7 @@ ${link}
     function exportCSV() {
         if (!allReservations.length) { showToast('لا بيانات'); return; }
         const BOM = '\uFEFF';
-        let csv = BOM + 'الاسم,التليفون,العنوان,نوع السماعة,الاستفسار,ميعاد التسليم,حالة الطلب,تم رفع إسكرين,رقم المحول منه,تاريخ الحجز\n';
+        let csv = BOM + 'الاسم,التليفون,العنوان,المنتج,الاستفسار,ميعاد التسليم,حالة الطلب,تم رفع إسكرين,رقم المحول منه,تاريخ الحجز\n';
         allReservations.forEach(r => {
             const d = r.data;
             csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${d.payment_proof_url ? 'نعم' : 'لا'}","${d.sender_phone || ''}","${formatDate(d.created_at)}"\n`;
@@ -635,129 +922,22 @@ ${link}
         showToast('تم التصدير');
     }
     
-    function showConfirmationPage() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const confirmId = urlParams.get('c');
-        
-        if (confirmId) {
-            const mainContent = document.getElementById('mainContent');
-            const sidebar = document.querySelector('.sidebar');
-            const menuToggle = document.querySelector('.menu-toggle');
-            if (mainContent) mainContent.style.display = 'none';
-            if (sidebar) sidebar.style.display = 'none';
-            if (menuToggle) menuToggle.style.display = 'none';
-            
-            db.collection('reservations').doc(confirmId).get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    const customerName = data.name || 'العميل';
-                    
-                    const confirmHTML = `
-                        <div class="confirm-page">
-                            <div class="confirm-card">
-                                <h2>✅ تأكيد حجزك - أبو زهرة</h2>
-                                <p style="text-align: center;">مرحباً <strong>${customerName}</strong></p>
-                                <div class="bank-number">
-                                    <div style="margin-bottom: 10px;">💰 المطلوب تحويله</div>
-                                    <div class="number">150 جنيه</div>
-                                    <div style="margin: 15px 0 5px;">على رقم فودافون كاش</div>
-                                    <div class="number">01559319483</div>
-                                    <div style="margin-top: 10px;">📌 باسم <strong>صلاح</strong></div>
-                                </div>
-                                
-                                <div style="margin: 20px 0;">
-                                    <div style="background: #1a1508; padding: 12px; border-radius: 16px; text-align: center;">
-                                        <strong>رقم التليفون المحول منه</strong>
-                                        <input type="tel" id="confirmSenderPhone" class="sender-input" placeholder="أدخل رقم التليفون اللي حولت منه">
-                                    </div>
-                                    
-                                    <div class="upload-area" id="uploadArea">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                        <p>اضغط لرفع صورة الإسكرين</p>
-                                        <p style="font-size: 12px; color: #a07d3a;">(صورة التحويل من فودافون كاش)</p>
-                                        <input type="file" id="confirmScreenshot" accept="image/*" style="display: none;">
-                                    </div>
-                                    <img id="previewImg" class="preview-img">
-                                    
-                                    <button class="upload-btn" id="submitBtn">
-                                        📤 إرسال التأكيد
-                                    </button>
-                                    <div id="confirmMessage" style="margin-top: 20px; text-align: center;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.innerHTML = confirmHTML;
-                    
-                    const uploadArea = document.getElementById('uploadArea');
-                    const fileInput = document.getElementById('confirmScreenshot');
-                    const previewImg = document.getElementById('previewImg');
-                    const submitBtn = document.getElementById('submitBtn');
-                    
-                    uploadArea.addEventListener('click', () => fileInput.click());
-                    fileInput.addEventListener('change', function(e) {
-                        const file = e.target.files[0];
-                        if (file) {
-                            const reader = new FileReader();
-                            reader.onload = function(event) {
-                                previewImg.src = event.target.result;
-                                previewImg.style.display = 'block';
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    });
-                    
-                    submitBtn.onclick = async function() {
-                        const file = document.getElementById('confirmScreenshot').files[0];
-                        const senderPhone = document.getElementById('confirmSenderPhone').value.trim();
-                        const messageDiv = document.getElementById('confirmMessage');
-                        
-                        if (!file) {
-                            messageDiv.innerHTML = '<p style="color: #ef4444;">❌ يرجى رفع صورة الإسكرين</p>';
-                            return;
-                        }
-                        if (!senderPhone) {
-                            messageDiv.innerHTML = '<p style="color: #ef4444;">❌ يرجى كتابة رقم التليفون المحول منه</p>';
-                            return;
-                        }
-                        
-                        messageDiv.innerHTML = '<p style="color: #F5C542;">⏳ جاري رفع الإسكرين على imgBB...</p>';
-                        
-                        try {
-                            const imageUrl = await uploadToImgBB(file);
-                            
-                            await db.collection('reservations').doc(confirmId).update({
-                                payment_proof_url: imageUrl,
-                                sender_phone: senderPhone,
-                                payment_submitted_at: firebase.firestore.FieldValue.serverTimestamp()
-                            });
-                            
-                            messageDiv.innerHTML = '<p style="color: #10b981;">✅ تم إرسال التأكيد بنجاح! سيتم مراجعة التحويل قريباً.</p>';
-                            setTimeout(() => {
-                                window.location.href = BASE_URL;
-                            }, 3000);
-                        } catch(err) {
-                            console.error(err);
-                            messageDiv.innerHTML = '<p style="color: #ef4444;">❌ حدث خطأ في رفع الصورة: ' + (err.message || 'حاول مرة أخرى') + '</p>';
-                        }
-                    };
-                } else {
-                    document.body.innerHTML = `<div class="confirm-page"><div class="confirm-card"><h2>❌ رابط غير صالح</h2><p>عذراً، لم نتمكن من العثور على حجزك.</p></div></div>`;
-                }
-            }).catch(err => {
-                document.body.innerHTML = `<div class="confirm-page"><div class="confirm-card"><h2>❌ خطأ</h2><p>حدث خطأ في الاتصال بقاعدة البيانات.</p></div></div>`;
-            });
-        }
-    }
-    
+    // Real-time listener
     db.collection('reservations').orderBy('created_at', 'desc').onSnapshot(snapshot => {
         const newReservations = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
         
+        // إشعار عند رفع إسكرين جديد
         newReservations.forEach(res => {
             const old = previousReservations.get(res.id);
             if (old && !old.data.payment_proof_url && res.data.payment_proof_url) {
-                showToast(`📸 العميل ${res.data.name || ''} رفع إسكرين التحويل`);
+                showToast(`📸 العميل ${res.data.name || ''} رفع إسكرين التحويل - مراجعة`);
+                // تشغيل صوت إشعار
+                try {
+                    const audio = new Audio();
+                    audio.src = "https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3";
+                    audio.volume = 0.3;
+                    audio.play().catch(e => console.log);
+                } catch(e) {}
             }
         });
         
@@ -775,8 +955,6 @@ ${link}
         if (e.key === '/') { e.preventDefault(); document.getElementById('searchInput').focus(); }
         if (e.key === 'Escape') { ['editModal', 'detailModal', 'confirmModal', 'proofModal'].forEach(id => closeModal(id)); }
     });
-    
-    showConfirmationPage();
 </script>
 </body>
 </html>
