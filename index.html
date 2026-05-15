@@ -3,343 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>أبو زهرة | لوحة تحكم الحجوزات الفاخرة</title>
+    <title>أبو زهرة | لوحة تحكم الحجوزات</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23F5C542'>🎧</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: #050301;
-            color: #e2e8f0;
-            min-height: 100vh;
-            direction: rtl;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Animated Background */
-        .admin-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: radial-gradient(circle at 20% 30%, rgba(229, 170, 50, 0.08) 0%, #030101 90%);
-        }
-        
-        .admin-bg::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle at 10% 20%, rgba(229,184,60,0.08) 1px, transparent 1px);
-            background-size: 40px 40px;
-            animation: floatBg 20s linear infinite;
-        }
-        
-        @keyframes floatBg {
-            0% { background-position: 0 0; }
-            100% { background-position: 100px 100px; }
-        }
-
-        /* Sidebar */
-        .sidebar {
-            position: fixed;
-            right: 0; top: 0;
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(180deg, #0e0b06 0%, #050301 100%);
-            border-left: 1px solid rgba(229, 184, 60, 0.2);
-            z-index: 100;
-            padding: 20px 0;
-            transition: transform 0.3s;
-            overflow-y: auto;
-        }
-        
-        .sidebar-header {
-            padding: 10px 20px 30px;
-            text-align: center;
-            border-bottom: 1px solid rgba(229, 184, 60, 0.2);
-            margin-bottom: 20px;
-        }
-        
-        .sidebar-header .logo {
-            font-size: 55px;
-            margin-bottom: 8px;
-            animation: pulseGold 2s infinite;
-        }
-        
-        @keyframes pulseGold {
-            0%, 100% { text-shadow: 0 0 0px #F5C542; }
-            50% { text-shadow: 0 0 15px #F5C542; }
-        }
-        
-        .sidebar-header h2 {
-            font-size: 18px;
-            color: #F5C542;
-            font-weight: 800;
-        }
-        
-        .sidebar-header p {
-            font-size: 12px;
-            color: #a07d3a;
-        }
-        
-        .sidebar-nav {
-            list-style: none;
-            padding: 0 15px;
-        }
-        
-        .sidebar-nav li {
-            margin-bottom: 5px;
-        }
-        
-        .sidebar-nav a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 18px;
-            color: #a07d3a;
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.3s;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: rgba(229, 184, 60, 0.12);
-            color: #F5C542;
-            border-right: 3px solid #F5C542;
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-right: 280px;
-            padding: 20px;
-            min-height: 100vh;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Top Bar */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        
-        .top-bar h1 {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #F5C542, #FFE4A0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 40px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #E5B83C, #B8860B);
-            color: #050301;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #F5C542, #D4AF37);
-            box-shadow: 0 5px 20px rgba(229,184,60,0.3);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(229, 184, 60, 0.4);
-            color: #F5C542;
-        }
-        
-        .btn-outline:hover {
-            border-color: #F5C542;
-            background: rgba(229,184,60,0.1);
-        }
-        
-        .btn-success {
-            background: #25D366;
-            color: #fff;
-        }
-        
-        .btn-danger {
-            background: #dc2626;
-            color: #fff;
-        }
-
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: rgba(14, 11, 6, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(229, 184, 60, 0.2);
-            border-radius: 20px;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(229, 184, 60, 0.5);
-        }
-        
-        .stat-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-        
-        .stat-number {
-            font-size: 32px;
-            font-weight: 900;
-            color: #F5C542;
-        }
-        
-        .stat-label {
-            font-size: 13px;
-            color: #a07d3a;
-            font-weight: 600;
-        }
-
-        /* Filter Bar */
-        .filter-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .search-box {
-            flex: 1;
-            min-width: 250px;
-            position: relative;
-        }
-        
-        .search-box input {
-            width: 100%;
-            padding: 14px 45px 14px 18px;
-            background: rgba(14, 11, 6, 0.8);
-            border: 1px solid rgba(229, 184, 60, 0.2);
-            border-radius: 50px;
-            color: #e2e8f0;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px;
-            outline: none;
-        }
-        
-        .search-box input:focus {
-            border-color: #F5C542;
-        }
-        
-        .search-box .search-icon {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #F5C542;
-        }
-        
-        .filter-select {
-            padding: 12px 18px;
-            background: rgba(14, 11, 6, 0.8);
-            border: 1px solid rgba(229, 184, 60, 0.2);
-            border-radius: 50px;
-            color: #e2e8f0;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px;
-            cursor: pointer;
-            min-width: 180px;
-        }
-
-        /* Table */
-        .table-container {
-            background: rgba(14, 11, 6, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(229, 184, 60, 0.15);
-            border-radius: 24px;
-            overflow: hidden;
-        }
-        
-        .table-scroll {
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 1300px;
-        }
-        
-        thead {
-            background: rgba(0,0,0,0.4);
-            border-bottom: 1px solid rgba(229, 184, 60, 0.2);
-        }
-        
-        th {
-            padding: 16px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #F5C542;
-            text-align: right;
-        }
-        
-        td {
-            padding: 14px 16px;
-            font-size: 13px;
-            border-bottom: 1px solid rgba(229, 184, 60, 0.08);
-            vertical-align: middle;
-        }
-        
-        tbody tr:hover {
-            background: rgba(229, 184, 60, 0.05);
-        }
-
-        /* Status Badge & Select */
-        .status-select {
-            padding: 8px 12px;
-            border-radius: 30px;
-            border: none;
-            font-family: 'Cairo', sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            outline: none;
-            min-width: 170px;
-        }
-        
+        body { font-family: 'Cairo', sans-serif; background: #050301; color: #e2e8f0; min-height: 100vh; direction: rtl; overflow-x: hidden; }
+        .admin-bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(circle at 20% 30%, rgba(229,170,50,0.08) 0%, #030101 90%); }
+        .sidebar { position: fixed; right: 0; top: 0; width: 280px; height: 100vh; background: linear-gradient(180deg, #0e0b06 0%, #050301 100%); border-left: 1px solid rgba(229,184,60,0.2); z-index: 100; padding: 20px 0; transition: transform 0.3s; overflow-y: auto; }
+        .sidebar-header { padding: 10px 20px 30px; text-align: center; border-bottom: 1px solid rgba(229,184,60,0.2); margin-bottom: 20px; }
+        .sidebar-header .logo { font-size: 55px; margin-bottom: 8px; animation: pulseGold 2s infinite; }
+        @keyframes pulseGold { 0%,100%{text-shadow:0 0 0 #F5C542;} 50%{text-shadow:0 0 15px #F5C542;} }
+        .sidebar-header h2 { font-size: 18px; color: #F5C542; font-weight: 800; }
+        .sidebar-header p { font-size: 12px; color: #a07d3a; }
+        .sidebar-nav { list-style: none; padding: 0 15px; }
+        .sidebar-nav li { margin-bottom: 5px; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 12px 18px; color: #a07d3a; text-decoration: none; border-radius: 12px; transition: all 0.3s; font-size: 14px; font-weight: 600; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(229,184,60,0.12); color: #F5C542; border-right: 3px solid #F5C542; }
+        .main-content { margin-right: 280px; padding: 20px; min-height: 100vh; position: relative; z-index: 10; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 12px; }
+        .top-bar h1 { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #F5C542, #FFE4A0); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none; border-radius: 40px; font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.3s; text-decoration: none; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary { background: linear-gradient(135deg, #E5B83C, #B8860B); color: #050301; }
+        .btn-primary:hover { background: linear-gradient(135deg, #F5C542, #D4AF37); box-shadow: 0 5px 20px rgba(229,184,60,0.3); }
+        .btn-outline { background: transparent; border: 1px solid rgba(229,184,60,0.4); color: #F5C542; }
+        .btn-outline:hover { border-color: #F5C542; background: rgba(229,184,60,0.1); }
+        .btn-success { background: #25D366; color: #fff; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 30px; }
+        .stat-card { background: rgba(14,11,6,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(229,184,60,0.2); border-radius: 20px; padding: 20px; transition: all 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); border-color: rgba(229,184,60,0.5); }
+        .stat-icon { font-size: 32px; margin-bottom: 10px; }
+        .stat-number { font-size: 32px; font-weight: 900; color: #F5C542; }
+        .stat-label { font-size: 13px; color: #a07d3a; font-weight: 600; }
+        .filter-bar { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
+        .search-box { flex: 1; min-width: 250px; position: relative; }
+        .search-box input { width: 100%; padding: 14px 45px 14px 18px; background: rgba(14,11,6,0.8); border: 1px solid rgba(229,184,60,0.2); border-radius: 50px; color: #e2e8f0; font-family: 'Cairo', sans-serif; font-size: 14px; outline: none; }
+        .search-box input:focus { border-color: #F5C542; }
+        .search-box .search-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #F5C542; }
+        .filter-select { padding: 12px 18px; background: rgba(14,11,6,0.8); border: 1px solid rgba(229,184,60,0.2); border-radius: 50px; color: #e2e8f0; font-family: 'Cairo', sans-serif; font-size: 14px; cursor: pointer; min-width: 180px; }
+        .table-container { background: rgba(14,11,6,0.6); backdrop-filter: blur(10px); border: 1px solid rgba(229,184,60,0.15); border-radius: 24px; overflow: hidden; }
+        .table-scroll { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 1300px; }
+        thead { background: rgba(0,0,0,0.4); border-bottom: 1px solid rgba(229,184,60,0.2); }
+        th { padding: 16px; font-size: 13px; font-weight: 700; color: #F5C542; text-align: right; }
+        td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid rgba(229,184,60,0.08); vertical-align: middle; }
+        tbody tr:hover { background: rgba(229,184,60,0.05); }
+        .status-select { padding: 8px 12px; border-radius: 30px; border: none; font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; outline: none; min-width: 170px; }
         .status-select.status-review { background: #fef3c7; color: #92400e; }
         .status-select.status-contacted { background: #dbeafe; color: #1e40af; }
         .status-select.status-preparing { background: #fce7f3; color: #9d174d; }
@@ -347,585 +58,88 @@
         .status-select.status-shipped { background: #e0e7ff; color: #3730a3; }
         .status-select.status-delivered { background: #d1fae5; color: #065f46; }
         .status-select.status-cancelled { background: #fee2e2; color: #991b1b; }
-
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        /* Payment Badge */
-        .payment-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 700;
-            background: #10b98120;
-            color: #10b981;
-            border: 1px solid #10b98140;
-        }
-        
-        .payment-badge.not-paid {
-            background: #ef444420;
-            color: #ef4444;
-            border-color: #ef444440;
-        }
-
-        /* Action Buttons */
-        .actions-cell {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        
-        .action-btn {
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-        
-        .action-btn:hover {
-            transform: scale(1.1);
-        }
-        
+        .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
+        .action-btn { width: 36px; height: 36px; border: none; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s; }
+        .action-btn:hover { transform: scale(1.1); }
         .action-btn.edit { background: rgba(229,184,60,0.15); color: #F5C542; }
         .action-btn.call { background: rgba(34,197,94,0.15); color: #22c55e; }
         .action-btn.whatsapp { background: rgba(37,211,102,0.15); color: #25D366; }
-        .action-btn.payment { background: rgba(16,185,129,0.2); color: #10b981; }
-        .action-btn.status-wa { background: rgba(139,92,246,0.15); color: #a78bfa; }
         .action-btn.delete { background: rgba(220,38,38,0.15); color: #ef4444; }
         .action-btn.view { background: rgba(229,184,60,0.15); color: #F5C542; }
-
-        /* Payment Confirm Button */
-        .payment-confirm-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-        
-        .payment-confirm-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 3px 10px rgba(16,185,129,0.3);
-        }
-        
-        .payment-confirm-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Mobile Cards */
-        .mobile-cards {
-            display: none;
-        }
-        
-        .mobile-card {
-            background: rgba(14, 11, 6, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(229, 184, 60, 0.15);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        
-        .mobile-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(229,184,60,0.15);
-        }
-        
-        .mobile-card-name {
-            font-size: 16px;
-            font-weight: 800;
-            color: #F5C542;
-        }
-        
-        .mobile-card-body {
-            display: grid;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-        
-        .mobile-card-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-        }
-        
-        .mobile-card-label {
-            color: #a07d3a;
-        }
-        
-        .mobile-card-value {
-            color: #e2e8f0;
-            font-weight: 600;
-        }
-        
-        .mobile-card-actions {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 6px;
-            margin-top: 12px;
-        }
-
-        /* Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(12px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .modal-overlay.active {
-            display: flex;
-        }
-        
-        .modal {
-            background: #0e0b06;
-            border: 1px solid rgba(229, 184, 60, 0.3);
-            border-radius: 32px;
-            width: 100%;
-            max-width: 550px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalSlideIn 0.3s ease;
-        }
-        
-        @keyframes modalSlideIn {
-            from { opacity: 0; transform: scale(0.95) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            border-bottom: 1px solid rgba(229,184,60,0.2);
-        }
-        
-        .modal-header h3 {
-            font-size: 20px;
-            font-weight: 800;
-            color: #F5C542;
-        }
-        
-        .modal-close {
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 12px;
-            background: rgba(229,184,60,0.1);
-            color: #F5C542;
-            cursor: pointer;
-            font-size: 18px;
-        }
-        
-        .modal-body {
-            padding: 24px;
-        }
-        
-        .modal-footer {
-            padding: 16px 24px;
-            border-top: 1px solid rgba(229,184,60,0.2);
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .form-group {
-            margin-bottom: 16px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #a07d3a;
-            margin-bottom: 6px;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            background: #050301;
-            border: 1px solid rgba(229,184,60,0.2);
-            border-radius: 16px;
-            color: #e2e8f0;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px;
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: #F5C542;
-            outline: none;
-        }
-        
-        .detail-grid {
-            display: grid;
-            gap: 12px;
-        }
-        
-        .detail-item {
-            background: #050301;
-            border-radius: 16px;
-            padding: 14px;
-        }
-        
-        .detail-label {
-            font-size: 12px;
-            color: #a07d3a;
-            margin-bottom: 4px;
-        }
-        
-        .detail-value {
-            font-size: 15px;
-            font-weight: 700;
-            color: #F5C542;
-        }
-        
-        /* Toast */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .toast {
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            animation: slideInRight 0.3s ease;
-            background: #0e0b06;
-            border: 1px solid rgba(229,184,60,0.3);
-            color: #F5C542;
-        }
-        
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        .loading-state {
-            text-align: center;
-            padding: 60px;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(229,184,60,0.2);
-            border-top-color: #F5C542;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 16px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px;
-        }
-        
-        .menu-toggle {
-            display: none;
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 200;
-            width: 45px;
-            height: 45px;
-            background: #0e0b06;
-            border: 1px solid rgba(229,184,60,0.3);
-            border-radius: 12px;
-            color: #F5C542;
-            font-size: 22px;
-            cursor: pointer;
-        }
-        
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 95;
-        }
-        
-        .new-badge {
-            background: #F5C542;
-            color: #050301;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 20px;
-            margin-right: 8px;
-            font-weight: 800;
-        }
-        
-        /* Desktop Notification Style */
-        .desktop-notification {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: linear-gradient(135deg, #0e0b06, #1a1508);
-            border-right: 4px solid #F5C542;
-            border-radius: 16px;
-            padding: 16px 20px;
-            min-width: 320px;
-            max-width: 400px;
-            z-index: 10000;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            animation: slideInLeft 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            backdrop-filter: blur(20px);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .desktop-notification:hover {
-            transform: translateX(-5px);
-        }
-        
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        @keyframes slideOutLeft {
-            to {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-        }
-        
-        .desktop-notification.hide {
-            animation: slideOutLeft 0.3s ease forwards;
-        }
-        
-        .notification-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        
-        .notification-icon {
-            font-size: 28px;
-        }
-        
-        .notification-title {
-            font-size: 16px;
-            font-weight: 800;
-            color: #F5C542;
-        }
-        
-        .notification-time {
-            font-size: 10px;
-            color: #a07d3a;
-            margin-right: auto;
-        }
-        
-        .notification-message {
-            font-size: 13px;
-            color: #e2e8f0;
-            line-height: 1.5;
-            margin-bottom: 8px;
-        }
-        
-        .notification-details {
-            font-size: 11px;
-            color: #a07d3a;
-            border-top: 1px solid rgba(229,184,60,0.15);
-            padding-top: 8px;
-            margin-top: 8px;
-        }
-        
-        .notification-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        
-        .notification-action-btn {
-            padding: 4px 12px;
-            font-size: 11px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        
-        .notification-action-btn.view {
-            background: rgba(229,184,60,0.2);
-            color: #F5C542;
-        }
-        
-        .notification-action-btn.view:hover {
-            background: rgba(229,184,60,0.4);
-        }
-        
-        .notification-action-btn.close {
-            background: rgba(220,38,38,0.2);
-            color: #ef4444;
-        }
-        
-        .notification-action-btn.close:hover {
-            background: rgba(220,38,38,0.4);
-        }
-        
-        /* Permission Request Banner */
-        .permission-banner {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #0e0b06;
-            border: 1px solid rgba(229,184,60,0.3);
-            border-radius: 16px;
-            padding: 16px 20px;
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            gap: 16px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        
-        .permission-banner.show {
-            display: flex;
-        }
-        
-        .permission-banner p {
-            font-size: 13px;
-            color: #e2e8f0;
-        }
-        
+        .proof-btn { width: 42px; height: 42px; border-radius: 12px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.2s; border: none; }
+        .proof-btn.red { background: rgba(220,38,38,0.2); color: #ef4444; border: 1px solid rgba(220,38,38,0.5); }
+        .proof-btn.green { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.5); }
+        .proof-btn:hover { transform: scale(1.1); }
+        .mobile-cards { display: none; }
+        .mobile-card { background: rgba(14,11,6,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(229,184,60,0.15); border-radius: 20px; padding: 16px; margin-bottom: 12px; }
+        .mobile-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(229,184,60,0.15); }
+        .mobile-card-name { font-size: 16px; font-weight: 800; color: #F5C542; }
+        .mobile-card-body { display: grid; gap: 8px; margin-bottom: 12px; }
+        .mobile-card-row { display: flex; justify-content: space-between; font-size: 13px; }
+        .mobile-card-label { color: #a07d3a; }
+        .mobile-card-value { color: #e2e8f0; font-weight: 600; }
+        .mobile-card-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: #0e0b06; border: 1px solid rgba(229,184,60,0.3); border-radius: 32px; width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto; animation: modalSlideIn 0.3s ease; }
+        @keyframes modalSlideIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid rgba(229,184,60,0.2); }
+        .modal-header h3 { font-size: 20px; font-weight: 800; color: #F5C542; }
+        .modal-close { width: 36px; height: 36px; border: none; border-radius: 12px; background: rgba(229,184,60,0.1); color: #F5C542; cursor: pointer; font-size: 18px; }
+        .modal-body { padding: 24px; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid rgba(229,184,60,0.2); display: flex; gap: 10px; flex-wrap: wrap; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #a07d3a; margin-bottom: 6px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px 16px; background: #050301; border: 1px solid rgba(229,184,60,0.2); border-radius: 16px; color: #e2e8f0; font-family: 'Cairo', sans-serif; font-size: 14px; }
+        .detail-grid { display: grid; gap: 12px; }
+        .detail-item { background: #050301; border-radius: 16px; padding: 14px; }
+        .detail-label { font-size: 12px; color: #a07d3a; margin-bottom: 4px; }
+        .detail-value { font-size: 15px; font-weight: 700; color: #F5C542; }
+        .proof-image { max-width: 100%; border-radius: 16px; margin-top: 8px; cursor: pointer; }
+        .toast-container { position: fixed; top: 20px; left: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; }
+        .toast { padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; animation: slideInRight 0.3s ease; background: #0e0b06; border: 1px solid rgba(229,184,60,0.3); color: #F5C542; }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .loading-state { text-align: center; padding: 60px; }
+        .spinner { width: 40px; height: 40px; border: 3px solid rgba(229,184,60,0.2); border-top-color: #F5C542; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .empty-state { text-align: center; padding: 60px; }
+        .menu-toggle { display: none; position: fixed; top: 15px; right: 15px; z-index: 200; width: 45px; height: 45px; background: #0e0b06; border: 1px solid rgba(229,184,60,0.3); border-radius: 12px; color: #F5C542; font-size: 22px; cursor: pointer; }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 95; }
+        .new-badge { background: #F5C542; color: #050301; font-size: 10px; padding: 2px 8px; border-radius: 20px; margin-right: 8px; font-weight: 800; }
         @media (max-width: 1000px) {
-            .sidebar {
-                transform: translateX(100%);
-                width: 280px;
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .sidebar-overlay.open {
-                display: block;
-            }
-            .main-content {
-                margin-right: 0;
-                padding: 15px;
-                padding-top: 70px;
-            }
-            .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .table-scroll {
-                display: none;
-            }
-            .mobile-cards {
-                display: block;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-            }
-            .desktop-notification {
-                left: 10px;
-                right: 10px;
-                min-width: auto;
-                max-width: calc(100% - 20px);
-            }
+            .sidebar { transform: translateX(100%); width: 280px; }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay.open { display: block; }
+            .main-content { margin-right: 0; padding: 15px; padding-top: 70px; }
+            .menu-toggle { display: flex; align-items: center; justify-content: center; }
+            .table-scroll { display: none; }
+            .mobile-cards { display: block; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
         }
-        
         @media (max-width: 600px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .filter-bar {
-                flex-direction: column;
-            }
-            .search-box, .filter-select {
-                width: 100%;
-            }
-            .mobile-card-actions {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .filter-bar { flex-direction: column; }
+            .mobile-card-actions { grid-template-columns: repeat(4, 1fr); }
         }
-        
-        /* Notification Badge */
-        .notification-badge {
-            position: relative;
-        }
-        
-        .notification-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ef4444;
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 10px;
-            min-width: 18px;
-            text-align: center;
-        }
+        /* صفحة التأكيد */
+        .confirm-page { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; background: #050301; }
+        .confirm-card { max-width: 550px; width: 100%; background: #0e0b06; border-radius: 32px; padding: 28px; border: 1px solid #F5C542; }
+        .confirm-card h2 { color: #F5C542; text-align: center; margin-bottom: 20px; }
+        .bank-number { background: #1a1508; padding: 20px; border-radius: 20px; text-align: center; margin: 20px 0; }
+        .bank-number .number { font-size: 28px; font-weight: bold; color: #F5C542; letter-spacing: 2px; }
+        .upload-area { border: 2px dashed rgba(229,184,60,0.3); border-radius: 24px; padding: 30px; text-align: center; margin: 20px 0; cursor: pointer; transition: all 0.3s; }
+        .upload-area:hover { border-color: #F5C542; background: rgba(229,184,60,0.05); }
+        .upload-area i { font-size: 48px; color: #F5C542; margin-bottom: 12px; }
+        .upload-btn { background: #F5C542; color: #050301; border: none; padding: 16px 32px; border-radius: 60px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s; }
+        .upload-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(229,184,60,0.3); }
+        .preview-img { max-width: 100%; border-radius: 16px; margin-top: 15px; display: none; }
+        .sender-input { width: 100%; padding: 15px; background: #050301; border: 1px solid rgba(229,184,60,0.3); border-radius: 16px; color: white; text-align: center; font-size: 18px; margin: 15px 0; }
     </style>
 </head>
 <body>
 
 <div class="admin-bg"></div>
 <div class="toast-container" id="toastContainer"></div>
-
-<!-- Permission Banner -->
-<div class="permission-banner" id="permissionBanner">
-    <div>🔔</div>
-    <p>فعّل الإشعارات لتصلك تحديثات الحجوزات فوراً</p>
-    <button class="btn btn-primary" onclick="requestNotificationPermission()" style="padding: 6px 16px;">تفعيل</button>
-    <button class="btn btn-outline" onclick="closePermissionBanner()" style="padding: 6px 16px;">لاحقاً</button>
-</div>
 
 <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
@@ -940,11 +154,10 @@
         <li><a href="#" class="active" onclick="return false"><span class="icon">📋</span> الحجوزات</a></li>
         <li><a href="#" onclick="exportCSV(); return false"><span class="icon">📥</span> تصدير البيانات</a></li>
         <li><a href="#" onclick="window.print(); return false"><span class="icon">🖨️</span> طباعة</a></li>
-        <li><a href="#" onclick="window.location.href='index.html'; return false"><span class="icon">🌐</span> صفحة الحجز</a></li>
     </ul>
 </aside>
 
-<div class="main-content">
+<div class="main-content" id="mainContent">
     <div class="top-bar">
         <h1>🎧 إدارة حجوزات السماعات - أبو زهرة</h1>
         <div class="top-bar-actions">
@@ -956,10 +169,9 @@
     <div class="stats-grid">
         <div class="stat-card"><div class="stat-icon">🎧</div><div class="stat-number" id="statTotal">0</div><div class="stat-label">إجمالي الحجوزات</div></div>
         <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-number" id="statReview">0</div><div class="stat-label">قيد المراجعة</div></div>
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-number" id="statPaid">0</div><div class="stat-label">تم الدفع</div></div>
+        <div class="stat-card"><div class="stat-icon">📸</div><div class="stat-number" id="statHasProof">0</div><div class="stat-label">رفع إسكرين</div></div>
         <div class="stat-card"><div class="stat-icon">🔧</div><div class="stat-number" id="statPreparing">0</div><div class="stat-label">تحت التجهيز</div></div>
         <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-number" id="statDelivered">0</div><div class="stat-label">تم الاستلام</div></div>
-        <div class="stat-card"><div class="stat-icon">❌</div><div class="stat-number" id="statCancelled">0</div><div class="stat-label">ملغي</div></div>
     </div>
 
     <div class="filter-bar">
@@ -983,7 +195,7 @@
         <div class="table-scroll">
             <table>
                 <thead>
-                    <tr><th>#</th><th>الاسم</th><th>التليفون</th><th>العنوان</th><th>السماعة</th><th>التسليم</th><th>تاريخ الحجز</th><th>حالة الدفع</th><th>حالة الطلب</th><th>العمليات</th></tr>
+                    <tr><th>#</th><th>الاسم</th><th>التليفون</th><th>العنوان</th><th>السماعة</th><th>التسليم</th><th>تاريخ الحجز</th><th>حالة الطلب</th><th>الإسكرين</th><th>العمليات</th></tr>
                 </thead>
                 <tbody id="tableBody">
                     <tr><td colspan="10"><div class="loading-state"><div class="spinner"></div><p>جاري التحميل...</p></div></td></tr>
@@ -1042,269 +254,31 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="proofModal">
+    <div class="modal" style="max-width: 550px;">
+        <div class="modal-header"><h3>📸 إسكرين التحويل</h3><button class="modal-close" onclick="closeModal('proofModal')">✕</button></div>
+        <div class="modal-body" id="proofContent"></div>
+        <div class="modal-footer" id="proofFooter"></div>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
 <script>
     firebase.initializeApp({
         apiKey: "AIzaSyDrhyNCKO5tzF-tiRQevk12kLM8hAkkr0w",
         authDomain: "reservations-e411a.firebaseapp.com",
         projectId: "reservations-e411a",
-        storageBucket: "reservations-e411a.firebasestorage.app",
-        messagingSenderId: "197134642642",
-        appId: "1:197134642642:web:a112f2cbf9dc64d0096c0b"
+        storageBucket: "reservations-e411a.firebasestorage.app"
     });
 
     const db = firebase.firestore();
+    const storage = firebase.storage();
     let allReservations = [];
-    let previousReservations = new Map(); // لحفظ الحالة السابقة
-    let lastNotificationTime = 0;
-    const NOTIFICATION_COOLDOWN = 3000; // 3 ثوان بين الإشعارات
-
-    // صوت الإشعار (نبضة قصيرة)
-    const notificationSound = new Audio("data:audio/wav;base64,U3RlYWx0aCBzb3VuZA==");
-    // محاولة إنشاء صوت باستخدام Web Audio API كبديل
-    let audioContext = null;
-    
-    function playNotificationSound() {
-        try {
-            // محاولة تشغيل صوت بسيط عبر Web Audio API
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = 880; // نغمة عالية
-            gainNode.gain.value = 0.3;
-            
-            oscillator.start();
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
-            oscillator.stop(audioContext.currentTime + 0.5);
-            
-            // إذا كان الـ AudioContext معلقاً (بسبب سياسة المتصفح)، نحاول تنشيطه
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-        } catch(e) {
-            console.log("تعذر تشغيل الصوت:", e);
-        }
-    }
-
-    // طلب إذن الإشعارات
-    async function requestNotificationPermission() {
-        if ('Notification' in window) {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                showToast('🔔 تم تفعيل الإشعارات بنجاح', 'success');
-                closePermissionBanner();
-                // اختبار الإشعار
-                showDesktopNotification('✅ نظام الإشعارات جاهز', 'سيتم إشعارك عند إضافة حجوزات جديدة أو تحديث الحالات');
-                playNotificationSound();
-            } else if (permission === 'denied') {
-                showToast('❌ تم رفض الإشعارات، يمكنك تفعيلها من إعدادات المتصفح', 'error');
-            }
-        } else {
-            showToast('المتصفح لا يدعم الإشعارات', 'error');
-        }
-    }
-    
-    function closePermissionBanner() {
-        document.getElementById('permissionBanner').classList.remove('show');
-        localStorage.setItem('notifications_banner_closed', 'true');
-    }
-    
-    // عرض إشعار سطح المكتب
-    function showDesktopNotification(title, message, reservationId = null, reservationData = null) {
-        if (!('Notification' in window)) return;
-        if (Notification.permission !== 'granted') return;
-        
-        // منع الإشعارات المتكررة جداً
-        const now = Date.now();
-        if (now - lastNotificationTime < NOTIFICATION_COOLDOWN) {
-            return;
-        }
-        lastNotificationTime = now;
-        
-        const options = {
-            body: message,
-            icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y=".9em" font-size="90" fill="%23F5C542"%3E🎧%3C/text%3E%3C/svg%3E',
-            badge: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y=".9em" font-size="90" fill="%23F5C542"%3E🎧%3C/text%3E%3C/svg%3E',
-            tag: reservationId || 'general',
-            renotify: true,
-            requireInteraction: true, // يبقى الإشعار ظاهراً حتى يتفاعل معه المستخدم
-            silent: false,
-            vibrate: [200, 100, 200]
-        };
-        
-        const notification = new Notification(title, options);
-        
-        notification.onclick = () => {
-            window.focus();
-            if (reservationId) {
-                const reservation = allReservations.find(r => r.id === reservationId);
-                if (reservation) {
-                    openDetail(reservationId);
-                }
-            }
-            notification.close();
-        };
-        
-        notification.onclose = () => {
-            // تم إغلاق الإشعار
-        };
-        
-        // تشغيل الصوت مع الإشعار
-        playNotificationSound();
-    }
-    
-    // عرض الإشعار المخصص داخل الصفحة (نسخة احتياطية)
-    function showCustomNotification(title, message, reservationId = null, reservationData = null) {
-        const container = document.getElementById('toastContainer');
-        const notificationDiv = document.createElement('div');
-        notificationDiv.className = 'desktop-notification';
-        
-        const time = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-        
-        notificationDiv.innerHTML = `
-            <div class="notification-header">
-                <div class="notification-icon">🎧</div>
-                <div class="notification-title">${title}</div>
-                <div class="notification-time">${time}</div>
-            </div>
-            <div class="notification-message">${message}</div>
-            <div class="notification-details">أبو زهرة - نظام إدارة الحجوزات</div>
-            <div class="notification-actions">
-                ${reservationId ? '<button class="notification-action-btn view" onclick="showNotificationDetail(\'' + reservationId + '\')">عرض التفاصيل</button>' : ''}
-                <button class="notification-action-btn close" onclick="this.closest(\'.desktop-notification\').classList.add(\'hide\'); setTimeout(() => this.closest(\'.desktop-notification\').remove(), 300);">إغلاق</button>
-            </div>
-        `;
-        
-        container.appendChild(notificationDiv);
-        
-        // إزالة الإشعار تلقائياً بعد 10 ثوانٍ
-        setTimeout(() => {
-            if (notificationDiv && notificationDiv.parentNode) {
-                notificationDiv.classList.add('hide');
-                setTimeout(() => notificationDiv.remove(), 300);
-            }
-        }, 10000);
-        
-        // تشغيل الصوت
-        playNotificationSound();
-    }
-    
-    function showNotificationDetail(reservationId) {
-        const reservation = allReservations.find(r => r.id === reservationId);
-        if (reservation) {
-            openDetail(reservationId);
-        }
-        // إغلاق جميع الإشعارات المخصصة
-        document.querySelectorAll('.desktop-notification').forEach(n => {
-            n.classList.add('hide');
-            setTimeout(() => n.remove(), 300);
-        });
-    }
-    
-    // فحص التغييرات وإرسال الإشعارات
-    function checkForChanges(newReservations) {
-        const newMap = new Map();
-        newReservations.forEach(r => newMap.set(r.id, r));
-        
-        // التحقق من الحجوزات الجديدة
-        newReservations.forEach(res => {
-            if (!previousReservations.has(res.id)) {
-                // حجز جديد
-                const d = res.data;
-                const customerName = d.name || 'عميل جديد';
-                const device = d.device || 'سماعة';
-                const title = '🆕 حجز جديد!';
-                const message = `${customerName} | ${device}`;
-                
-                showDesktopNotification(title, message, res.id, d);
-                showCustomNotification(title, message, res.id, d);
-            }
-        });
-        
-        // التحقق من تحديثات الحالة أو الدفع
-        newReservations.forEach(res => {
-            const old = previousReservations.get(res.id);
-            if (old) {
-                const oldStatus = old.data.status || 'قيد المراجعة';
-                const newStatus = res.data.status || 'قيد المراجعة';
-                const oldPayment = old.data.payment_confirmed || false;
-                const newPayment = res.data.payment_confirmed || false;
-                
-                if (oldStatus !== newStatus) {
-                    // تغيرت حالة الطلب
-                    const customerName = res.data.name || 'عميل';
-                    const statusLabels = {
-                        'قيد المراجعة': '⏳ قيد المراجعة',
-                        'تم التواصل': '📞 تم التواصل',
-                        'تحت التجهيز': '🔧 تحت التجهيز',
-                        'تم الانتهاء من التجهيز': '✔️ تم التجهيز',
-                        'تم تسليمه لمندوب الشحن': '🚚 تم تسليمه للشحن',
-                        'تم الاستلام': '✅ تم الاستلام',
-                        'ملغي': '❌ ملغي'
-                    };
-                    const title = '📋 تحديث حالة الطلب';
-                    const message = `${customerName} : ${statusLabels[newStatus] || newStatus}`;
-                    
-                    showDesktopNotification(title, message, res.id, res.data);
-                    showCustomNotification(title, message, res.id, res.data);
-                }
-                
-                if (oldPayment !== newPayment && newPayment === true) {
-                    // تم تأكيد الدفع
-                    const customerName = res.data.name || 'عميل';
-                    const title = '💰 تأكيد الدفع';
-                    const message = `${customerName} : تم تأكيد دفع رسوم الشحن`;
-                    
-                    showDesktopNotification(title, message, res.id, res.data);
-                    showCustomNotification(title, message, res.id, res.data);
-                }
-            }
-        });
-        
-        // تحديث الخريطة
-        previousReservations = newMap;
-    }
-    
-    // التحقق من إذن الإشعارات عند التحميل
-    function checkNotificationPermission() {
-        if ('Notification' in window) {
-            if (Notification.permission === 'granted') {
-                console.log('إذن الإشعارات مفعل');
-            } else if (Notification.permission === 'default') {
-                // عرض البانر بعد 3 ثوانٍ إذا لم يتم إغلاقه من قبل
-                const bannerClosed = localStorage.getItem('notifications_banner_closed');
-                if (!bannerClosed) {
-                    setTimeout(() => {
-                        if (Notification.permission === 'default') {
-                            document.getElementById('permissionBanner').classList.add('show');
-                        }
-                    }, 3000);
-                }
-            }
-        }
-    }
-    
-    const STATUSES = [
-        { value: 'قيد المراجعة', label: '⏳ قيد المراجعة', css: 'status-review' },
-        { value: 'تم التواصل', label: '📞 تم التواصل', css: 'status-contacted' },
-        { value: 'تحت التجهيز', label: '🔧 تحت التجهيز', css: 'status-preparing' },
-        { value: 'تم الانتهاء من التجهيز', label: '✔️ تم الانتهاء من التجهيز', css: 'status-ready' },
-        { value: 'تم تسليمه لمندوب الشحن', label: '🚚 تم تسليمه للشحن', css: 'status-shipped' },
-        { value: 'تم الاستلام', label: '✅ تم الاستلام', css: 'status-delivered' },
-        { value: 'ملغي', label: '❌ ملغي', css: 'status-cancelled' }
-    ];
-
-    function getStatusCSS(s) { const st = STATUSES.find(st => st.value === s); return st ? st.css : 'status-review'; }
-    function getStatusLabel(s) { const st = STATUSES.find(st => st.value === s); return st ? st.label : '⏳ قيد المراجعة'; }
+    let previousReservations = new Map();
+    const BASE_URL = window.location.origin + window.location.pathname;
 
     function formatPhoneForWA(phone) {
         if (!phone) return '';
@@ -1327,7 +301,7 @@
         return (Date.now() - d.getTime()) < 3600000;
     }
 
-    function showToast(msg, type = 'success') {
+    function showToast(msg) {
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.innerHTML = msg;
@@ -1343,86 +317,96 @@
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    function buildInvoiceMessage(data, newStatus, paymentConfirmed) {
-        const name = data.name || 'العميل';
-        const phone = data.phone || '';
-        const address = data.address || '';
-        const device = data.device || '';
-        const question = data.question || 'لا يوجد';
-        const deliveryDate = data.delivery_date || 'لم يحدد';
-        const orderDate = formatDate(data.created_at);
-        const paymentStatus = paymentConfirmed ? '✅ تم دفع رسوم الشحن' : '⏳ لم يتم الدفع بعد';
-        
-        let statusMessage = '';
-        switch(newStatus) {
-            case 'تحت التجهيز': statusMessage = '🔧 طلبك قيد التجهيز'; break;
-            case 'تم الانتهاء من التجهيز': statusMessage = '✔️ تم تجهيز طلبك'; break;
-            case 'تم تسليمه لمندوب الشحن': statusMessage = '🚚 تم تسليم طلبك للشحن'; break;
-            case 'تم الاستلام': statusMessage = '✅ تم استلام طلبك بنجاح'; break;
-            case 'تم التواصل': statusMessage = '📞 تم التواصل معك'; break;
-            case 'ملغي': statusMessage = '❌ تم إلغاء طلبك'; break;
-            default: statusMessage = `📌 تم تحديث حالتك إلى: ${newStatus}`;
-        }
-
-        return `🏷️ *أبو زهرة للإلكترونيات - فاتورة الحجز*
-━━━━━━━━━━━━━━━━━━━━
-👤 *العميل:* ${name}
-📞 *الجوال:* ${phone}
-📍 *العنوان:* ${address}
-━━━━━━━━━━━━━━━━━━━━
-🎧 *المنتج:* سماعة ${device}
-📅 *التسليم:* ${deliveryDate}
-🕐 *تاريخ الحجز:* ${orderDate}
-💬 *ملاحظات:* ${question}
-━━━━━━━━━━━━━━━━━━━━
-💰 *حالة الدفع:* ${paymentStatus}
-📌 *حالة الطلب:* ${newStatus}
-${statusMessage}
-━━━━━━━━━━━━━━━━━━━━
-شكراً لاختياركم أبو زهرة`;
+    // رابط التأكيد القصير والنظيف
+    function getConfirmationLink(reservationId) {
+        return `${BASE_URL}?c=${reservationId}`;
     }
 
-    function sendWAInvoice(data, newStatus, paymentConfirmed) {
-        const invoice = buildInvoiceMessage(data, newStatus, paymentConfirmed);
-        const phone = data.phone;
-        if (!phone) { showToast('لا يوجد رقم هاتف', 'error'); return; }
-        window.open(`https://wa.me/${formatPhoneForWA(phone)}?text=${encodeURIComponent(invoice)}`, '_blank');
+    // رسالة واتساب مهذبة
+    function sendConfirmationWA(phone, name, reservationId) {
+        const link = getConfirmationLink(reservationId);
+        const message = `🌹 مرحباً ${name}،
+
+نشكرك على حجزك في أبو زهرة للإلكترونيات 🎧
+
+للتأكيد حجزك، يرجى تحويل مبلغ 150 جنيه (تأمين الشحن) على رقم فودافون كاش:
+📱 01559319483
+📌 باسم: صلاح
+
+🔗 بعد التحويل، اضغط على الرابط التالي لرفع إسكرين التحويل:
+${link}
+
+📸 خطوات بسيطة:
+1️⃣ حول المبلغ
+2️⃣ افتح الرابط
+3️⃣ ارفع صورة الإسكرين
+4️⃣ اكتب رقم التليفون اللي حولت منه
+5️⃣ اضغط إرسال
+
+سيتم إشعارنا فور وصول الإسكرين.
+
+شكراً لثقتك 🤍
+أبو زهرة للإلكترونيات`;
+        
+        window.open(`https://wa.me/${formatPhoneForWA(phone)}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
-    async function confirmPayment(docId) {
-        const reservation = allReservations.find(r => r.id === docId);
-        if (!reservation) return;
-        
-        if (reservation.data.payment_confirmed === true) {
-            showToast('تم تأكيد الدفع مسبقاً', 'info');
+    function copyPaymentLink(reservationId, name, phone) {
+        const link = getConfirmationLink(reservationId);
+        navigator.clipboard.writeText(link);
+        showToast('✅ تم نسخ رابط التأكيد');
+    }
+    
+    function viewProof(reservationId) {
+        const res = allReservations.find(r => r.id === reservationId);
+        if (!res || !res.data.payment_proof_url) {
+            showToast('لا يوجد إسكرين مرفوع');
             return;
         }
-        
-        try {
-            await db.collection('reservations').doc(docId).update({ 
-                payment_confirmed: true
-            });
-            showToast('✅ تم تأكيد دفع مبلغ الشحن');
-            
-            // الإشعار سيتم عن طريق الـ snapshot
-        } catch (err) {
-            showToast('حدث خطأ', 'error');
-        }
+        const data = res.data;
+        document.getElementById('proofContent').innerHTML = `
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="detail-label">العميل</div>
+                    <div class="detail-value">${data.name || '—'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">رقم المحول منه</div>
+                    <div class="detail-value">${data.sender_phone || '—'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">تاريخ الإرسال</div>
+                    <div class="detail-value">${formatDate(data.payment_submitted_at)}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">الإسكرين</div>
+                    <img src="${data.payment_proof_url}" class="proof-image" onclick="window.open('${data.payment_proof_url}', '_blank')">
+                </div>
+            </div>
+        `;
+        document.getElementById('proofFooter').innerHTML = `<button class="btn btn-outline" onclick="closeModal('proofModal')">إغلاق</button>`;
+        openModal('proofModal');
     }
+    
+    const STATUSES = [
+        { value: 'قيد المراجعة', label: '⏳ قيد المراجعة', css: 'status-review' },
+        { value: 'تم التواصل', label: '📞 تم التواصل', css: 'status-contacted' },
+        { value: 'تحت التجهيز', label: '🔧 تحت التجهيز', css: 'status-preparing' },
+        { value: 'تم الانتهاء من التجهيز', label: '✔️ تم الانتهاء من التجهيز', css: 'status-ready' },
+        { value: 'تم تسليمه لمندوب الشحن', label: '🚚 تم تسليمه للشحن', css: 'status-shipped' },
+        { value: 'تم الاستلام', label: '✅ تم الاستلام', css: 'status-delivered' },
+        { value: 'ملغي', label: '❌ ملغي', css: 'status-cancelled' }
+    ];
+
+    function getStatusCSS(s) { const st = STATUSES.find(st => st.value === s); return st ? st.css : 'status-review'; }
+    function getStatusLabel(s) { const st = STATUSES.find(st => st.value === s); return st ? st.label : '⏳ قيد المراجعة'; }
 
     async function updateStatus(docId, newStatus, selectEl) {
         try {
             await db.collection('reservations').doc(docId).update({ status: newStatus });
             if (selectEl) selectEl.className = 'status-select ' + getStatusCSS(newStatus);
             showToast('تم تحديث حالة الطلب');
-            
-            const reservation = allReservations.find(r => r.id === docId);
-            if (reservation) {
-                sendWAInvoice(reservation.data, newStatus, reservation.data.payment_confirmed || false);
-            }
-        } catch (err) {
-            showToast('حدث خطأ', 'error');
-        }
+        } catch (err) { showToast('حدث خطأ'); }
     }
 
     function statusSelectHTML(docId, currentStatus) {
@@ -1455,22 +439,28 @@ ${statusMessage}
             question: document.getElementById('editQuestion').value.trim()
         };
         if (!updates.name || !updates.phone || !updates.address || !updates.device) {
-            showToast('املأ جميع الحقول', 'error');
+            showToast('املأ جميع الحقول');
             return;
         }
         try {
             await db.collection('reservations').doc(docId).update(updates);
             showToast('تم التحديث');
             closeModal('editModal');
-        } catch (err) { showToast('خطأ', 'error'); }
+        } catch (err) { showToast('خطأ'); }
     }
 
     function openDetail(docId) {
         const r = allReservations.find(r => r.id === docId);
         if (!r) return;
         const d = r.data;
-        const paymentBadge = d.payment_confirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
         const statusBadge = `<span class="status-badge ${getStatusCSS(d.status || 'قيد المراجعة')}">${getStatusLabel(d.status || 'قيد المراجعة')}</span>`;
+        const hasProof = d.payment_proof_url ? true : false;
+        
+        let proofSection = '';
+        if (hasProof) {
+            proofSection = `<div class="detail-item"><div class="detail-label">📸 إسكرين التحويل</div><button class="btn btn-outline" onclick="closeModal('detailModal'); viewProof('${docId}')">عرض الإسكرين</button></div>
+            <div class="detail-item"><div class="detail-label">رقم المحول منه</div><div class="detail-value">${d.sender_phone || '—'}</div></div>`;
+        }
         
         document.getElementById('detailContent').innerHTML = `
             <div class="detail-grid">
@@ -1481,14 +471,15 @@ ${statusMessage}
                 <div class="detail-item"><div class="detail-label">التسليم</div><div class="detail-value">${d.delivery_date || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">تاريخ الحجز</div><div class="detail-value">${formatDate(d.created_at)}</div></div>
                 <div class="detail-item"><div class="detail-label">الاستفسار</div><div class="detail-value">${d.question || 'لا يوجد'}</div></div>
-                <div class="detail-item"><div class="detail-label">حالة الدفع</div><div class="detail-value">${paymentBadge}</div></div>
                 <div class="detail-item"><div class="detail-label">حالة الطلب</div><div class="detail-value">${statusBadge}</div></div>
+                ${proofSection}
             </div>
         `;
         document.getElementById('detailFooter').innerHTML = `
             <button class="btn btn-primary" onclick="closeModal('detailModal'); openEdit('${docId}')">✏️ تعديل</button>
             <a href="tel:${d.phone}" class="btn btn-success">📞 اتصال</a>
-            <a href="https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || '') + '، بخصوص حجزك')}" target="_blank" class="btn btn-success" style="background:#25D366;">💬 واتساب</a>
+            <button class="btn btn-success" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${docId}')" style="background:#25D366;">💬 إرسال الرابط</button>
+            <button class="btn btn-outline" onclick="copyPaymentLink('${docId}', '${d.name}', '${d.phone}')">🔗 نسخ الرابط</button>
             <button class="btn btn-outline" onclick="closeModal('detailModal')">إغلاق</button>
         `;
         openModal('detailModal');
@@ -1504,16 +495,10 @@ ${statusMessage}
                     showToast('تم الحذف');
                     closeModal('confirmModal');
                     deleteId = null;
-                } catch (err) { showToast('خطأ', 'error'); }
+                } catch (err) { showToast('خطأ'); }
             }
         };
         openModal('confirmModal');
-    }
-
-    function sendStatusWA(docId) {
-        const r = allReservations.find(r => r.id === docId);
-        if (!r) return;
-        sendWAInvoice(r.data, r.data.status || 'قيد المراجعة', r.data.payment_confirmed || false);
     }
 
     function renderReservations(reservations) {
@@ -1521,7 +506,7 @@ ${statusMessage}
         const mobile = document.getElementById('mobileCards');
         
         if (reservations.length === 0) {
-            tbody.innerHTML = `</td><td colspan="10"><div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div></td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div></td></tr>`;
             mobile.innerHTML = '<div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div>';
             document.getElementById('showingCount').textContent = 'عرض 0 حجز';
             return;
@@ -1533,9 +518,11 @@ ${statusMessage}
             const d = res.data;
             const id = res.id;
             const status = d.status || 'قيد المراجعة';
-            const paymentConfirmed = d.payment_confirmed === true;
+            const hasProof = d.payment_proof_url ? true : false;
             const newBadge = isNew(d.created_at) ? '<span class="new-badge">جديد</span>' : '';
-            const paymentBadge = paymentConfirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
+            const proofBtn = hasProof 
+                ? `<button class="proof-btn green" onclick="viewProof('${id}')" title="عرض الإسكرين">📸</button>`
+                : `<button class="proof-btn red" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${id}')" title="لم يرفع إسكرين">📸</button>`;
             
             tableHTML += `
                 <tr>
@@ -1546,17 +533,15 @@ ${statusMessage}
                     <td><span style="color:#FFDE9E;">🎧 ${d.device || '—'}</span></td>
                     <td>${d.delivery_date || '—'}</td>
                     <td style="font-size:12px;">${formatDate(d.created_at)}</td>
-                    <td>${paymentBadge}</td>
                     <td>${statusSelectHTML(id, status)}</td>
+                    <td style="text-align:center;">${proofBtn}</td>
                     <td>
                         <div class="actions-cell">
-                            <button class="action-btn view" onclick="openDetail('${id}')" title="تفاصيل">👁️</button>
-                            <button class="action-btn edit" onclick="openEdit('${id}')" title="تعديل">✏️</button>
-                            <button class="action-btn call" onclick="window.open('tel:${d.phone}')" title="اتصال">📞</button>
-                            <button class="action-btn whatsapp" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || ''))}', '_blank')" title="واتساب">💬</button>
-                            ${!paymentConfirmed ? `<button class="action-btn payment" onclick="confirmPayment('${id}')" title="تأكيد دفع الشحن">💰</button>` : ''}
-                            <button class="action-btn status-wa" onclick="sendStatusWA('${id}')" title="إرسال الحالة">📨</button>
-                            <button class="action-btn delete" onclick="confirmDelete('${id}')" title="حذف">🗑️</button>
+                            <button class="action-btn view" onclick="openDetail('${id}')">👁️</button>
+                            <button class="action-btn edit" onclick="openEdit('${id}')">✏️</button>
+                            <button class="action-btn call" onclick="window.open('tel:${d.phone}')">📞</button>
+                            <button class="action-btn whatsapp" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${id}')">💬</button>
+                            <button class="action-btn delete" onclick="confirmDelete('${id}')">🗑️</button>
                         </div>
                     </td>
                 </tr>
@@ -1566,25 +551,23 @@ ${statusMessage}
                 <div class="mobile-card">
                     <div class="mobile-card-header">
                         <div class="mobile-card-name">${newBadge}${d.name || '—'}</div>
-                        <button class="action-btn view" onclick="openDetail('${id}')">👁️</button>
+                        ${proofBtn}
                     </div>
                     <div class="mobile-card-body">
                         <div class="mobile-card-row"><span class="mobile-card-label">📱 التليفون</span><span class="mobile-card-value">${d.phone || '—'}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">📍 العنوان</span><span class="mobile-card-value">${d.address || '—'}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">🎧 السماعة</span><span class="mobile-card-value">${d.device || '—'}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">📅 التسليم</span><span class="mobile-card-value">${d.delivery_date || '—'}</span></div>
-                        <div class="mobile-card-row"><span class="mobile-card-label">💰 الدفع</span><span class="mobile-card-value">${paymentConfirmed ? '✅ مدفوع' : '⏳ غير مدفوع'}</span></div>
                     </div>
                     <div class="mobile-card-status">
                         <label style="color:#a07d3a; font-size:12px;">الحالة:</label>
                         ${statusSelectHTML(id, status)}
                     </div>
                     <div class="mobile-card-actions">
+                        <button class="action-btn view" onclick="openDetail('${id}')">👁️</button>
                         <button class="action-btn edit" onclick="openEdit('${id}')">✏️</button>
                         <button class="action-btn call" onclick="window.open('tel:${d.phone}')">📞</button>
-                        <button class="action-btn whatsapp" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || ''))}', '_blank')">💬</button>
-                        ${!paymentConfirmed ? `<button class="action-btn payment" onclick="confirmPayment('${id}')">💰</button>` : ''}
-                        <button class="action-btn status-wa" onclick="sendStatusWA('${id}')">📨</button>
+                        <button class="action-btn whatsapp" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${id}')">💬</button>
                         <button class="action-btn delete" onclick="confirmDelete('${id}')">🗑️</button>
                     </div>
                 </div>
@@ -1599,17 +582,15 @@ ${statusMessage}
     function updateStats(reservations) {
         const total = reservations.length;
         const review = reservations.filter(r => (r.data.status || 'قيد المراجعة') === 'قيد المراجعة').length;
-        const paid = reservations.filter(r => r.data.payment_confirmed === true).length;
+        const hasProof = reservations.filter(r => r.data.payment_proof_url).length;
         const preparing = reservations.filter(r => r.data.status === 'تحت التجهيز').length;
         const delivered = reservations.filter(r => r.data.status === 'تم الاستلام').length;
-        const cancelled = reservations.filter(r => r.data.status === 'ملغي').length;
         
         document.getElementById('statTotal').textContent = total;
         document.getElementById('statReview').textContent = review;
-        document.getElementById('statPaid').textContent = paid;
+        document.getElementById('statHasProof').textContent = hasProof;
         document.getElementById('statPreparing').textContent = preparing;
         document.getElementById('statDelivered').textContent = delivered;
-        document.getElementById('statCancelled').textContent = cancelled;
         document.getElementById('totalCount').textContent = `الإجمالي: ${total}`;
     }
     
@@ -1626,12 +607,12 @@ ${statusMessage}
     }
     
     function exportCSV() {
-        if (!allReservations.length) { showToast('لا بيانات', 'info'); return; }
+        if (!allReservations.length) { showToast('لا بيانات'); return; }
         const BOM = '\uFEFF';
-        let csv = BOM + 'الاسم,التليفون,العنوان,نوع السماعة,الاستفسار,ميعاد التسليم,حالة الطلب,حالة الدفع,تاريخ الحجز\n';
+        let csv = BOM + 'الاسم,التليفون,العنوان,نوع السماعة,الاستفسار,ميعاد التسليم,حالة الطلب,تم رفع إسكرين,رقم المحول منه,تاريخ الحجز\n';
         allReservations.forEach(r => {
             const d = r.data;
-            csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${d.payment_confirmed ? 'مدفوع' : 'غير مدفوع'}","${formatDate(d.created_at)}"\n`;
+            csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${d.payment_proof_url ? 'نعم' : 'لا'}","${d.sender_phone || ''}","${formatDate(d.created_date)}\n`;
         });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
@@ -1640,43 +621,162 @@ ${statusMessage}
         showToast('تم التصدير');
     }
     
-    // Real-time listener مع الإشعارات
+    // صفحة التأكيد - شغالة 100%
+    function showConfirmationPage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const confirmId = urlParams.get('c');
+        
+        if (confirmId) {
+            // إخفاء لوحة التحكم
+            const mainContent = document.getElementById('mainContent');
+            const sidebar = document.querySelector('.sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            if (mainContent) mainContent.style.display = 'none';
+            if (sidebar) sidebar.style.display = 'none';
+            if (menuToggle) menuToggle.style.display = 'none';
+            
+            // جلب بيانات العميل من Firebase
+            db.collection('reservations').doc(confirmId).get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const customerName = data.name || 'العميل';
+                    const customerPhone = data.phone || '';
+                    
+                    const confirmHTML = `
+                        <div class="confirm-page">
+                            <div class="confirm-card">
+                                <h2>✅ تأكيد حجزك - أبو زهرة</h2>
+                                <p style="text-align: center;">مرحباً <strong>${customerName}</strong></p>
+                                <div class="bank-number">
+                                    <div style="margin-bottom: 10px;">💰 المطلوب تحويله</div>
+                                    <div class="number">150 جنيه</div>
+                                    <div style="margin: 15px 0 5px;">على رقم فودافون كاش</div>
+                                    <div class="number">01559319483</div>
+                                    <div style="margin-top: 10px;">📌 باسم <strong>صلاح</strong></div>
+                                </div>
+                                
+                                <div style="margin: 20px 0;">
+                                    <div style="background: #1a1508; padding: 12px; border-radius: 16px; text-align: center;">
+                                        <strong>رقم التليفون المحول منه</strong>
+                                        <input type="tel" id="confirmSenderPhone" class="sender-input" placeholder="أدخل رقم التليفون اللي حولت منه">
+                                    </div>
+                                    
+                                    <div class="upload-area" id="uploadArea">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>اضغط لرفع صورة الإسكرين</p>
+                                        <p style="font-size: 12px; color: #a07d3a;">(صورة التحويل من فودافون كاش)</p>
+                                        <input type="file" id="confirmScreenshot" accept="image/*" style="display: none;">
+                                    </div>
+                                    <img id="previewImg" class="preview-img">
+                                    
+                                    <button class="upload-btn" id="submitBtn">
+                                        📤 إرسال التأكيد
+                                    </button>
+                                    <div id="confirmMessage" style="margin-top: 20px; text-align: center;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.innerHTML = confirmHTML;
+                    
+                    // ربط الأحداث
+                    const uploadArea = document.getElementById('uploadArea');
+                    const fileInput = document.getElementById('confirmScreenshot');
+                    const previewImg = document.getElementById('previewImg');
+                    const submitBtn = document.getElementById('submitBtn');
+                    
+                    uploadArea.addEventListener('click', () => fileInput.click());
+                    fileInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                previewImg.src = event.target.result;
+                                previewImg.style.display = 'block';
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                    
+                    submitBtn.onclick = async function() {
+                        const file = document.getElementById('confirmScreenshot').files[0];
+                        const senderPhone = document.getElementById('confirmSenderPhone').value.trim();
+                        const messageDiv = document.getElementById('confirmMessage');
+                        
+                        if (!file) {
+                            messageDiv.innerHTML = '<p style="color: #ef4444;">❌ يرجى رفع صورة الإسكرين</p>';
+                            return;
+                        }
+                        if (!senderPhone) {
+                            messageDiv.innerHTML = '<p style="color: #ef4444;">❌ يرجى كتابة رقم التليفون المحول منه</p>';
+                            return;
+                        }
+                        
+                        messageDiv.innerHTML = '<p style="color: #F5C542;">⏳ جاري الرفع...</p>';
+                        
+                        try {
+                            const storageRef = storage.ref(`payment_proofs/${confirmId}_${Date.now()}.png`);
+                            const uploadTask = storageRef.put(file);
+                            
+                            uploadTask.on('state_changed', null,
+                                (error) => {
+                                    messageDiv.innerHTML = '<p style="color: #ef4444;">❌ حدث خطأ في الرفع</p>';
+                                },
+                                async () => {
+                                    const downloadURL = await storageRef.getDownloadURL();
+                                    await db.collection('reservations').doc(confirmId).update({
+                                        payment_proof_url: downloadURL,
+                                        sender_phone: senderPhone,
+                                        payment_submitted_at: firebase.firestore.FieldValue.serverTimestamp()
+                                    });
+                                    messageDiv.innerHTML = '<p style="color: #10b981;">✅ تم إرسال التأكيد بنجاح! سيتم مراجعة التحويل قريباً.</p>';
+                                    setTimeout(() => {
+                                        window.location.href = BASE_URL;
+                                    }, 3000);
+                                }
+                            );
+                        } catch(err) {
+                            messageDiv.innerHTML = '<p style="color: #ef4444;">❌ حدث خطأ، حاول مرة أخرى</p>';
+                        }
+                    };
+                } else {
+                    document.body.innerHTML = `<div class="confirm-page"><div class="confirm-card"><h2>❌ رابط غير صالح</h2><p>عذراً، لم نتمكن من العثور على حجزك.</p></div></div>`;
+                }
+            }).catch(err => {
+                document.body.innerHTML = `<div class="confirm-page"><div class="confirm-card"><h2>❌ خطأ</h2><p>حدث خطأ في الاتصال بقاعدة البيانات.</p></div></div>`;
+            });
+        }
+    }
+    
+    // Real-time listener
     db.collection('reservations').orderBy('created_at', 'desc').onSnapshot(snapshot => {
         const newReservations = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
         
-        // التحقق من التغييرات وإرسال الإشعارات (لأول مرة فقط بعد تحميل البيانات الأولية)
-        if (previousReservations.size > 0) {
-            checkForChanges(newReservations);
-        }
+        // إشعار عند رفع إسكرين جديد
+        newReservations.forEach(res => {
+            const old = previousReservations.get(res.id);
+            if (old && !old.data.payment_proof_url && res.data.payment_proof_url) {
+                showToast(`📸 العميل ${res.data.name || ''} رفع إسكرين التحويل`);
+            }
+        });
         
         allReservations = newReservations;
         updateStats(allReservations);
         filterReservations();
         
-        // تحديث الخريطة بعد المعالجة
         if (previousReservations.size === 0) {
-            // أول تحميل - تخزين البيانات بدون إشعارات
             previousReservations = new Map();
             allReservations.forEach(r => previousReservations.set(r.id, r));
         }
     }, err => console.error(err));
     
-    // بدء تشغيل النظام
     document.addEventListener('keydown', e => {
         if (e.key === '/') { e.preventDefault(); document.getElementById('searchInput').focus(); }
-        if (e.key === 'Escape') { ['editModal', 'detailModal', 'confirmModal'].forEach(id => closeModal(id)); }
+        if (e.key === 'Escape') { ['editModal', 'detailModal', 'confirmModal', 'proofModal'].forEach(id => closeModal(id)); }
     });
     
-    // تفعيل الصوت عند أول تفاعل من المستخدم (لأن المتصفحات تمنع الصوت التلقائي)
-    document.body.addEventListener('click', function initAudio() {
-        if (audioContext && audioContext.state === 'suspended') {
-            audioContext.resume();
-        }
-        document.body.removeEventListener('click', initAudio);
-    });
-    
-    // التحقق من الإذن
-    checkNotificationPermission();
+    showConfirmationPage();
 </script>
 </body>
 </html>
