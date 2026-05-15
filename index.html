@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>أبو زهرة | لوحة التحكم</title>
+    <title>أبو زهرة | لوحة التحكم المتكاملة</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23F5C542'>🎧</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Cairo', sans-serif;
             background: #050301;
             color: #e2e8f0;
+            min-height: 100vh;
             direction: rtl;
+            position: relative;
             overflow-x: hidden;
         }
+
+        /* Animated Background */
         .admin-bg {
             position: fixed;
             top: 0;
@@ -22,31 +28,76 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            background: radial-gradient(circle at 20% 30%, rgba(229,170,50,0.08) 0%, #030101 90%);
+            background: radial-gradient(circle at 20% 30%, rgba(229, 170, 50, 0.08) 0%, #030101 90%);
         }
+        
+        .admin-bg::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 10% 20%, rgba(229,184,60,0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: floatBg 20s linear infinite;
+        }
+        
+        @keyframes floatBg {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        /* Sidebar */
         .sidebar {
             position: fixed;
             right: 0; top: 0;
             width: 280px;
             height: 100vh;
             background: linear-gradient(180deg, #0e0b06 0%, #050301 100%);
-            border-left: 1px solid rgba(229,184,60,0.2);
+            border-left: 1px solid rgba(229, 184, 60, 0.2);
             z-index: 100;
             padding: 20px 0;
             transition: transform 0.3s;
             overflow-y: auto;
         }
+        
         .sidebar-header {
             padding: 10px 20px 30px;
             text-align: center;
-            border-bottom: 1px solid rgba(229,184,60,0.2);
+            border-bottom: 1px solid rgba(229, 184, 60, 0.2);
             margin-bottom: 20px;
         }
-        .sidebar-header .logo { font-size: 55px; margin-bottom: 8px; }
-        .sidebar-header h2 { font-size: 18px; color: #F5C542; font-weight: 800; }
-        .sidebar-header p { font-size: 12px; color: #a07d3a; }
-        .sidebar-nav { list-style: none; padding: 0 15px; }
-        .sidebar-nav li { margin-bottom: 5px; }
+        
+        .sidebar-header .logo {
+            font-size: 55px;
+            margin-bottom: 8px;
+            animation: pulseGold 2s infinite;
+        }
+        
+        @keyframes pulseGold {
+            0%, 100% { text-shadow: 0 0 0px #F5C542; }
+            50% { text-shadow: 0 0 15px #F5C542; }
+        }
+        
+        .sidebar-header h2 {
+            font-size: 18px;
+            color: #F5C542;
+            font-weight: 800;
+        }
+        
+        .sidebar-header p {
+            font-size: 12px;
+            color: #a07d3a;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0 15px;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 5px;
+        }
+        
         .sidebar-nav a {
             display: flex;
             align-items: center;
@@ -58,12 +109,16 @@
             transition: all 0.3s;
             font-size: 14px;
             font-weight: 600;
+            cursor: pointer;
         }
+        
         .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: rgba(229,184,60,0.12);
+            background: rgba(229, 184, 60, 0.12);
             color: #F5C542;
             border-right: 3px solid #F5C542;
         }
+
+        /* Main Content */
         .main-content {
             margin-right: 280px;
             padding: 20px;
@@ -71,6 +126,8 @@
             position: relative;
             z-index: 10;
         }
+
+        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -79,6 +136,7 @@
             flex-wrap: wrap;
             gap: 12px;
         }
+        
         .top-bar h1 {
             font-size: 24px;
             font-weight: 800;
@@ -87,6 +145,7 @@
             background-clip: text;
             color: transparent;
         }
+        
         .btn {
             display: inline-flex;
             align-items: center;
@@ -101,51 +160,111 @@
             transition: all 0.3s;
             text-decoration: none;
         }
-        .btn:hover { transform: translateY(-2px); }
-        .btn-primary { background: linear-gradient(135deg, #E5B83C, #B8860B); color: #050301; }
-        .btn-outline { background: transparent; border: 1px solid rgba(229,184,60,0.4); color: #F5C542; }
-        .btn-success { background: #25D366; color: #fff; }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #E5B83C, #B8860B);
+            color: #050301;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #F5C542, #D4AF37);
+            box-shadow: 0 5px 20px rgba(229,184,60,0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(229, 184, 60, 0.4);
+            color: #F5C542;
+        }
+        
+        .btn-outline:hover {
+            border-color: #F5C542;
+            background: rgba(229,184,60,0.1);
+        }
+        
+        .btn-success {
+            background: #25D366;
+            color: #fff;
+        }
+        
+        .btn-danger {
+            background: #dc2626;
+            color: #fff;
+        }
+
+        /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 16px;
             margin-bottom: 30px;
         }
+        
         .stat-card {
-            background: rgba(14,11,6,0.8);
+            background: rgba(14, 11, 6, 0.8);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(229,184,60,0.2);
+            border: 1px solid rgba(229, 184, 60, 0.2);
             border-radius: 20px;
             padding: 20px;
             transition: all 0.3s;
         }
-        .stat-card:hover { transform: translateY(-5px); border-color: rgba(229,184,60,0.5); }
-        .stat-icon { font-size: 32px; margin-bottom: 10px; }
-        .stat-number { font-size: 32px; font-weight: 900; color: #F5C542; }
-        .stat-label { font-size: 13px; color: #a07d3a; font-weight: 600; }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(229, 184, 60, 0.5);
+        }
+        
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: #F5C542;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #a07d3a;
+            font-weight: 600;
+        }
+
+        /* Filter Bar */
         .filter-bar {
             display: flex;
             gap: 12px;
             margin-bottom: 25px;
             flex-wrap: wrap;
         }
+        
         .search-box {
             flex: 1;
             min-width: 250px;
             position: relative;
         }
+        
         .search-box input {
             width: 100%;
             padding: 14px 45px 14px 18px;
-            background: rgba(14,11,6,0.8);
-            border: 1px solid rgba(229,184,60,0.2);
+            background: rgba(14, 11, 6, 0.8);
+            border: 1px solid rgba(229, 184, 60, 0.2);
             border-radius: 50px;
             color: #e2e8f0;
             font-family: 'Cairo', sans-serif;
             font-size: 14px;
             outline: none;
         }
-        .search-box input:focus { border-color: #F5C542; }
+        
+        .search-box input:focus {
+            border-color: #F5C542;
+        }
+        
         .search-box .search-icon {
             position: absolute;
             right: 18px;
@@ -153,10 +272,11 @@
             transform: translateY(-50%);
             color: #F5C542;
         }
+        
         .filter-select {
             padding: 12px 18px;
-            background: rgba(14,11,6,0.8);
-            border: 1px solid rgba(229,184,60,0.2);
+            background: rgba(14, 11, 6, 0.8);
+            border: 1px solid rgba(229, 184, 60, 0.2);
             border-radius: 50px;
             color: #e2e8f0;
             font-family: 'Cairo', sans-serif;
@@ -164,23 +284,31 @@
             cursor: pointer;
             min-width: 180px;
         }
+
+        /* Table */
         .table-container {
-            background: rgba(14,11,6,0.6);
+            background: rgba(14, 11, 6, 0.6);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(229,184,60,0.15);
+            border: 1px solid rgba(229, 184, 60, 0.15);
             border-radius: 24px;
             overflow: hidden;
         }
-        .table-scroll { overflow-x: auto; }
+        
+        .table-scroll {
+            overflow-x: auto;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1300px;
+            min-width: 1400px;
         }
+        
         thead {
             background: rgba(0,0,0,0.4);
-            border-bottom: 1px solid rgba(229,184,60,0.2);
+            border-bottom: 1px solid rgba(229, 184, 60, 0.2);
         }
+        
         th {
             padding: 16px;
             font-size: 13px;
@@ -188,13 +316,19 @@
             color: #F5C542;
             text-align: right;
         }
+        
         td {
             padding: 14px 16px;
             font-size: 13px;
-            border-bottom: 1px solid rgba(229,184,60,0.08);
+            border-bottom: 1px solid rgba(229, 184, 60, 0.08);
             vertical-align: middle;
         }
-        tbody tr:hover { background: rgba(229,184,60,0.05); }
+        
+        tbody tr:hover {
+            background: rgba(229, 184, 60, 0.05);
+        }
+
+        /* Status Badge & Select */
         .status-select {
             padding: 8px 12px;
             border-radius: 30px;
@@ -206,6 +340,7 @@
             outline: none;
             min-width: 170px;
         }
+        
         .status-select.status-review { background: #fef3c7; color: #92400e; }
         .status-select.status-contacted { background: #dbeafe; color: #1e40af; }
         .status-select.status-preparing { background: #fce7f3; color: #9d174d; }
@@ -213,7 +348,58 @@
         .status-select.status-shipped { background: #e0e7ff; color: #3730a3; }
         .status-select.status-delivered { background: #d1fae5; color: #065f46; }
         .status-select.status-cancelled { background: #fee2e2; color: #991b1b; }
-        .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* Payment Badge */
+        .payment-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #10b98120;
+            color: #10b981;
+            border: 1px solid #10b98140;
+        }
+        
+        .payment-badge.not-paid {
+            background: #ef444420;
+            color: #ef4444;
+            border-color: #ef444440;
+        }
+
+        /* Proof Button */
+        .proof-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+            border: none;
+        }
+        
+        .proof-btn.red { background: rgba(220,38,38,0.2); color: #ef4444; }
+        .proof-btn.green { background: rgba(16,185,129,0.2); color: #10b981; }
+        .proof-btn:hover { transform: scale(1.1); }
+
+        /* Action Buttons */
+        .actions-cell {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
         .action-btn {
             width: 36px;
             height: 36px;
@@ -226,36 +412,34 @@
             font-size: 16px;
             transition: all 0.2s;
         }
-        .action-btn:hover { transform: scale(1.1); }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
         .action-btn.edit { background: rgba(229,184,60,0.15); color: #F5C542; }
         .action-btn.call { background: rgba(34,197,94,0.15); color: #22c55e; }
         .action-btn.whatsapp { background: rgba(37,211,102,0.15); color: #25D366; }
+        .action-btn.payment { background: rgba(16,185,129,0.2); color: #10b981; }
+        .action-btn.status-wa { background: rgba(139,92,246,0.15); color: #a78bfa; }
         .action-btn.delete { background: rgba(220,38,38,0.15); color: #ef4444; }
         .action-btn.view { background: rgba(229,184,60,0.15); color: #F5C542; }
-        .proof-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            transition: all 0.2s;
-            border: none;
+        .action-btn.link { background: rgba(59,130,246,0.15); color: #3b82f6; }
+
+        /* Mobile Cards */
+        .mobile-cards {
+            display: none;
         }
-        .proof-btn.red { background: rgba(220,38,38,0.2); color: #ef4444; border: 1px solid rgba(220,38,38,0.5); }
-        .proof-btn.green { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.5); }
-        .proof-btn:hover { transform: scale(1.1); }
-        .mobile-cards { display: none; }
+        
         .mobile-card {
-            background: rgba(14,11,6,0.8);
+            background: rgba(14, 11, 6, 0.8);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(229,184,60,0.15);
+            border: 1px solid rgba(229, 184, 60, 0.15);
             border-radius: 20px;
             padding: 16px;
             margin-bottom: 12px;
         }
+        
         .mobile-card-header {
             display: flex;
             justify-content: space-between;
@@ -264,12 +448,51 @@
             padding-bottom: 12px;
             border-bottom: 1px solid rgba(229,184,60,0.15);
         }
-        .mobile-card-name { font-size: 16px; font-weight: 800; color: #F5C542; }
-        .mobile-card-body { display: grid; gap: 8px; margin-bottom: 12px; }
-        .mobile-card-row { display: flex; justify-content: space-between; font-size: 13px; }
-        .mobile-card-label { color: #a07d3a; }
-        .mobile-card-value { color: #e2e8f0; font-weight: 600; }
-        .mobile-card-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
+        
+        .mobile-card-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #F5C542;
+        }
+        
+        .mobile-card-body {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .mobile-card-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        
+        .mobile-card-label {
+            color: #a07d3a;
+        }
+        
+        .mobile-card-value {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+        
+        .mobile-card-actions {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-top: 12px;
+        }
+        
+        .mobile-proof-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(229,184,60,0.1);
+        }
+
+        /* Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -281,10 +504,14 @@
             align-items: center;
             padding: 20px;
         }
-        .modal-overlay.active { display: flex; }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
         .modal {
             background: #0e0b06;
-            border: 1px solid rgba(229,184,60,0.3);
+            border: 1px solid rgba(229, 184, 60, 0.3);
             border-radius: 32px;
             width: 100%;
             max-width: 550px;
@@ -292,10 +519,12 @@
             overflow-y: auto;
             animation: modalSlideIn 0.3s ease;
         }
+        
         @keyframes modalSlideIn {
             from { opacity: 0; transform: scale(0.95) translateY(20px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
+        
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -303,7 +532,13 @@
             padding: 20px 24px;
             border-bottom: 1px solid rgba(229,184,60,0.2);
         }
-        .modal-header h3 { font-size: 20px; font-weight: 800; color: #F5C542; }
+        
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #F5C542;
+        }
+        
         .modal-close {
             width: 36px;
             height: 36px;
@@ -314,7 +549,11 @@
             cursor: pointer;
             font-size: 18px;
         }
-        .modal-body { padding: 24px; }
+        
+        .modal-body {
+            padding: 24px;
+        }
+        
         .modal-footer {
             padding: 16px 24px;
             border-top: 1px solid rgba(229,184,60,0.2);
@@ -322,7 +561,11 @@
             gap: 10px;
             flex-wrap: wrap;
         }
-        .form-group { margin-bottom: 16px; }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
         .form-group label {
             display: block;
             font-size: 13px;
@@ -330,7 +573,9 @@
             color: #a07d3a;
             margin-bottom: 6px;
         }
-        .form-group input, .form-group textarea {
+        
+        .form-group input,
+        .form-group textarea {
             width: 100%;
             padding: 12px 16px;
             background: #050301;
@@ -340,20 +585,44 @@
             font-family: 'Cairo', sans-serif;
             font-size: 14px;
         }
-        .detail-grid { display: grid; gap: 12px; }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #F5C542;
+            outline: none;
+        }
+        
+        .detail-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
         .detail-item {
             background: #050301;
             border-radius: 16px;
             padding: 14px;
         }
-        .detail-label { font-size: 12px; color: #a07d3a; margin-bottom: 4px; }
-        .detail-value { font-size: 15px; font-weight: 700; color: #F5C542; }
+        
+        .detail-label {
+            font-size: 12px;
+            color: #a07d3a;
+            margin-bottom: 4px;
+        }
+        
+        .detail-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #F5C542;
+        }
+        
         .proof-image {
             max-width: 100%;
             border-radius: 16px;
             margin-top: 8px;
             cursor: pointer;
         }
+        
+        /* Toast */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -363,6 +632,7 @@
             flex-direction: column;
             gap: 8px;
         }
+        
         .toast {
             padding: 12px 20px;
             border-radius: 12px;
@@ -373,11 +643,17 @@
             border: 1px solid rgba(229,184,60,0.3);
             color: #F5C542;
         }
+        
         @keyframes slideInRight {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-        .loading-state { text-align: center; padding: 60px; }
+        
+        .loading-state {
+            text-align: center;
+            padding: 60px;
+        }
+        
         .spinner {
             width: 40px;
             height: 40px;
@@ -387,7 +663,16 @@
             animation: spin 0.8s linear infinite;
             margin: 0 auto 16px;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+        }
+        
         .menu-toggle {
             display: none;
             position: fixed;
@@ -403,6 +688,7 @@
             font-size: 22px;
             cursor: pointer;
         }
+        
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -410,6 +696,7 @@
             background: rgba(0,0,0,0.6);
             z-index: 95;
         }
+        
         .new-badge {
             background: #F5C542;
             color: #050301;
@@ -419,20 +706,202 @@
             margin-right: 8px;
             font-weight: 800;
         }
-        @media (max-width: 1000px) {
-            .sidebar { transform: translateX(100%); width: 280px; }
-            .sidebar.open { transform: translateX(0); }
-            .sidebar-overlay.open { display: block; }
-            .main-content { margin-right: 0; padding: 15px; padding-top: 70px; }
-            .menu-toggle { display: flex; align-items: center; justify-content: center; }
-            .table-scroll { display: none; }
-            .mobile-cards { display: block; }
-            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        
+        /* Desktop Notification Style */
+        .desktop-notification {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #0e0b06, #1a1508);
+            border-right: 4px solid #F5C542;
+            border-radius: 16px;
+            padding: 16px 20px;
+            min-width: 320px;
+            max-width: 400px;
+            z-index: 10000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideInLeft 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(20px);
+            cursor: pointer;
+            transition: transform 0.2s;
         }
+        
+        .desktop-notification:hover {
+            transform: translateX(-5px);
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideOutLeft {
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+        
+        .desktop-notification.hide {
+            animation: slideOutLeft 0.3s ease forwards;
+        }
+        
+        .notification-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .notification-icon {
+            font-size: 28px;
+        }
+        
+        .notification-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #F5C542;
+        }
+        
+        .notification-time {
+            font-size: 10px;
+            color: #a07d3a;
+            margin-right: auto;
+        }
+        
+        .notification-message {
+            font-size: 13px;
+            color: #e2e8f0;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        
+        .notification-details {
+            font-size: 11px;
+            color: #a07d3a;
+            border-top: 1px solid rgba(229,184,60,0.15);
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .notification-action-btn {
+            padding: 4px 12px;
+            font-size: 11px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .notification-action-btn.view {
+            background: rgba(229,184,60,0.2);
+            color: #F5C542;
+        }
+        
+        .notification-action-btn.view:hover {
+            background: rgba(229,184,60,0.4);
+        }
+        
+        .notification-action-btn.close {
+            background: rgba(220,38,38,0.2);
+            color: #ef4444;
+        }
+        
+        .notification-action-btn.close:hover {
+            background: rgba(220,38,38,0.4);
+        }
+        
+        /* Permission Request Banner */
+        .permission-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #0e0b06;
+            border: 1px solid rgba(229,184,60,0.3);
+            border-radius: 16px;
+            padding: 16px 20px;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .permission-banner.show {
+            display: flex;
+        }
+        
+        .permission-banner p {
+            font-size: 13px;
+            color: #e2e8f0;
+        }
+        
+        @media (max-width: 1000px) {
+            .sidebar {
+                transform: translateX(100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay.open {
+                display: block;
+            }
+            .main-content {
+                margin-right: 0;
+                padding: 15px;
+                padding-top: 70px;
+            }
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .table-scroll {
+                display: none;
+            }
+            .mobile-cards {
+                display: block;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .desktop-notification {
+                left: 10px;
+                right: 10px;
+                min-width: auto;
+                max-width: calc(100% - 20px);
+            }
+        }
+        
         @media (max-width: 600px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .filter-bar { flex-direction: column; }
-            .mobile-card-actions { grid-template-columns: repeat(4, 1fr); }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .filter-bar {
+                flex-direction: column;
+            }
+            .search-box, .filter-select {
+                width: 100%;
+            }
+            .mobile-card-actions {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
@@ -441,6 +910,14 @@
 <div class="admin-bg"></div>
 <div class="toast-container" id="toastContainer"></div>
 
+<!-- Permission Banner -->
+<div class="permission-banner" id="permissionBanner">
+    <div>🔔</div>
+    <p>فعّل الإشعارات لتصلك تحديثات الحجوزات فوراً</p>
+    <button class="btn btn-primary" onclick="requestNotificationPermission()" style="padding: 6px 16px;">تفعيل</button>
+    <button class="btn btn-outline" onclick="closePermissionBanner()" style="padding: 6px 16px;">لاحقاً</button>
+</div>
+
 <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
@@ -448,7 +925,7 @@
     <div class="sidebar-header">
         <div class="logo">🎧</div>
         <h2>Abo Zahra</h2>
-        <p>لوحة التحكم</p>
+        <p>لوحة التحكم المتكاملة</p>
     </div>
     <ul class="sidebar-nav">
         <li><a href="#" class="active" onclick="return false"><span class="icon">📋</span> الحجوزات</a></li>
@@ -469,6 +946,7 @@
     <div class="stats-grid">
         <div class="stat-card"><div class="stat-icon">🎧</div><div class="stat-number" id="statTotal">0</div><div class="stat-label">إجمالي الحجوزات</div></div>
         <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-number" id="statReview">0</div><div class="stat-label">قيد المراجعة</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-number" id="statPaid">0</div><div class="stat-label">تم الدفع</div></div>
         <div class="stat-card"><div class="stat-icon">📸</div><div class="stat-number" id="statHasProof">0</div><div class="stat-label">تم رفع إسكرين</div></div>
         <div class="stat-card"><div class="stat-icon">🔧</div><div class="stat-number" id="statPreparing">0</div><div class="stat-label">تحت التجهيز</div></div>
         <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-number" id="statDelivered">0</div><div class="stat-label">تم الاستلام</div></div>
@@ -500,10 +978,10 @@
         <div class="table-scroll">
             <table>
                 <thead>
-                    <tr><th>#</th><th>الاسم</th><th>التليفون</th><th>العنوان</th><th>المنتج</th><th>التسليم</th><th>تاريخ الحجز</th><th>حالة الطلب</th><th>الإسكرين</th><th>العمليات</th></tr>
+                    <tr><th>#</th><th>الاسم</th><th>التليفون</th><th>العنوان</th><th>المنتج</th><th>التسليم</th><th>تاريخ الحجز</th><th>حالة الدفع</th><th>حالة الطلب</th><th>الإسكرين</th><th>العمليات</th></tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr><td colspan="10"><div class="loading-state"><div class="spinner"></div><p>جاري التحميل...</p></div></td></tr>
+                    <tr><td colspan="11"><div class="loading-state"><div class="spinner"></div><p>جاري التحميل...</p></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -580,11 +1058,13 @@
     const db = firebase.firestore();
     let allReservations = [];
     let previousReservations = new Map();
+    let lastNotificationTime = 0;
+    const NOTIFICATION_COOLDOWN = 3000;
+    let audioContext = null;
     
-    // رابط صفحة تأكيد الحجز (عدله على حسب رابط موقعك)
+    // رابط صفحة تأكيد الحجز
     const CONFIRM_PAGE_URL = "https://mosalah-maker.github.io/Confirm-your-reservation/";
     
-    // دالة تحويل الرقم للواتساب
     function formatPhoneForWA(phone) {
         if (!phone) return '';
         let cleaned = phone.replace(/[\s\-\+\(\)]/g, '');
@@ -607,7 +1087,7 @@
         return (Date.now() - d.getTime()) < 3600000;
     }
     
-    function showToast(msg) {
+    function showToast(msg, type = 'success') {
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.innerHTML = msg;
@@ -668,29 +1148,126 @@ ${link}
             showToast('لا يوجد إسكرين مرفوع');
             return;
         }
-        const data = res.data;
+        const d = res.data;
         document.getElementById('proofContent').innerHTML = `
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">العميل</div>
-                    <div class="detail-value">${data.name || '—'}</div>
+                    <div class="detail-value">${d.name || '—'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">رقم المحول منه</div>
-                    <div class="detail-value">${data.sender_phone || '—'}</div>
+                    <div class="detail-value">${d.sender_phone || '—'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">تاريخ الإرسال</div>
-                    <div class="detail-value">${formatDate(data.payment_submitted_at)}</div>
+                    <div class="detail-value">${formatDate(d.payment_submitted_at)}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">الإسكرين</div>
-                    <img src="${data.payment_proof_url}" class="proof-image" onclick="window.open('${data.payment_proof_url}', '_blank')">
+                    <img src="${d.payment_proof_url}" class="proof-image" onclick="window.open('${d.payment_proof_url}', '_blank')">
                 </div>
             </div>
         `;
         document.getElementById('proofFooter').innerHTML = `<button class="btn btn-outline" onclick="closeModal('proofModal')">إغلاق</button>`;
         openModal('proofModal');
+    }
+    
+    // نظام الإشعارات الصوتية
+    function playNotificationSound() {
+        try {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.frequency.value = 880;
+            gainNode.gain.value = 0.3;
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
+            oscillator.stop(audioContext.currentTime + 0.5);
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        } catch(e) { console.log("صوت:", e); }
+    }
+    
+    // طلب إذن الإشعارات
+    async function requestNotificationPermission() {
+        if ('Notification' in window) {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                showToast('🔔 تم تفعيل الإشعارات بنجاح');
+                closePermissionBanner();
+                showDesktopNotification('✅ نظام الإشعارات جاهز', 'سيتم إشعارك عند إضافة حجوزات جديدة أو رفع إسكرين');
+                playNotificationSound();
+            } else if (permission === 'denied') {
+                showToast('❌ تم رفض الإشعارات');
+            }
+        }
+    }
+    
+    function closePermissionBanner() {
+        document.getElementById('permissionBanner').classList.remove('show');
+        localStorage.setItem('notifications_banner_closed', 'true');
+    }
+    
+    function showDesktopNotification(title, message, reservationId = null) {
+        if (!('Notification' in window) || Notification.permission !== 'granted') return;
+        const now = Date.now();
+        if (now - lastNotificationTime < NOTIFICATION_COOLDOWN) return;
+        lastNotificationTime = now;
+        
+        const options = {
+            body: message,
+            icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y=".9em" font-size="90" fill="%23F5C542"%3E🎧%3C/text%3E%3C/svg%3E',
+            tag: reservationId || 'general',
+            renotify: true,
+            requireInteraction: true,
+            vibrate: [200, 100, 200]
+        };
+        
+        const notification = new Notification(title, options);
+        notification.onclick = () => {
+            window.focus();
+            if (reservationId) {
+                openDetail(reservationId);
+            }
+            notification.close();
+        };
+        playNotificationSound();
+    }
+    
+    function showCustomNotification(title, message, reservationId = null) {
+        const container = document.getElementById('toastContainer');
+        const notificationDiv = document.createElement('div');
+        notificationDiv.className = 'desktop-notification';
+        const time = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+        
+        notificationDiv.innerHTML = `
+            <div class="notification-header">
+                <div class="notification-icon">🎧</div>
+                <div class="notification-title">${title}</div>
+                <div class="notification-time">${time}</div>
+            </div>
+            <div class="notification-message">${message}</div>
+            <div class="notification-details">أبو زهرة - نظام إدارة الحجوزات</div>
+            <div class="notification-actions">
+                ${reservationId ? '<button class="notification-action-btn view" onclick="openDetail(\'' + reservationId + '\'); this.closest(\'.desktop-notification\').remove();">عرض التفاصيل</button>' : ''}
+                <button class="notification-action-btn close" onclick="this.closest(\'.desktop-notification\').classList.add(\'hide\'); setTimeout(() => this.closest(\'.desktop-notification\').remove(), 300);">إغلاق</button>
+            </div>
+        `;
+        
+        container.appendChild(notificationDiv);
+        setTimeout(() => {
+            if (notificationDiv && notificationDiv.parentNode) {
+                notificationDiv.classList.add('hide');
+                setTimeout(() => notificationDiv.remove(), 300);
+            }
+        }, 10000);
+        playNotificationSound();
     }
     
     const STATUSES = [
@@ -706,12 +1283,81 @@ ${link}
     function getStatusCSS(s) { const st = STATUSES.find(st => st.value === s); return st ? st.css : 'status-review'; }
     function getStatusLabel(s) { const st = STATUSES.find(st => st.value === s); return st ? st.label : '⏳ قيد المراجعة'; }
     
+    async function confirmPayment(docId) {
+        const reservation = allReservations.find(r => r.id === docId);
+        if (!reservation) return;
+        if (reservation.data.payment_confirmed === true) {
+            showToast('تم تأكيد الدفع مسبقاً');
+            return;
+        }
+        try {
+            await db.collection('reservations').doc(docId).update({ payment_confirmed: true });
+            showToast('✅ تم تأكيد دفع مبلغ الشحن');
+        } catch (err) { showToast('حدث خطأ', 'error'); }
+    }
+    
     async function updateStatus(docId, newStatus, selectEl) {
         try {
             await db.collection('reservations').doc(docId).update({ status: newStatus });
             if (selectEl) selectEl.className = 'status-select ' + getStatusCSS(newStatus);
             showToast('تم تحديث حالة الطلب');
-        } catch (err) { showToast('حدث خطأ'); }
+            const reservation = allReservations.find(r => r.id === docId);
+            if (reservation) {
+                sendWAInvoice(reservation.data, newStatus, reservation.data.payment_confirmed || false);
+            }
+        } catch (err) { showToast('حدث خطأ', 'error'); }
+    }
+    
+    function buildInvoiceMessage(data, newStatus, paymentConfirmed) {
+        const name = data.name || 'العميل';
+        const phone = data.phone || '';
+        const address = data.address || '';
+        const device = data.device || '';
+        const question = data.question || 'لا يوجد';
+        const deliveryDate = data.delivery_date || 'لم يحدد';
+        const orderDate = formatDate(data.created_at);
+        const paymentStatus = paymentConfirmed ? '✅ تم دفع رسوم الشحن' : '⏳ لم يتم الدفع بعد';
+        
+        let statusMessage = '';
+        switch(newStatus) {
+            case 'تحت التجهيز': statusMessage = '🔧 طلبك قيد التجهيز'; break;
+            case 'تم الانتهاء من التجهيز': statusMessage = '✔️ تم تجهيز طلبك'; break;
+            case 'تم تسليمه لمندوب الشحن': statusMessage = '🚚 تم تسليم طلبك للشحن'; break;
+            case 'تم الاستلام': statusMessage = '✅ تم استلام طلبك بنجاح'; break;
+            case 'تم التواصل': statusMessage = '📞 تم التواصل معك'; break;
+            case 'ملغي': statusMessage = '❌ تم إلغاء طلبك'; break;
+            default: statusMessage = `📌 تم تحديث حالتك إلى: ${newStatus}`;
+        }
+        
+        return `🏷️ *أبو زهرة للإلكترونيات - فاتورة الحجز*
+━━━━━━━━━━━━━━━━━━━━
+👤 *العميل:* ${name}
+📞 *الجوال:* ${phone}
+📍 *العنوان:* ${address}
+━━━━━━━━━━━━━━━━━━━━
+🎧 *المنتج:* سماعة ${device}
+📅 *التسليم:* ${deliveryDate}
+🕐 *تاريخ الحجز:* ${orderDate}
+💬 *ملاحظات:* ${question}
+━━━━━━━━━━━━━━━━━━━━
+💰 *حالة الدفع:* ${paymentStatus}
+📌 *حالة الطلب:* ${newStatus}
+${statusMessage}
+━━━━━━━━━━━━━━━━━━━━
+شكراً لاختياركم أبو زهرة`;
+    }
+    
+    function sendWAInvoice(data, newStatus, paymentConfirmed) {
+        const invoice = buildInvoiceMessage(data, newStatus, paymentConfirmed);
+        const phone = data.phone;
+        if (!phone) { showToast('لا يوجد رقم هاتف', 'error'); return; }
+        window.open(`https://wa.me/${formatPhoneForWA(phone)}?text=${encodeURIComponent(invoice)}`, '_blank');
+    }
+    
+    function sendStatusWA(docId) {
+        const r = allReservations.find(r => r.id === docId);
+        if (!r) return;
+        sendWAInvoice(r.data, r.data.status || 'قيد المراجعة', r.data.payment_confirmed || false);
     }
     
     function statusSelectHTML(docId, currentStatus) {
@@ -744,20 +1390,21 @@ ${link}
             question: document.getElementById('editQuestion').value.trim()
         };
         if (!updates.name || !updates.phone || !updates.address || !updates.device) {
-            showToast('املأ جميع الحقول');
+            showToast('املأ جميع الحقول', 'error');
             return;
         }
         try {
             await db.collection('reservations').doc(docId).update(updates);
             showToast('تم التحديث');
             closeModal('editModal');
-        } catch (err) { showToast('خطأ'); }
+        } catch (err) { showToast('خطأ', 'error'); }
     }
     
     function openDetail(docId) {
         const r = allReservations.find(r => r.id === docId);
         if (!r) return;
         const d = r.data;
+        const paymentBadge = d.payment_confirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
         const statusBadge = `<span class="status-badge ${getStatusCSS(d.status || 'قيد المراجعة')}">${getStatusLabel(d.status || 'قيد المراجعة')}</span>`;
         const hasProof = d.payment_proof_url ? true : false;
         
@@ -776,6 +1423,7 @@ ${link}
                 <div class="detail-item"><div class="detail-label">التسليم</div><div class="detail-value">${d.delivery_date || '—'}</div></div>
                 <div class="detail-item"><div class="detail-label">تاريخ الحجز</div><div class="detail-value">${formatDate(d.created_at)}</div></div>
                 <div class="detail-item"><div class="detail-label">الاستفسار</div><div class="detail-value">${d.question || 'لا يوجد'}</div></div>
+                <div class="detail-item"><div class="detail-label">حالة الدفع</div><div class="detail-value">${paymentBadge}</div></div>
                 <div class="detail-item"><div class="detail-label">حالة الطلب</div><div class="detail-value">${statusBadge}</div></div>
                 ${proofSection}
             </div>
@@ -783,8 +1431,8 @@ ${link}
         document.getElementById('detailFooter').innerHTML = `
             <button class="btn btn-primary" onclick="closeModal('detailModal'); openEdit('${docId}')">✏️ تعديل</button>
             <a href="tel:${d.phone}" class="btn btn-success">📞 اتصال</a>
-            <button class="btn btn-success" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${docId}')" style="background:#25D366;">💬 إرسال رابط التأكيد</button>
-            <button class="btn btn-outline" onclick="copyPaymentLink('${docId}')">🔗 نسخ الرابط</button>
+            <a href="https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || '') + '، بخصوص حجزك')}" target="_blank" class="btn btn-success" style="background:#25D366;">💬 واتساب</a>
+            <button class="btn btn-outline" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${docId}')" style="background:#25D366;">🔗 رابط التأكيد</button>
             <button class="btn btn-outline" onclick="closeModal('detailModal')">إغلاق</button>
         `;
         openModal('detailModal');
@@ -800,7 +1448,7 @@ ${link}
                     showToast('تم الحذف');
                     closeModal('confirmModal');
                     deleteId = null;
-                } catch (err) { showToast('خطأ'); }
+                } catch (err) { showToast('خطأ', 'error'); }
             }
         };
         openModal('confirmModal');
@@ -811,8 +1459,8 @@ ${link}
         const mobile = document.getElementById('mobileCards');
         
         if (reservations.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state" style="text-align:center; padding:40px;"><div class="icon" style="font-size:50px;">🎧</div><h3>لا توجد حجوزات</h3></div></td></tr>`;
-            mobile.innerHTML = '<div class="empty-state" style="text-align:center; padding:40px;"><div class="icon" style="font-size:50px;">🎧</div><h3>لا توجد حجوزات</h3></div>';
+            tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div></td></tr>`;
+            mobile.innerHTML = '<div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div>';
             document.getElementById('showingCount').textContent = 'عرض 0 حجز';
             return;
         }
@@ -823,8 +1471,10 @@ ${link}
             const d = res.data;
             const id = res.id;
             const status = d.status || 'قيد المراجعة';
+            const paymentConfirmed = d.payment_confirmed === true;
             const hasProof = d.payment_proof_url ? true : false;
             const newBadge = isNew(d.created_at) ? '<span class="new-badge">جديد</span>' : '';
+            const paymentBadge = paymentConfirmed ? '<span class="payment-badge">💰 مدفوع</span>' : '<span class="payment-badge not-paid">⏳ غير مدفوع</span>';
             const proofBtn = hasProof 
                 ? `<button class="proof-btn green" onclick="viewProof('${id}')" title="عرض الإسكرين">📸</button>`
                 : `<button class="proof-btn red" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${id}')" title="إرسال رابط التأكيد للعميل">📸</button>`;
@@ -838,41 +1488,50 @@ ${link}
                     <td><span style="color:#FFDE9E;">🎧 ${(d.device || '—').substring(0, 40)}${(d.device || '').length > 40 ? '...' : ''}</span></td>
                     <td>${d.delivery_date || '—'}</td>
                     <td style="font-size:12px;">${formatDate(d.created_at)}</td>
+                    <td>${paymentBadge}</td>
                     <td>${statusSelectHTML(id, status)}</td>
                     <td style="text-align:center;">${proofBtn}</td>
                     <td>
                         <div class="actions-cell">
-                            <button class="action-btn view" onclick="openDetail('${id}')">👁️</button>
-                            <button class="action-btn edit" onclick="openEdit('${id}')">✏️</button>
-                            <button class="action-btn call" onclick="window.open('tel:${d.phone}')">📞</button>
-                            <button class="action-btn whatsapp" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${id}')">💬</button>
-                            <button class="action-btn delete" onclick="confirmDelete('${id}')">🗑️</button>
+                            <button class="action-btn view" onclick="openDetail('${id}')" title="تفاصيل">👁️</button>
+                            <button class="action-btn edit" onclick="openEdit('${id}')" title="تعديل">✏️</button>
+                            <button class="action-btn call" onclick="window.open('tel:${d.phone}')" title="اتصال">📞</button>
+                            <button class="action-btn whatsapp" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || ''))}', '_blank')" title="واتساب">💬</button>
+                            ${!paymentConfirmed ? `<button class="action-btn payment" onclick="confirmPayment('${id}')" title="تأكيد دفع الشحن">💰</button>` : ''}
+                            <button class="action-btn status-wa" onclick="sendStatusWA('${id}')" title="إرسال الحالة">📨</button>
+                            <button class="action-btn delete" onclick="confirmDelete('${id}')" title="حذف">🗑️</button>
                         </div>
-                    </td>
-                </tr>
+                     </td>
+                 </tr>
             `;
             
             mobileHTML += `
                 <div class="mobile-card">
                     <div class="mobile-card-header">
                         <div class="mobile-card-name">${newBadge}${d.name || '—'}</div>
-                        ${proofBtn}
+                        <button class="action-btn view" onclick="openDetail('${id}')">👁️</button>
                     </div>
                     <div class="mobile-card-body">
                         <div class="mobile-card-row"><span class="mobile-card-label">📱 التليفون</span><span class="mobile-card-value">${d.phone || '—'}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">📍 العنوان</span><span class="mobile-card-value">${d.address || '—'}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">🎧 المنتج</span><span class="mobile-card-value">${(d.device || '—').substring(0, 30)}</span></div>
                         <div class="mobile-card-row"><span class="mobile-card-label">📅 التسليم</span><span class="mobile-card-value">${d.delivery_date || '—'}</span></div>
+                        <div class="mobile-card-row"><span class="mobile-card-label">💰 الدفع</span><span class="mobile-card-value">${paymentConfirmed ? '✅ مدفوع' : '⏳ غير مدفوع'}</span></div>
+                    </div>
+                    <div class="mobile-proof-row">
+                        <span class="mobile-card-label">📸 الإسكرين</span>
+                        ${proofBtn}
                     </div>
                     <div class="mobile-card-status">
                         <label style="color:#a07d3a; font-size:12px;">الحالة:</label>
                         ${statusSelectHTML(id, status)}
                     </div>
                     <div class="mobile-card-actions">
-                        <button class="action-btn view" onclick="openDetail('${id}')">👁️</button>
                         <button class="action-btn edit" onclick="openEdit('${id}')">✏️</button>
                         <button class="action-btn call" onclick="window.open('tel:${d.phone}')">📞</button>
-                        <button class="action-btn whatsapp" onclick="sendConfirmationWA('${d.phone}', '${d.name}', '${id}')">💬</button>
+                        <button class="action-btn whatsapp" onclick="window.open('https://wa.me/${formatPhoneForWA(d.phone)}?text=${encodeURIComponent('مرحباً ' + (d.name || ''))}', '_blank')">💬</button>
+                        ${!paymentConfirmed ? `<button class="action-btn payment" onclick="confirmPayment('${id}')">💰</button>` : ''}
+                        <button class="action-btn status-wa" onclick="sendStatusWA('${id}')">📨</button>
                         <button class="action-btn delete" onclick="confirmDelete('${id}')">🗑️</button>
                     </div>
                 </div>
@@ -887,12 +1546,14 @@ ${link}
     function updateStats(reservations) {
         const total = reservations.length;
         const review = reservations.filter(r => (r.data.status || 'قيد المراجعة') === 'قيد المراجعة').length;
+        const paid = reservations.filter(r => r.data.payment_confirmed === true).length;
         const hasProof = reservations.filter(r => r.data.payment_proof_url).length;
         const preparing = reservations.filter(r => r.data.status === 'تحت التجهيز').length;
         const delivered = reservations.filter(r => r.data.status === 'تم الاستلام').length;
         
         document.getElementById('statTotal').textContent = total;
         document.getElementById('statReview').textContent = review;
+        document.getElementById('statPaid').textContent = paid;
         document.getElementById('statHasProof').textContent = hasProof;
         document.getElementById('statPreparing').textContent = preparing;
         document.getElementById('statDelivered').textContent = delivered;
@@ -916,12 +1577,12 @@ ${link}
     }
     
     function exportCSV() {
-        if (!allReservations.length) { showToast('لا بيانات'); return; }
+        if (!allReservations.length) { showToast('لا بيانات', 'info'); return; }
         const BOM = '\uFEFF';
-        let csv = BOM + 'الاسم,التليفون,العنوان,المنتج,الاستفسار,ميعاد التسليم,حالة الطلب,تم رفع إسكرين,رقم المحول منه,تاريخ الحجز\n';
+        let csv = BOM + 'الاسم,التليفون,العنوان,المنتج,الاستفسار,ميعاد التسليم,حالة الطلب,حالة الدفع,تم رفع إسكرين,رقم المحول منه,تاريخ الحجز\n';
         allReservations.forEach(r => {
             const d = r.data;
-            csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${d.payment_proof_url ? 'نعم' : 'لا'}","${d.sender_phone || ''}","${formatDate(d.created_at)}"\n`;
+            csv += `"${d.name || ''}","${d.phone || ''}","${d.address || ''}","${d.device || ''}","${d.question || ''}","${d.delivery_date || ''}","${d.status || 'قيد المراجعة'}","${d.payment_confirmed ? 'مدفوع' : 'غير مدفوع'}","${d.payment_proof_url ? 'نعم' : 'لا'}","${d.sender_phone || ''}","${formatDate(d.created_at)}"\n`;
         });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
@@ -930,22 +1591,82 @@ ${link}
         showToast('تم التصدير');
     }
     
+    function checkForChanges(newReservations) {
+        const newMap = new Map();
+        newReservations.forEach(r => newMap.set(r.id, r));
+        
+        newReservations.forEach(res => {
+            if (!previousReservations.has(res.id)) {
+                const d = res.data;
+                const customerName = d.name || 'عميل جديد';
+                showDesktopNotification('🆕 حجز جديد!', `${customerName} | ${d.device || 'سماعة'}`, res.id);
+                showCustomNotification('🆕 حجز جديد!', `${customerName} | ${d.device || 'سماعة'}`, res.id);
+            }
+        });
+        
+        newReservations.forEach(res => {
+            const old = previousReservations.get(res.id);
+            if (old) {
+                const oldStatus = old.data.status || 'قيد المراجعة';
+                const newStatus = res.data.status || 'قيد المراجعة';
+                const oldPayment = old.data.payment_confirmed || false;
+                const newPayment = res.data.payment_confirmed || false;
+                const oldProof = old.data.payment_proof_url;
+                const newProof = res.data.payment_proof_url;
+                
+                if (oldStatus !== newStatus) {
+                    const statusLabels = {
+                        'قيد المراجعة': '⏳ قيد المراجعة',
+                        'تم التواصل': '📞 تم التواصل',
+                        'تحت التجهيز': '🔧 تحت التجهيز',
+                        'تم الانتهاء من التجهيز': '✔️ تم التجهيز',
+                        'تم تسليمه لمندوب الشحن': '🚚 تم تسليمه للشحن',
+                        'تم الاستلام': '✅ تم الاستلام',
+                        'ملغي': '❌ ملغي'
+                    };
+                    showDesktopNotification('📋 تحديث حالة الطلب', `${res.data.name || 'عميل'} : ${statusLabels[newStatus] || newStatus}`, res.id);
+                    showCustomNotification('📋 تحديث حالة الطلب', `${res.data.name || 'عميل'} : ${statusLabels[newStatus] || newStatus}`, res.id);
+                }
+                
+                if (oldPayment !== newPayment && newPayment === true) {
+                    showDesktopNotification('💰 تأكيد الدفع', `${res.data.name || 'عميل'} : تم تأكيد دفع رسوم الشحن`, res.id);
+                    showCustomNotification('💰 تأكيد الدفع', `${res.data.name || 'عميل'} : تم تأكيد دفع رسوم الشحن`, res.id);
+                }
+                
+                if (!oldProof && newProof) {
+                    showDesktopNotification('📸 تم رفع إسكرين تحويل', `${res.data.name || 'عميل'} : تم رفع إسكرين التحويل - مراجعة`, res.id);
+                    showCustomNotification('📸 تم رفع إسكرين تحويل', `${res.data.name || 'عميل'} : تم رفع إسكرين التحويل - مراجعة`, res.id);
+                }
+            }
+        });
+        
+        previousReservations = newMap;
+    }
+    
+    function checkNotificationPermission() {
+        if ('Notification' in window) {
+            if (Notification.permission === 'granted') {
+                console.log('إذن الإشعارات مفعل');
+            } else if (Notification.permission === 'default') {
+                const bannerClosed = localStorage.getItem('notifications_banner_closed');
+                if (!bannerClosed) {
+                    setTimeout(() => {
+                        if (Notification.permission === 'default') {
+                            document.getElementById('permissionBanner').classList.add('show');
+                        }
+                    }, 3000);
+                }
+            }
+        }
+    }
+    
     // Real-time listener
     db.collection('reservations').orderBy('created_at', 'desc').onSnapshot(snapshot => {
         const newReservations = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
         
-        newReservations.forEach(res => {
-            const old = previousReservations.get(res.id);
-            if (old && !old.data.payment_proof_url && res.data.payment_proof_url) {
-                showToast(`📸 العميل ${res.data.name || ''} رفع إسكرين التحويل - مراجعة`);
-                try {
-                    const audio = new Audio();
-                    audio.src = "https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3";
-                    audio.volume = 0.3;
-                    audio.play().catch(e => console.log);
-                } catch(e) {}
-            }
-        });
+        if (previousReservations.size > 0) {
+            checkForChanges(newReservations);
+        }
         
         allReservations = newReservations;
         updateStats(allReservations);
@@ -961,6 +1682,15 @@ ${link}
         if (e.key === '/') { e.preventDefault(); document.getElementById('searchInput').focus(); }
         if (e.key === 'Escape') { ['editModal', 'detailModal', 'confirmModal', 'proofModal'].forEach(id => closeModal(id)); }
     });
+    
+    document.body.addEventListener('click', function initAudio() {
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        document.body.removeEventListener('click', initAudio);
+    });
+    
+    checkNotificationPermission();
 </script>
 </body>
 </html>
