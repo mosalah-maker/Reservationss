@@ -15,7 +15,6 @@
             direction: rtl;
             overflow-x: hidden;
         }
-        /* نفس الستايلات اللي كانت موجودة في الداشبورد القديم */
         .admin-bg {
             position: fixed;
             top: 0;
@@ -45,6 +44,7 @@
         }
         .sidebar-header .logo { font-size: 55px; margin-bottom: 8px; }
         .sidebar-header h2 { font-size: 18px; color: #F5C542; font-weight: 800; }
+        .sidebar-header p { font-size: 12px; color: #a07d3a; }
         .sidebar-nav { list-style: none; padding: 0 15px; }
         .sidebar-nav li { margin-bottom: 5px; }
         .sidebar-nav a {
@@ -101,6 +101,7 @@
             transition: all 0.3s;
             text-decoration: none;
         }
+        .btn:hover { transform: translateY(-2px); }
         .btn-primary { background: linear-gradient(135deg, #E5B83C, #B8860B); color: #050301; }
         .btn-outline { background: transparent; border: 1px solid rgba(229,184,60,0.4); color: #F5C542; }
         .btn-success { background: #25D366; color: #fff; }
@@ -453,7 +454,6 @@
         <li><a href="#" class="active" onclick="return false"><span class="icon">📋</span> الحجوزات</a></li>
         <li><a href="#" onclick="exportCSV(); return false"><span class="icon">📥</span> تصدير البيانات</a></li>
         <li><a href="#" onclick="window.print(); return false"><span class="icon">🖨️</span> طباعة</a></li>
-        <li><a href="#" onclick="window.open('index.html', '_blank'); return false"><span class="icon">🌐</span> صفحة الحجز</a></li>
     </ul>
 </aside>
 
@@ -582,7 +582,18 @@
     let previousReservations = new Map();
     
     // رابط صفحة تأكيد الحجز (عدله على حسب رابط موقعك)
-    const CONFIRM_PAGE_URL = "https://mosalah-maker.github.io/confirm.html";
+    const CONFIRM_PAGE_URL = "https://mosalah-maker.github.io/Confirm-your-reservation/";
+    
+    // دالة تحويل الرقم للواتساب
+    function formatPhoneForWA(phone) {
+        if (!phone) return '';
+        let cleaned = phone.replace(/[\s\-\+\(\)]/g, '');
+        if (cleaned.startsWith('00')) cleaned = cleaned.substring(2);
+        if (cleaned.startsWith('+')) cleaned = cleaned.substring(1);
+        if (cleaned.startsWith('0')) cleaned = '20' + cleaned.substring(1);
+        if (!cleaned.startsWith('20')) cleaned = '20' + cleaned;
+        return cleaned;
+    }
     
     function formatDate(ts) {
         if (!ts) return '—';
@@ -612,7 +623,6 @@
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
     
-    // ربط صفحة التأكيد
     function getConfirmationLink(reservationId) {
         return `${CONFIRM_PAGE_URL}?id=${reservationId}`;
     }
@@ -625,6 +635,7 @@
     
     function sendConfirmationWA(phone, name, reservationId) {
         const link = getConfirmationLink(reservationId);
+        const formattedPhone = formatPhoneForWA(phone);
         const message = `🌹 مرحباً ${name}،
 
 نشكرك على حجزك في أبو زهرة للإلكترونيات 🎧
@@ -648,9 +659,6 @@ ${link}
 شكراً لثقتك 🤍
 أبو زهرة للإلكترونيات`;
         
-        let formattedPhone = phone.replace(/[\s\-\+\(\)]/g, '');
-        if (formattedPhone.startsWith('0')) formattedPhone = '2' + formattedPhone.substring(1);
-        if (!formattedPhone.startsWith('20')) formattedPhone = '20' + formattedPhone;
         window.open(`https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`, '_blank');
     }
     
@@ -803,8 +811,8 @@ ${link}
         const mobile = document.getElementById('mobileCards');
         
         if (reservations.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div></td></tr>`;
-            mobile.innerHTML = '<div class="empty-state"><div class="icon">🎧</div><h3>لا توجد حجوزات</h3></div>';
+            tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state" style="text-align:center; padding:40px;"><div class="icon" style="font-size:50px;">🎧</div><h3>لا توجد حجوزات</h3></div></td></tr>`;
+            mobile.innerHTML = '<div class="empty-state" style="text-align:center; padding:40px;"><div class="icon" style="font-size:50px;">🎧</div><h3>لا توجد حجوزات</h3></div>';
             document.getElementById('showingCount').textContent = 'عرض 0 حجز';
             return;
         }
@@ -926,12 +934,10 @@ ${link}
     db.collection('reservations').orderBy('created_at', 'desc').onSnapshot(snapshot => {
         const newReservations = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
         
-        // إشعار عند رفع إسكرين جديد
         newReservations.forEach(res => {
             const old = previousReservations.get(res.id);
             if (old && !old.data.payment_proof_url && res.data.payment_proof_url) {
                 showToast(`📸 العميل ${res.data.name || ''} رفع إسكرين التحويل - مراجعة`);
-                // تشغيل صوت إشعار
                 try {
                     const audio = new Audio();
                     audio.src = "https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3";
