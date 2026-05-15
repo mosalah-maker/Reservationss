@@ -1329,7 +1329,7 @@ ${link}
             default: statusMessage = `📌 تم تحديث حالتك إلى: ${newStatus}`;
         }
         
-        return `🏷️ *أبو زهرة للإلكترونيات - فاتورة الحجز*
+        let formattedInvoice = `🏷️ *أبو زهرة للإلكترونيات - فاتورة الحجز*
 ━━━━━━━━━━━━━━━━━━━━
 👤 *العميل:* ${name}
 📞 *الجوال:* ${phone}
@@ -1345,6 +1345,35 @@ ${link}
 ${statusMessage}
 ━━━━━━━━━━━━━━━━━━━━
 شكراً لاختياركم أبو زهرة`;
+
+        // رسالة مخصصة لحالة "تم الاستلام"
+        if (newStatus === 'تم الاستلام') {
+            formattedInvoice += `
+
+🌟✨ *أهلاً بيك 🤍* ✨🌟
+
+يهمنا جداً رأيك بعد تجربتك معانا 🙏  
+لو عندك دقيقة بس، ادخل على البوست وشاركنا رأيك بصراحة 👇  
+🔗 https://www.facebook.com/share/p/1L2WMy3E28/?mibextid=wwXIfr  
+
+رأيك بيساعدنا نطور نفسنا ويطمن أي حد هيشتري بعدك 💯  
+
+💬 *مستنيين رأيك 🙌*  
+*Abo Zahra* 🎧`;
+        }
+        // رسالة مخصصة لحالة "تم التواصل"
+        else if (newStatus === 'تم التواصل') {
+            formattedInvoice += `
+
+📢 *لو حابب تتأكد من شغلنا وجودتنا*  
+خش شوف الكومنتات بتاعة عملاءنا في البوست دا 👇  
+🔗 https://www.facebook.com/share/p/1L2WMy3E28/?mibextid=wwXIfr  
+
+💰 *أراء اللي جربونا قبلك بتعبر عنا* 💯  
+*Abo Zahra* 🎧`;
+        }
+        
+        return formattedInvoice;
     }
     
     function sendWAInvoice(data, newStatus, paymentConfirmed) {
@@ -1501,8 +1530,8 @@ ${statusMessage}
                             <button class="action-btn status-wa" onclick="sendStatusWA('${id}')" title="إرسال الحالة">📨</button>
                             <button class="action-btn delete" onclick="confirmDelete('${id}')" title="حذف">🗑️</button>
                         </div>
-                     </td>
-                 </tr>
+                      </td>
+                  </tr>
             `;
             
             mobileHTML += `
