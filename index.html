@@ -121,7 +121,6 @@
             .filter-bar { flex-direction: column; }
             .mobile-card-actions { grid-template-columns: repeat(4, 1fr); }
         }
-        /* صفحة التأكيد */
         .confirm-page { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; background: #050301; }
         .confirm-card { max-width: 550px; width: 100%; background: #0e0b06; border-radius: 32px; padding: 28px; border: 1px solid #F5C542; }
         .confirm-card h2 { color: #F5C542; text-align: center; margin-bottom: 20px; }
@@ -269,8 +268,7 @@
     firebase.initializeApp({
         apiKey: "AIzaSyDrhyNCKO5tzF-tiRQevk12kLM8hAkkr0w",
         authDomain: "reservations-e411a.firebaseapp.com",
-        projectId: "reservations-e411a",
-        storageBucket: "reservations-e411a.firebasestorage.app"
+        projectId: "reservations-e411a"
     });
 
     const db = firebase.firestore();
@@ -278,7 +276,6 @@
     let previousReservations = new Map();
     const BASE_URL = window.location.origin + window.location.pathname;
     
-    // API key بتاع imgBB
     const IMGBB_API_KEY = "d96cbbe822e1ace2ef3247edf29d6de2";
 
     function formatPhoneForWA(phone) {
@@ -318,7 +315,6 @@
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    // رفع الصورة على imgBB
     async function uploadToImgBB(file) {
         const formData = new FormData();
         formData.append('image', file);
@@ -333,7 +329,7 @@
         if (result.success) {
             return result.data.url;
         } else {
-            throw new Error('فشل رفع الصورة');
+            throw new Error(result.error?.message || 'فشل رفع الصورة');
         }
     }
 
@@ -639,7 +635,6 @@ ${link}
         showToast('تم التصدير');
     }
     
-    // صفحة التأكيد - باستخدام imgBB
     function showConfirmationPage() {
         const urlParams = new URLSearchParams(window.location.search);
         const confirmId = urlParams.get('c');
@@ -727,13 +722,11 @@ ${link}
                             return;
                         }
                         
-                        messageDiv.innerHTML = '<p style="color: #F5C542;">⏳ جاري رفع الإسكرين...</p>';
+                        messageDiv.innerHTML = '<p style="color: #F5C542;">⏳ جاري رفع الإسكرين على imgBB...</p>';
                         
                         try {
-                            // رفع الصورة على imgBB
                             const imageUrl = await uploadToImgBB(file);
                             
-                            // حفظ الرابط في Firebase
                             await db.collection('reservations').doc(confirmId).update({
                                 payment_proof_url: imageUrl,
                                 sender_phone: senderPhone,
@@ -746,7 +739,7 @@ ${link}
                             }, 3000);
                         } catch(err) {
                             console.error(err);
-                            messageDiv.innerHTML = '<p style="color: #ef4444;">❌ حدث خطأ في رفع الصورة، حاول مرة أخرى</p>';
+                            messageDiv.innerHTML = '<p style="color: #ef4444;">❌ حدث خطأ في رفع الصورة: ' + (err.message || 'حاول مرة أخرى') + '</p>';
                         }
                     };
                 } else {
@@ -758,7 +751,6 @@ ${link}
         }
     }
     
-    // Real-time listener
     db.collection('reservations').orderBy('created_at', 'desc').onSnapshot(snapshot => {
         const newReservations = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
         
